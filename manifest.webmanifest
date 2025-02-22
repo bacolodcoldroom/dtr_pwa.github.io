@@ -1,0 +1,22 @@
+{
+  "name": "DTR App",
+  "short_name": "DTR",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#a9a9a9",
+  "theme_color": "#a9a9a9",
+  "description": "DTR App for Bacolod Cold Chain Facility",
+  "icons": [
+    {
+      "src": "gfx/favicon_io/android-chrome-152x152.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "gfx/favicon_io/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

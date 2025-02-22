@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="theme-color" content="#000000"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="description" content="Your Online Printing Store.">
+<meta name="og:image" content="gfx/icon-192x192.png">
+
+<!-- HTML Meta Tags -->
+<!-- Google / Search Engine Tags -->
+<meta itemprop="name" content="Regent Prints">
+<meta itemprop="description" content="Your Online Printing Store.">
+<meta itemprop="image" content="gfx/icon-192x192.png">
+ 
+<!-- Facebook Meta Tags -->
+<!--meta property="og:url" content="https://nothing.com"-->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Regent Prints">
+<meta property="og:description" content="Your Online Printing Store.">
+<meta property="og:image" content="gfx/icon-192x192.png">
+ 
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Regent Prints">
+<meta name="twitter:description" content="Your Online Printing Store.">
+<meta name="twitter:image" content="gfx/icon-192x192.png">
+ 
+<link rel="shortcut icon" href="gfx/favicon_io/favicon.ico">
+<link rel="icon" href="gfx/favicon.ico">
+<link rel="apple-touch-icon" href="gfx/apple-touch-icon.png">
+
+<link rel="manifest" href="./manifest.webmanifest">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<!--script type='text/javascript' src='html2pdf.jeffbundle.min.js'></script-->
+
+<style>
+
+    @media print {
+        body {
+            -webkit-print-color-adjust: exact;
+            -moz-print-color-adjust: exact;
+            -ms-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    }
+ 
+    #container {
+      width: 100%;
+      height: 400px;
+      background-color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 0px;
+      touch-action: none;
+    }
+    .cl_item {
+      width: auto;
+      height: auto;
+      position: absolute;
+      border: 0px solid indianred;
+      background-repeat:no-repeat;background-size:auto 100%;
+      background-color: none;
+      padding:0px;
+      /*
+      background-color: rgb(245, 230, 99);
+      border: 1px solid rgba(136, 136, 136, .5);
+      border-radius: 50%; 
+      */
+      touch-action: none;
+      user-select: none;
+    }
+
+    /*
+    .cl_item:active {
+      background-color: rgba(168, 218, 220, 1.00);
+    }    
+    .cl_item:hover {
+      cursor: pointer;
+      border-width: 2px;
+      border:1px solid red;
+    }
+    */
+    
+</style>
+
+<!-- ****************************************************************** -->
+<!-- ****************************************************************** -->
+<title>DTR App</title>
+<!--script src="main_jslib/eruda.min.js"></script>
+<script>eruda.init();</script-->
+  
+
+<script>  
+  var CURR_APPNAME="DTR APP"; 
+  var CURR_CLIENT='DTR';
+  var CURR_SITE='http://192.168.0.199:4440';
+  var CURR_VER="1.015";
+  var CURR_CLIENTNAME="Bacolod Cold Chain Facility";
+  var CURR_CLIENTADDRESS="Annex Bldg., Bacolod New Gov't Center, Bacolod City";
+  var CURR_TELNO="410-4810"; 
+  
+  var DEBUG_NODE=false;
+  var JBE_API='https://updesk.heliohost.org/rpd_api/';  
+  //var pathloc=window.location.origin.substring(0,21);
+  var pathloc=window.location.origin;
+  let posloc = pathloc.search("4400");
+  let posloc2 = pathloc.search("4440");
+  if(posloc == -1 && posloc2 == -1) { //android debug
+    JBE_API=window.location.origin;  
+    DEBUG_NODE=false;
+  }  
+  JBE_API='api/';
+  //alert(JBE_API);
+  //alert(pathloc);
+</script>
+<!-- ****************************************************************** -->
+<!-- ****************************************************************** -->
+</head>
+
+<body style="color:#252526;background:#E8E8E8;padding:0px;" onresize="myResizeFunction()">
+
+<audio id="myAudio">
+  <source src="gfx/snd/chimes.ogg" type="audio/ogg">
+  <source src="gfx/snd/chimes.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<div id="snackbar"></div> 
+<!--************************* blocker-->
+<div id="je_msg" tabindex="0" data-rval="SAGBAYAN" class="modal" style="display:none;z-index:1100;" onkeydown="javascript:if(event.keyCode==27) closeModal()">
+  <div class="modal-content">
+    <div id="modal-header" class="modal-header color_head" style="background:none;">
+      <!--span class="closeBtn" onclick="closeModal()">&times;</span-->
+      <span id="DivPrompt">
+        <h1>Modal Header</h1>
+      </span>				
+    </div>
+    <div id="modal-body" class="modal-body" style="background:none;">
+      <div id="msgBody">        
+      </div>	
+      <div style="height:auto;text-align:center;margin-top:5px;background:none;">
+        <div id="msgDivPrompt" style="display:none;margin-bottom:5px;">
+          <input class="je_msg_btn" type="text" id="txtPrompt" onkeydown="javascript:if(event.keyCode==13) MSG_CLICK(1)" style="width:40%;height:20px;border:1px solid black;text-align:center;" value="" />
+        </div>
+        <div id="msgDivOk" style="display:none;">
+          <!--input type="button" onclick="closeModal()" class="button" value="OK" /-->
+          <input type="text" id="txOk" style="display:none;width:100px;"/>
+          <input class="je_msg_btn" type="button" id="btnOk" onclick="MSG_CLICK(1)" onkeydown="javascript:if(event.keyCode==13) MSG_CLICK(1)" value="OK" />
+        </div>
+        <div id="msgDivYesNo" style="display:none;">
+          <input class="je_msg_btn" type="button" id="btnYes" onclick="MSG_CLICK(1)" value="Yes" />
+          <input class="je_msg_btn" type="button" id="btnNo"  onclick="MSG_CLICK(2)" value="No" style="margin-left: 2%;" />
+        </div>
+      </div>				
+    </div>
+    <div id="modal-footer" class="modal-footer color_head" style="color:white;text-align:right;height:auto;">
+      ENADSYS Dialog Ver 1.01 Copyright (c) 2018
+    </div>
+  </div>	
+</div>  
+
+<div id="loading" class="modal" style="display:block;z-index:1450;">      
+  <div style="width:150px;height:150px;background:none;
+          position: absolute;  z-index: 1000;  top: 50%;  left: 50%;  
+          -webkit-transform: translate(-50%, -50%);  transform: translate(-50%, -50%);">      
+    <img src="gfx/proc_logo.gif" alt="proc image" style="float:right;height:100%;width:100%;background:none;" />
+  </div>
+</div>
+
+<!-- *************************PAGES***************************************************
+******************************************************************************** -->
+
+<div id="page_login" class="modal" data-jbepass="" style="display:none;width:100%;height:100%;background-color:none;padding:5px;">
+  
+  <div id="firstlogin" class="modal-content" data-mod="1" style="display:block;width:280px;height:310px;background:none;">      
+          
+    <div style="width:100%;height:100%; border-radius:5px; padding:3%; font-size:14px; background:lightgray;">
+      
+      <div style="width:100%;height:20px;font-size:14px;background:none;">        
+        <div style="float:right;width:20px;height:20px;text-align:center;border-radius:5px; cursor:pointer;
+          color:white;background:black;" onclick="closeLogin()">x</div>
+      </div>
+      <div id="dv_avatar" style="position:relative;width:100%;height:65px;text-align:center;background:none;">
+        <img id="img_avatar" data-img="" name="img_avatar" src="gfx/avatar.png" style="border-radius:50%;height:65px;width:65px;border:1px solid gray;"/>
+        <div id="div_avatar" style="display:none;position:absolute;top:50%;left:50%;cursor:pointer;border-radius:50%;border:1px solid black;
+              height:30px;width:30px;padding:3px;background:#434343;">              
+          
+          <input type="file" id="id_file" data-orig="" data-sel=0 name="id_file" hidden="hidden" />
+          <img src="gfx/jcam.png" onclick="JBE_GET_IMAGE(0,id_file.id,img_avatar.id,'',false)" style="width:95%;"/>
+        </div>
+      </div>
+      
+      <div id="logpanel" style="margin-top:0%;height:auto;background:none;">
+
+        <div id="dv_uid" style="margin-top:0%; height:auto; width:100%;background:none;">
+          <div style="height:15px; width:100%; background:none;">User ID</div>
+          <div style="height:25px; width:100%;background:none;">
+            <input id="fuser" type="text" placeholder="Name, Email or Phone Number"  maxlength=20 onkeydown="javascript:if(event.keyCode==13) document.getElementById('fpass').focus()"
+              style="width:100%;height:25px;text-align:center;border-radius:5px;" value=""/>              
+          </div>
+        </div>
+        <div id="dv_pass" style="margin-top:2%; height:auto; width:100%;background:none;">
+          <div style="height:15px; width:100%;background:none;">Password</div>
+          <form onsubmit="false" style="height:25px; width:100%;">
+            <input id="fpass" name="fpass" autocomplete="off" type="password" placeholder="Password" maxlength=20 onkeydown="javascript:if(event.keyCode==13) document.getElementById('lognow').focus()"
+              style="width:100%;height:25px;text-align:center;border-radius:5px;" value=""/>
+          </form>
+        </div>
+        
+      </div>
+
+      <div id="fmsg" style="display:none;margin-top:5px; height:60px; width:100%;font-size:12px;margin-bottom:0px;color:black;background:none;">
+        Make sure your password is 
+      </div>
+
+      <div id="log_1" style="display:block;margin-top:1px;text-align:center;height:30px;width:100%;background:none;">
+        <input id="lognow" type="button" onclick="chk_lognow()" style="width:48%;height:100%;color:white;background:#039be5;border:1px solid gray;border-radius:5px;cursor:pointer;" value="Log In"/>        
+      </div>
+      <div style="display:none;width:100%;height:auto;margin-top:9px;text-align:center;background:none;">Not a member yet? <span id="signUp" onclick="fm_profile(1)" style="font-weight:bold;cursor:pointer;color:red;"><u>Sign Up</u></span></div>        
+    </div>
+
+  </div>  
+
+</div>
+
+<!--  *************************PAGES***************************************************
+      ************************************************************************** -->
+<div id="wrapper" style="position:relative;display:none;height:100%;background-color:white;padding:0px;">  
+    <!--div id="app-logo"  style="width:100%;height:100px;text-align:center;">
+      <img  src="./gfx/icon-192x192.png" style="height:100%;" alt="first_logo image" >      
+    </div--> 
+    <!--  ************************* PERMANENT *************************************************** -->
+
+   
+
+  <div id="page_main" class="page_class" style="display:none;width:100%;height:100%;background-color:none;">
+    
+    <div id="div_header" class="jheader color_head" style="width:100%;height:54px;opacity:1;z-index:5;text-align:center;padding:0px;border:0px solid gray;">              
+      <div id="div_tilt" style="display:block;width:auto;height:60%;font-size:24px;font-weight:bold;padding:8px 0 0 0;text-align:center;color:white;background:none;"></div>        
+      <div id="div_sysdate" style="display:block;width:auto;height:40%;font-size:14px;font-weight:bold;padding:0px 0 0 0;text-align:center;color:black;background:none;"></div>        
+    </div>
+    
+    <div id="divUL" style="display:none;position:absolute;width:100%;height:200px;padding:2px;top:70px;overflow:auto;background:red;">
+        <ul id="myUL" style="width:100%;height:100%;position:none;"></ul>
+    </div>
+    
+    <div id="user_main" style="display:block;width:100%;height:300px;padding:0px;background:none;">
+      <div id="online_stat" style="width:100%;height:25px;">
+        <div id="online_status" style="float:left;width:50%;height:100%;font-size:14px;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset: 5px;font-weight:bold;padding:3px;color:red;border:0px solid red;background:white;">O F F L I N E</div>
+        <div id="logger" onclick="main_login()" style="float:right;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset: 5px;cursor:pointer;text-align:right;width:50%;height:100%;font-size:14px;font-weight:bold;padding:3px 10px 0 0;color:navy;border:0px solid red;background:none;"></div>
+      </div>  
+	    <div id="img_main" style="position:relative;width:100%;height:60px;text-align:center;border:0px solid blue;padding:10px;background:none;">        
+        <div style="float:left;width:25%;height:100%;text-align:center;"><img src="gfx/logoDOH.png" style="height:100%;" alt="eMeter image"/></div>        
+        <div style="float:left;width:25%;height:100%;text-align:center;"><img src="gfx/logoNGC.png" style="height:100%;" alt="eMeter image"/></div>          
+        <div style="float:left;width:25%;height:100%;text-align:center;"><img src="gfx/logoCHO.png" style="height:100%;" alt="eMeter image"/></div>
+        <div style="float:left;width:25%;height:100%;text-align:center;"><img src="gfx/icon-192x192.png" style="height:100%;" alt="eMeter image"/></div>        
+      </div>
+      
+      <div id="filler" style="width:100%;height:60px;border:0px solid blue;background:none;">
+        <div style="width:100%;height:70px;font-weight:bold;text-align:center;padding:10px 0 0 0;background:#039be5;
+              font-weight:bold;text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">        
+          <div id="heeding1"></div>
+          <div id="heeding2"></div>
+          <div id="heeding3" style="font-style:italic;color:blue;"></div>          
+        </div>
+        <div id="heed_main" style="width:100%;padding:10% 0% 0% 0%;height:100px;margin-top:0px;text-align:center;background:none;"><input type="image" src="gfx/main.png" onclick="fm_daily()" style="height:250px;width:auto;" alt="eMeter image"/></div>                  
+      </div>
+
+      <div id="btns" style="display:none;border:1px solid yellow;">
+
+        <div class="btn_box" style="background:none;">
+          <div id="btn_1" class="btn_image" style="background:#039be5;" onclick="main_ptr(0)">      
+            <input type="image" src="gfx/ptr.png"  style="height:80%;"/>            
+            <div style="height:20%;color:white">Read</div>
+          </div>          
+          <div id="btn_2" class="btn_image" style="background:#039be5;" onclick="main_ptr(1)">      
+            <input type="image" src="gfx/ptr.png"  style="height:80%;"/>            
+            <div style="height:20%;color:white">History</div>
+          </div>          
+        </div>  
+
+        <div class="btn_box" style="background:none;">          
+          <div id="btn_3" class="btn_image" style="background:#039be5;" onclick="fm_receive()">      
+            <input type="image" src="gfx/receive.png"  style="height:80%;"/>            
+            <div style="height:20%;color:white">Report</div>
+          </div>
+          <div id="btn_4" class="btn_image" style="background:#039be5;" onclick="fm_ret()">      
+            <input type="image" src="gfx/returns.png"  style="height:80%;"/>            
+            <div style="height:20%;color:white">Tools</div>
+          </div>          
+        </div>
+
+      </div>
+      
+    </div>
+
+  </div>
+
+  <div id="div_bar" style="display:block;position:absolute;left:0px;top:0px;height:55px;width:100%;padding:2px;background-color: rgba(255,255,255,0.1);z-index:6;background:none;">
+        
+    <div id="menu_open" onclick="openNav()" class="class_notif" style="float:left;display:block;left:0px;width:auto;height:50px;background:black;">
+      <img id="hd_img" src="gfx/jham.png" style="height:100%;border:2px solid black;background:none;" alt="notif new hd image" >      
+    </div> 
+    
+
+    <div class="class_notif" style="display:block;float:right;right:10px;width:auto;height:50px;background:none;">      
+      <div style="float:right;height:50px;width:50px;border-radius:50%;border:2px solid white;background:none;" alt="ai" >
+        <img id="bar_avatar" src="gfx/avatar.png" onclick="jeff()" onerror="imgOnError(this)" 
+            style="float:right;height:100%;width:100%;border-radius:50%;border:1px solid black;background:none;" alt="ai" >
+      </div>
+      <div id="xlogger" style="display:none;float:right;width:100%;height:auto;text-align:right;padding:2px 0 0 0;font-size:11px;color:black;background:red;
+                              font-weight:bold;text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">
+      </div>
+    </div> 
+    
+    <div id="div_notifs" style="position:absolute;display:block;right:65px;width:auto;height:100%;background:none;">
+
+      <div id="notif_bell" onclick="show_notif_bell(0)" class="class_notif" style="right:0px;">
+        <img src="gfx/jbell.png" style="height:100%;background:none;" alt="notif new hd image" >
+        <div id="ntf_bell" class="class_notif2" style="left:35%;"></div>
+      </div> 
+      <div id="notif_chat" onclick="fm_chat('')" class="class_notif" style="position:relative;">
+        <img src="gfx/jnotif.png" style="height:100%;background:none;" alt="notif new hd image" >
+        <div id="ntf_chat" class="class_notif2" style="left:35%;"></div>
+      </div>       
+      <div id="notif_cart" onclick="fm_cart()" class="class_notif">
+        <img src="gfx/jcart.png" style="height:100%;background:none;" alt="notif order image" >
+        <div id="ntf_cart" class="class_notif2" style="left:35%;"></div>
+      </div>
+
+    </div>
+
+    <div id="jtime" onclick="" style="position:absolute;top:0px;left:0px;height:100%;;width:auto;color:red;padding:6px;
+          font-weight:bold;text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+          font-size:14px;background:none;">   
+    </div>
+
+    <div id="div_nobar" style="display:none;height:100%;width:100%;top:0px;left:0px;position:absolute;background-color: rgba(0,0,0,0.4);">
+    </div>
+
+    <div id="div_search" style="display:none;position:absolute;top:30px;left:10px;width:auto;height:100%;padding:2px;border-radius:5px;border:1px solid white;background:none;">
+        <input type="image" onclick="showUL(false)"  id="img_search" src="gfx/jsearch.png" style="float:left;width:auto;height:100%;background:none;" alt="seek image" />
+        <input id="inp_search" onclick="showUL(true)" onkeyup="mySearch()" type="text" style="float:left;height:100%;margin-left:2px;border:1px solid lightgray;text-align:center;opacity:0.6;color:black;background:white;" value=""/>
+    </div>   
+  </div> 
+  
+  <div id="mySidenav" class="sidenav" style="height:100%;margin-top:0px;font-size:9px;">
+    <div id="mySidenav_box" style="height:100%;width:90%;margin-top:0px;font-size:9px;border:1px solid black;padding:20px 0 0 0;background:darkgray;">
+    
+      <a id="id_setting" href="javascript:fm_setting()" class="nav_menu" style="display:none;margin-bottom:0px;">
+        <div style="width:100%;">
+          <img src="gfx/jsetting.png" alt="fm admin image"/>
+          <span>Setting</span>
+        </div>      
+      </a> 
+
+      <a href="javascript:fm_dtr()" class="nav_menu" style="margin-bottom:0px;">
+        <div style="width:100%;">
+          <img src="gfx/jadmin.png" alt="fm admin image"/>
+          <span>My DTR</span>
+        </div>      
+      </a>
+      
+      <a href="javascript:rp_dtr()" class="nav_menu">
+        <div style="width:100%;">
+          <img src="gfx/jdownload.png" alt="download image" />
+          <span>Print DTR</span>
+        </div>      
+      </a> 
+  
+      <hr> 
+  
+      <!--a href="javascript:logout()" class="nav_menu">
+        <div style="width:100%;">
+          <img src="gfx/jclose.png" alt="download image" />
+          <span>Log Out</span>
+        </div>      
+      </a-->
+          
+    </div>      
+  </div>
+
+  <div id="myJBox" class="modal_box" style="bottom:0px;">
+  </div>
+
+  <div id="myBox" class="modal_box">
+    
+    <div id="myBox_main" data-open=0 data-close='' data-meter=0 class="bottom_box"> 
+      <div id="hd_box" class="hd_box" style="width:100%;height:30px;font-size:15px;border:1px solid black;background:none;">
+        <div id="cap_box" style="float:left;width:90%;height:100%;padding:5px;background:none;">Title Box A</div>
+        <div style="float:right;width:10%;height:100%;background:none;">
+          <input type="button" onclick="closeBox()" style="float:right;width:30px;height:100%;font-size:14px;color:white;background:red;" value="X" />
+        </div>  
+      </div>  
+      <div id="dtl_box" style="width:100%;height:80px;bottom:0px;padding:5px;overflow:auto;border:1px solid black;color:black;background:none;">      
+      </div>   
+    </div>
+  
+  </div>
+
+  <div id="myView1" data-page=0 data-open=0 data-close="" data-JBEpage=0 class="page_class myView" style="display:none;">
+    <div style="width:100%;height:0px;"></div>
+    <div class="back_main">      
+      <div id="back_view1" onclick="JBE_CLOSE_VIEW()" class="back_class">
+        <img id="back_view_img1" src="gfx/jback.png" style="height:100%;" />
+        <span>Back</span>
+      </div>      
+      <div id="cap_myView1" class="cap_class"></div>
+      <div id="cap_viewMid1" class="cap_mid_class"></div>
+    </div>
+    <div id="dtl_myView1" class="myView_dtl">
+    </div>
+  </div>
+    
+  <div id="myView2" data-page=0 data-open=0 data-close="" class="page_class myView" style="display:none;">
+    <div style="width:100%;height:0px;"></div>
+    <div class="back_main">
+      <div id="back_view2" onclick="JBE_CLOSE_VIEW()" class="back_class">
+        <img id="back_view_img2" src="gfx/jback.png" style="height:100%;" />
+        <span>Back</span>
+      </div>
+      <div id="cap_myView2" class="cap_class"></div>
+      <div id="cap_viewMid2" class="cap_mid_class"></div>
+    </div>
+    <div id="dtl_myView2" class="myView_dtl">
+      <!--dtl-->
+    </div>       
+  </div>
+  
+  <div id="myView3" data-page=0 data-open=0 data-close="" class="page_class myView" style="display:none;">
+    <div style="width:100%;height:0px;"></div>    
+    <div class="back_main">
+      <div id="back_view3" onclick="JBE_CLOSE_VIEW()" class="back_class">
+        <img id="back_view_img3" src="gfx/jback.png" style="height:100%;" />
+        <span>Back</span>
+      </div>
+      <div id="cap_myView3" class="cap_class"></div>
+      <div id="cap_viewMid3" class="cap_mid_class"></div>
+    </div>
+    <div id="dtl_myView3" class="myView_dtl">
+      <!--dtl-->
+    </div>       
+  </div>
+  
+  <div id="myView4" data-page=0 data-open=0 data-close="" class="page_class myView" style="display:none;">
+    <div style="width:100%;height:0px;"></div> 
+    <div class="back_main">
+      <div id="back_view4" onclick="JBE_CLOSE_VIEW()" class="back_class">
+        <img id="back_view_img4" src="gfx/jback.png" style="height:100%;" />
+        <span>Back</span>
+      </div>
+      <div id="cap_myView4" class="cap_class"></div>
+      <div id="cap_viewMid4" class="cap_mid_class"></div>
+    </div>
+    <div id="dtl_myView4" class="myView_dtl">
+      <!--dtl-->
+    </div>       
+  </div>
+  
+  <div id="myView5" data-page=0 data-open=0 data-close="" class="page_class myView" style="display:none;">
+    <div style="width:100%;height:0px;"></div> 
+    <div class="back_main">
+      <div id="back_view5" onclick="JBE_CLOSE_VIEW()" class="back_class">
+        <img id="back_view_img5" src="gfx/jback.png" style="height:100%;" />
+        <span>Back</span>
+      </div>
+      <div id="cap_myView5" class="cap_class"></div>
+      <div id="cap_viewMid5" class="cap_mid_class"></div>
+    </div>
+    <div id="dtl_myView5" class="myView_dtl">
+      <!--dtl-->
+    </div>       
+  </div>
+
+  <div id="div_footer" class="jfooter color_head" style="display:block;height:50px;width:100%;">
+    <div id="mnu_submenu" class="menu_class" style="display:none;width:100%;height:100%;"></div>
+        
+    <div id="mnu_mainmenu" class="menu_class" style="display:none;width:100%;height:100%;">   
+          
+      <div onclick="location.href='index.html'" style="float:left;width:25%;height:100%;background:none;">
+        <div class="class_footer">
+          <img src="gfx/jhome.png" alt="home image" />
+          <span>Refresh</span>
+        </div>
+      </div>
+      <!-- two menus -->
+      <div id="mnu_main" style="float:left;width:50%;height:100%;background:none;">         
+        <div onclick="callText('call')" style="float:left;width:60%;height:100%;background:none;">
+          <div class="class_footer">
+            <img src="gfx/jcall.png" alt="call image" />
+            <span>Call / Text</span>
+          </div>
+        </div>           
+        <div onclick="fm_chat('')" style="float:left;width:40%;height:100%;background:none;">
+          <div class="class_footer">
+            <img src="gfx/jchat.png"  alt="home image" />
+            <span>Chat</span>
+          </div>      
+        </div>        
+      </div>
+
+      <div id="mnu_main_owner" style="display:none;float:left;width:50%;height:100%;">
+        <div onclick="callText('call')" style="float:left;width:60%;height:100%;background:none;">
+          <div class="class_footer">
+            <img src="gfx/jcall.png" alt="call image" />
+            <span>Call / Text</span>
+          </div>
+        </div>           
+        <div onclick="fm_chat('')" style="float:left;width:40%;height:100%;background:none;">
+          <div class="class_footer">
+            <img src="gfx/jchat.png"  alt="home image" />
+            <span>Chat</span>
+          </div>      
+        </div> 
+      </div>
+
+      <!--div onclick="main_login()" style="float:right;width:25%;height:100%;background:none;"-->
+      <div onclick="exit_app()" style="float:right;width:25%;height:100%;background:none;">
+        <div class="class_footer">
+          <img id="log_avatar" src="gfx/jclose.png" onerror="imgOnError(this)" style="height:100%;" alt="admin image" />
+          <span>EXIT</span>
+        </div> 
+      </div>
+
+    </div> <!--menu-->
+
+  </div> <!--footer-->
+
+</div> <!--main div-->
+
+<link rel="stylesheet" href="main_styles.css">
+<link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet" href="print.css">
+
+<link rel="stylesheet" href="misc/jbe_fmlib.css">
+
+<link rel="stylesheet" type="text/css" href="main_jslib/leaflet.css" />
+<script type='text/javascript' src='main_jslib/html2pdf.jeffbundle.min.js'></script>
+<!--script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script-->
+<script type='text/javascript' src='main_jslib/leaflet.js'></script>
+<script type='text/javascript' src='main_jslib/axios.min.js'></script>
+<!--script type='text/javascript' src="main_jslib/jspdf.debug.js"></script-->
+
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js" integrity="sha512-dBB2PGgYedA6vzize7rsf//Q6iuUuMPvXCDybHtZP3hQXCPCD/YVJXK3QYZ2v0p7YCfVurqr8IdcSuj4CCKnGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script-->
+
+<script type='text/javascript' src='main_jslib/enadlib.js'></script>
+
+<script type='text/javascript' src='main_jslib/coke.js'></script>
+<script type='text/javascript' src='main_jslib/je_msg.js'></script>
+<script type='text/javascript' src='main_jslib/qrcode.min.js'></script>
+<!--script type='text/javascript' src='main_jslib/rec_lock.js'></script-->
+
+<!--script type='text/javascript' src='main_jslib/jsPDF0.js'></script>
+<script type='text/javascript' src='main_jslib/html2canvas.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script-->
+
+
+<script type='text/javascript'  src='misc/jbe_chat.js'></script>
+<script type='text/javascript'  src='misc/jbe_notif.js'></script>
+<!-- libs -->
+<script type='text/javascript' src='misc/jbe_fmlib.js'></script>
+<!--script type='text/javascript' src='misc/jbe_fm2lib.js'></script>
+<script type='text/javascript' src='misc/lookup.js'></script-->
+
+<script type='text/javascript'  src='app_main.js'></script>
+<script type='text/javascript'  src='app_admin.js'></script>
+
+<script type='text/javascript'  src='app_daily.js'></script>
+<script type='text/javascript'  src='app_setting.js'></script>
+<script type='text/javascript'  src='app_dtr.js'></script>
+<script type='text/javascript'  src='rep_dtr.js'></script>
+<script type='text/javascript'  src='app_reports.js'></script>
+<script type='text/javascript'  src='app_rest_api.js'></script>
+<script type='text/javascript'  src='app_db.js'></script>
+
+<!--script type='text/javascript'  src='app_ptr.js'></script>
+<script type='text/javascript'  src='app_ret_print.js'></script>
+<script type='text/javascript'  src='app_ret.js'></script>
+
+<script type='text/javascript'  src='app_returns.js'></script>
+<script type='text/javascript'  src='app_adjust.js'></script>
+<script type='text/javascript'  src='app_transfer.js'></script>
+<script type='text/javascript'  src='app_area.js'></script>
+<script type='text/javascript'  src='app_supplier.js'></script>
+<script type='text/javascript'  src='app_wh.js'></script>
+<script type='text/javascript'  src='app_prod.js'></script>
+<script type='text/javascript'  src='app_stock.js'></script>
+<script type='text/javascript'  src='app_receive.js'></script>
+<script type='text/javascript'  src='app_master.js'></script>
+
+<script type='text/javascript'  src='app_signatory.js'></script>
+
+<script type='text/javascript'  src='rep_ptr_summ.js'></script>
+<script type='text/javascript'  src='rep_stockcard.js'></script>
+<script type='text/javascript'  src='rep_bincard.js'></script>
+<script type='text/javascript'  src='rep_daily.js'></script>
+<script type='text/javascript'  src='rep_stkled.js'></script>
+
+<script type='text/javascript'  src='app_camera.js'></script>
+<script type='text/javascript'  src='app_prn.js'></script-->
+
+<!--link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script-->
+
+
+
+<script type='text/javascript'  src='misc/jbe_map.js'></script>
+
+<script>
+  var THISFILE=[];
+  clear_THISFILE();  
+
+  var jbe_screen_mode=0;
+  
+  var JBE_CLOR='#028ea5';
+  //039be5
+  JBE_CLOR='#039be5';
+  var JBE_CLOR2='lightblue'; 
+  var JBE_CLOR3='#0eb8cc'; 
+  var JBE_CLOR4='#33cccc'; 
+
+  var JBE_TXCLOR1='#ffffff'; 
+  var JBE_TXCLOR2='#000000'; 
+  var JBE_TXCLOR3='#ffffff'; 
+  var JBE_TXCLOR4='#ffffff'; 
+
+  var JBE_ONLINE=true;
+  var JBE_ONLINE_NAVI=true;
+
+  var JBE_DEF_IMG='gfx/jimage.png';
+
+  var DB_USER=[];  
+  var DB_CLIENTS=[]; 
+  var DB_DAILY=[];  
+  var DB_MONTHLY=[];  
+
+  var DB_LOGGER=[];
+  var DB_LOCKERS=[];  
+  var DB_PTR=[];
+  var DB_AREA=[];
+  var DB_SUPPLIER=[];
+  var DB_WHOUSE=[];
+  var DB_RECEIVE=[];
+  var DB_RECEIVE2=[];
+  var DB_TRANSFER=[];
+  var DB_TRANSFER2=[];
+  var DB_RETURNS=[];
+  var DB_RETURNS2=[];
+  var DB_RET=[];
+  var DB_RET2=[];
+  var DB_ADJ=[];
+  var DB_ADJ2=[];
+  var DB_PRODUCT=[];
+  var DB_STOCK=[];  
+  var DB_SIG=[];  
+
+  var DB_COMMENT=[];  
+  var DB_CHAT=[];  
+  var DB_SYS=[];  
+  var DB_CART=[];  
+  var DB_ORDER=[];  
+  var DB_ORDER2=[];  
+  var DB_BELL=[];
+  var DB_SLIDER=[];
+
+  var CLIENT_USER=[];
+  var CLIENT_TRANS=[];
+  var CLIENT_TRANS2=[];
+  var CLIENT_CHAT=[];  
+
+  var CURR_REC='';
+  var CURR_USER=''; 
+  var CURR_NAME='';    
+  var CURR_NAME2='';    
+  var CURR_AXTYPE=0;
+  var CURR_DATE=new Date();
+  //var aryServTitle=[]; var aryServImg=[]; aryServClr=[];
+
+  var V_DESCRP='';
+  var V_UPLOADS='';
+  var V_CHATS='';
+
+  var H_WRAPPER=0;
+  var H_HEADER=0;
+  var H_FOOTER=25;
+  var H_BODY=0;
+  var H_PAGE=0;
+  var H_VIEW=0;
+
+  var CURR_BACKER=0;
+  var f_MainPage=false;
+  var f_reload=true;
+  var JBE_MOBILE=true;
+
+  var JBE_HEADER = {
+    /*
+    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, X-Auth-Token",
+    "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Access-Control-Allow-Origin": "*"
+    */
+    "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
+    "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Origin": "*"
+  }
+
+/*
+  document.addEventListener("visibilitychange", function() {
+    if (document.visibilityState === 'visible') {
+      console.log('DIA NA DIRI....');
+      // The PWA is currently visible
+      // You can show a message or take some action here
+    }
+  });
+
+  // Check if the flag exists in local storage
+  if (localStorage.getItem('appIsRunning')) {
+    // Notify the user or redirect to the existing instance
+    console.log('DIA NA DIRI....');
+  } else {
+    // Set the flag indicating that the app is running
+    localStorage.setItem('appIsRunning', 'true');
+    console.log('AYOS SET UP....');
+  }
+
+*/
+
+  var JBE_STORE_IDX = [    
+    { "id":0, "flename":"daily", "numrec":0 , "init":1 },
+    { "id":1, "flename":"monthly", "numrec":0 , "init":1 },
+    { "id":2, "flename":"sig", "numrec":0 , "init":1 },
+    { "id":3, "flename":"sysfile", "numrec":0 , "init":1 },
+    { "id":4, "flename":"user", "numrec":0 , "init":1 }
+  ];
+
+  /***************************************************** */
+  
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.register('SW_'+CURR_CLIENT+'.js', { scope: './' }).then(function(registration) {
+    //navigator.serviceWorker.register('SW_2.js', { scope: './' }).then(function(registration) {
+			console.log('Service worker registration succeeded:', registration);
+		}).catch(function(error) {
+			console.log('Service worker registration failed:', error);
+		});
+	} else {
+		console.log('Service workers are not supported.');
+	}
+    
+  
+  /***************************************************** */
+	
+  window.addEventListener('load', function() {
+    window.history.pushState({ noBackExitsApp: true }, '');    
+  })
+
+  window.addEventListener('popstate', function(event) {
+    window.history.pushState({ noBackExitsApp: true }, '');
+    console.log(event.state);
+    //if (history.state  &&  history.state.page == 1) {
+      //alert('we are on page 1');
+    //}
+    
+    if (event.state) {      
+      if(f_MainPage){                
+        //refreshIDX();
+        MSG_SHOW(vbYesNo,"CONFIRM: ","Close the App?",function(){                    
+          window.history.go(0);
+          f_reload=true;
+        },function(){});                  
+      }
+    }
+  })
+  
+  //=========START ENGINE=================
+  /*
+  fetch('client.json')
+    .then(response => response.json())
+    .then(data => {
+      CURR_CLIENT=data['client'];      
+      CURR_SITE=data['site'];  
+      document.title = data['title'];
+    }
+  );
+  */
+
+  document.getElementById('wrapper').style.display='block';
+  showProgress(false);
+  
+  var COOK_CLIENT=readCookie('cok_client_'+CURR_CLIENT);
+  CURR_USER=readCookie('cok_user_'+CURR_CLIENT);
+  CURR_NAME=readCookie('cok_name_'+CURR_CLIENT);
+  CURR_NAME2=readCookie('cok_name2_'+CURR_CLIENT);
+  CURR_AXTYPE=readCookie('cok_axtype_'+CURR_CLIENT);
+
+  var d = new Date();  
+  var n = d.toLocaleTimeString('it-IT');
+
+  if(!CURR_USER){ CURR_USER=''; }
+
+  myResizeFunction();   
+
+  JBE_SET_COLOR_BY_CLASS('color_head','',JBE_CLOR);
+  JBE_SET_COLOR_BY_CLASS('color_head2','black',JBE_CLOR2);
+  JBE_SET_COLOR_BY_CLASS('back_main','blue',JBE_CLOR);
+  
+  document.getElementById('divUL').style.height=(H_BODY-H_HEADER)+'px';
+    
+  document.getElementById('heeding1').innerHTML=CURR_CLIENTNAME.toUpperCase();
+  document.getElementById('heeding2').innerHTML=CURR_CLIENTADDRESS;
+  document.getElementById('heeding3').innerHTML='( EnadSys '+iif(DEBUG_NODE,'Node','PHP')+' App Ver.: '+CURR_VER+' )';
+  document.getElementById('div_tilt').innerHTML=CURR_APPNAME;
+    
+  let dd = new Date();
+  let formatter = Intl.DateTimeFormat(
+      "default", // a locale name; "default" chooses automatically
+      {
+          weekday: "short", 
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric"
+      }
+  );
+  document.getElementById('div_sysdate').innerHTML=formatter.format(dd);
+
+  window.history.pushState({ noBackExitsApp: true }, '');
+  f_MainPage=false;
+
+  // Get the title element
+  var titleElement = document.querySelector('title');
+  // Change the content of the title element
+  titleElement.textContent = CURR_APPNAME;
+  
+  document.getElementById('div_bar').style.display='block';
+  refresh_sidenav();
+
+  start_app();  
+
+</script>
+
+</body>
+</html>
