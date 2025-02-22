@@ -41,6 +41,14 @@ function initDb() {
   }
 }
 
+/*
+saveDataToIDX(DB_DAILY,0);
+saveDataToIDX(DB_MONTHLY,1);
+saveDataToIDX(DB_SIG,2);
+saveDataToIDX(DB_SYS,3);
+saveDataToIDX(DB_USER,4);
+*/
+
 function clearStore(jstore){   
   //alert(jstore);
   var request = indexedDB.open(CURR_IDX_DB, dbVersion);

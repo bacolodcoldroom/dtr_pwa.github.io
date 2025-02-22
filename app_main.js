@@ -5,7 +5,7 @@ var arySysColors=[
 ];
 
 function start_app(){
-  allow_start(false);
+  //allow_start(false);
   JBE_ONLINE_NAVI=navigator.onLine;   
   JBE_ONLINE=false;  
   //****************
@@ -17,12 +17,6 @@ function start_app(){
 
   if(!CURR_NAME2){ CURR_NAME2=''; }
   //speakText('Hello '+CURR_NAME2+'! Welcome to the Bahcolod City Cold Chain Facility.');
-  
-  rest_api_start();
-  return;
-}
-
-function showOnline(){
   JBE_ONLINE=true; 
   document.getElementById('div_bar').style.display='block';
   get_app_default();
@@ -45,19 +39,9 @@ function showOnline(){
         item.style.backgroundImage = `url(${item.dataset.src})`;
     };
   });      
-}
-
-function showOffline(){   
-  //alert('offline');
-  JBE_ONLINE=false;
-  dispMenu(true,'mnu_main');
-  getAllDataFromIDX(0);
-   
-  //document.getElementById('jtime').innerHTML='OFFLINE';
-  //document.getElementById('div_bar').style.display='block'; 
-
-  //allow_start(true);
-  showMainPage();
+  
+  //rest_api_start();
+  return;
 }
 
 function allow_start(v){
@@ -67,79 +51,11 @@ function allow_start(v){
   document.getElementById('wrapper').style.pointerEvents=vv;
 }
 
-function myScroll(){
-  var position = document.getElementById('user_main').scrollTop;
-  //console.log('POSITION: '+position);
-  document.getElementById('div_search').style.display='none';
-  if(position > 150) {
-    document.getElementById('div_header').style.opacity=1;
-    document.getElementById('div_search').style.display='block';
-  }else if(position > 125) {
-    document.getElementById('div_header').style.opacity=.8;   
-  }else if(position > 100) {
-    document.getElementById('div_header').style.opacity=.6;       
-  }else if(position > 50) {
-    document.getElementById('div_header').style.opacity=.4;       
-  }else{
-    document.getElementById('div_header').style.opacity=0;
-  }
-}
-
 function refresh_all_db(){
   get_app_default();
   snackBar('Refreshed...');
 }
 
-//=====================
-function initSearch(){
-  var dtl='';
-  for(var i=0;i<DB_STOCK.length;i++){
-    var stockno=DB_STOCK[i]["stockno"];
-    var descrp=DB_STOCK[i]["stockname"];
-    dtl+=
-      '<li><a href="javascript:seek_item(&quot;'+stockno+'&quot;)">'+descrp+'</a></li>';
-  }
-  document.getElementById('myUL').innerHTML=dtl;
-}
-
-function seek_item(stockno){
-  showUL(false);
-  //showMainPage();
-  view_dtl_stock(true,stockno,1);
-}
-
-function showUL(vmode){   
-  if(vmode){
-      document.getElementById('divUL').style.display='block';
-      document.getElementById('user_main').style.display='none';
-      document.getElementById('img_search').src= "gfx/jcancel.png";
-      initSearch();
-  }else{
-      document.getElementById('divUL').style.display='none';
-      document.getElementById('user_main').style.display='block';
-      document.getElementById('img_search').src= "gfx/jsearch.png";
-  } 
-}
-
-function mySearch() {
-  // Declare variables
-  var input, filter, ul, li, a, i, txtValue;
-  input = document.getElementById('inp_search');
-  filter = input.value.toUpperCase();
-  ul = document.getElementById("myUL");
-  li = ul.getElementsByTagName('li');
- 
-  // Loop through all list items, and hide those who don't match the search query
-  for (i = 0; i < li.length; i++) {
-    a = li[i].getElementsByTagName("a")[0];
-    txtValue = a.textContent || a.innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
-    }
-  }
-}
 
 function jeff(){ 
   alert(          
@@ -153,7 +69,7 @@ function jeff(){
 
 //=======APP DB AND DISPLAY==========================================================
 function get_app_default(){   
-  rest_api_get_all_tables();
+  //rest_api_get_all_tables();
   /*
   if(DEBUG_NODE){
     axios.get('/api/get_all_tables', { params: {tbl:['daily','monthly','sig','sysfile','user']} }).then(function (response){ mod2(response); }).catch(function (error) { console.log(error); });
