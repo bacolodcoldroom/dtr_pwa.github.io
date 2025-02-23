@@ -1018,11 +1018,17 @@ if (isMobileDevice()) {
 */
 
 function exit_app(){
-  let msg='Click the Upper Right [X] button of your browser';
-  if(isMobileDevice()) {
-    msg='Click the phone Back button';
+  let msg='Are you sure you want to exit the application?';
+  MSG_SHOW(vbOkAbort,'EXIT APP','<center>'+msg+'</center>', function(){ do_exit(); },function(){});
+  
+  function do_exit(){
+    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+      window.close(); // This works for installed PWAs on some platforms
+      window.location.href = 'about:blank'; // Fallback
+    } else {
+      window.location.href = 'about:blank'; // For browsers
+    }
   }
-  MSG_SHOW(vbOk,'EXIT APP','<center>'+msg+'</center>', function(){},function(){});
 }
 
 function formatPhoneNumber(phoneNumber) {

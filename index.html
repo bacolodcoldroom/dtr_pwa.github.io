@@ -347,6 +347,10 @@
         <input id="inp_search" onclick="showUL(true)" onkeyup="mySearch()" type="text" style="float:left;height:100%;margin-left:2px;border:1px solid lightgray;text-align:center;opacity:0.6;color:black;background:white;" value=""/>
     </div>   
   </div> 
+  <div>
+  <!--h1>PWA Exit App</h1>
+    <button id="exitBtn">Exit Application</button>
+  </div-->
   
   <div id="mySidenav" class="sidenav" style="height:100%;margin-top:0px;font-size:9px;">
     <div id="mySidenav_box" style="height:100%;width:90%;margin-top:0px;font-size:9px;border:1px solid black;padding:20px 0 0 0;background:darkgray;">
@@ -755,6 +759,25 @@
 		console.log('Service workers are not supported.');
 	}
     
+
+  // Exit App functionality
+  /*
+  document.getElementById('exitBtn').addEventListener('click', () => {
+      if (window.confirm('Are you sure you want to exit the application?')) {
+          // Close the window if possible
+          if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+              window.close(); // This works for installed PWAs on some platforms
+              window.location.href = 'about:blank'; // Fallback
+          } else {
+              window.location.href = 'about:blank'; // For browsers
+          }
+      }
+  });*/
+
+  // Track PWA installation
+  window.addEventListener('appinstalled', (evt) => {
+      console.log('PWA installed successfully');
+  });
   
   /***************************************************** */
 	
