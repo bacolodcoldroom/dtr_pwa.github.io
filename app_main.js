@@ -12,6 +12,15 @@ function start_app(){
   JBE_ONLINE_NAVI=true;
   //****************
 
+  isAppOffline().then(offline => {
+    if (offline) {
+      console.log("The app is offline!");
+    } else {
+      console.log("The app is online!");
+      document.getElementById('online_status').style.display='none';      
+    }
+  });
+
   //get_lock();
   //put_lock();
 
@@ -38,11 +47,11 @@ function start_app(){
         item.src = item.dataset.src :       
         item.style.backgroundImage = `url(${item.dataset.src})`;
     };
-  });      
+  }); 
   
-  //rest_api_start();
-  return;
 }
+
+
 
 function allow_start(v){
   var vv='none';
@@ -62,33 +71,13 @@ function jeff(){
     'DB_DAILY: '+DB_DAILY.length+
     '\nDB_MONTHLY: '+DB_MONTHLY.length+
     '\nDB_USER: '+DB_USER.length+
-    '\nDB_CLIENTS: '+DB_CLIENTS.length+
-    '\nDB_SYS: '+DB_SYS.length
+    '\nDB_CLIENTS: '+DB_CLIENTS.length
   );
 }
 
 //=======APP DB AND DISPLAY==========================================================
 function get_app_default(){   
-  //rest_api_get_all_tables();
-  /*
-  if(DEBUG_NODE){
-    axios.get('/api/get_all_tables', { params: {tbl:['daily','monthly','sig','sysfile','user']} }).then(function (response){ mod2(response); }).catch(function (error) { console.log(error); });
-  }else{
-    axios.post('z_tanan.php', { request: 0 }, JBE_HEADER).then(function (response){ mod2(response); }).catch(function (error) { console.log(error); });
-  }   
-  */
-}
-
-function xmod2(response){
-  let aryDB = response.data;        
-  DB_DAILY=aryDB[0];
-  DB_MONTHLY=aryDB[1];
-  DB_SIG=aryDB[2];
-  DB_SYS=aryDB[3];
-  DB_CLIENTS=aryDB[4];
- 
-  CURR_DATE=DB_SYS[0].sys_date;
-  document.getElementById('online_status').innerHTML=JBE_DATE_FORMAT(CURR_DATE,'MMMM YYYY');
+  rest_api_start();
 }
 
 function get_app_var(u,f_showprofile){ 
@@ -118,82 +107,6 @@ function get_db_userOnly(){
     DB_USER = response.data;
   })   
   .catch(function (error) { console.log('DB_USER: '+error); });
-}
-
-async function get_db_all(tbl){   
-  //axios.get('/api/get_user', { params: {clientno:CURR_CLIENT, userid:u,pword:p} }, JBE_HEADER)
-  //var aryDB=[];
-  //if(tbl=='ptr'){ clear_ptr(); }
-  //if(tbl=='ptr'){ clear_db(tbl); }
-  await axios.get('/api/get_table', { params: {tbl:tbl} })
-  .then(function (response) {
-    //console.log(response.data);
-    var aryDB = response.data;
-    //alert('DB_ALL len:'+aryDB.length);
-    //alert(aryDB.nodeName);
-    if(tbl=='sysfile'){ DB_SYS=aryDB; }
-    if(tbl=='ptr'){ DB_PTR=aryDB; }
-    if(tbl=='ptr2'){ DB_PTR2=aryDB; }
-    if(tbl=='user'){ DB_USER=aryDB; }
-    if(tbl=='area'){ DB_AREA=aryDB; }
-    if(tbl=='product'){ DB_PRODUCT=aryDB; }
-    if(tbl=='stock'){ DB_STOCK=aryDB; }
-    if(tbl=='receive'){ DB_RECEIVE=aryDB; }
-    if(tbl=='receive2'){ DB_RECEIVE2=aryDB; }
-    if(tbl=='transfer'){ DB_TRANSFER=aryDB; }
-    if(tbl=='transfer2'){ DB_TRANSFER2=aryDB; }
-    if(tbl=='returns'){ DB_RETURNS=aryDB; }
-    if(tbl=='returns2'){ DB_RETURNS2=aryDB; }
-    if(tbl=='ret'){ DB_RET=aryDB; }
-    if(tbl=='ret2'){ DB_RET2=aryDB; }
-    if(tbl=='adj'){ DB_ADJ=aryDB; }
-    if(tbl=='adj2'){ DB_ADJ2=aryDB; }
-    if(tbl=='supplier'){ DB_SUPPLIER=aryDB; }
-    if(tbl=='whouse'){ DB_WHOUSE=aryDB; }
-    if(tbl=='sig'){ DB_SIG=aryDB; }
-    if(tbl=='logger'){ DB_LOGGER=aryDB; }
-    console.log('Refreshed: '+tbl);
-  })   
-  .catch(function (error) { console.log(error); });
-}
-
-function get_db_chat(u){
-  DB_CHAT=[];
-  var req=1;
-  if(CURR_AXTYPE > 0){
-    req=0;
-  }
-  axios.post(JBE_API+'z_chat.php', { clientno:CURR_CLIENT,request: req, usercode: u },JBE_HEADER)    
-  .then(function (response) { console.log(response.data); DB_CHAT = response.data; refreshNOTIF('chat'); })   
-  .catch(function (error) { console.log(error); });
-}
-
-function get_db_pvc(){
-  DB_PVC0=[];
-  DB_PVC1=[];
-  DB_PVC2=[];
-  DB_PVCCLIENT=[];
-  DB_PVCUNIQ=[];
-
-  axios.post(JBE_API+'z_pvc.php', { request: 0 },JBE_HEADER)    
-  .then(function (response) {
-    console.log(response.data);   
-    DB_PVC0 = response.data[0];
-    DB_PVC1 = response.data[1];
-    DB_PVC2 = response.data[2];
-    DB_PVCCLIENT = response.data[3];    
-    DB_PVCUNIQ = response.data[4];    
-    disp_pvc();
-  })   
-  .catch(function (error) { console.log(error); });
-}
-
-function get_db_comments(){
-  DB_COMMENT=[];
-  //alert('get_db_comments() '+JBE_API);
-  axios.post(JBE_API+'z_comment.php', { clientno:CURR_CLIENT,request: 0 },JBE_HEADER)
-  .then(function (response) { DB_COMMENT = response.data; console.log(DB_COMMENT); })   
-  .catch(function (error) { console.log(error); });
 }
 
 function get_db_sys(){ 
@@ -291,19 +204,20 @@ function showMainPage(){
 }
 
 function dispHeaderMode(){
-  var n = new Date().toLocaleTimeString('it-IT');
+  //var n = new Date().toLocaleTimeString('it-IT');
   let v_mphoto='gfx/avatar.png'; 
   if(!CURR_USER){
-    document.getElementById('logger').style.color='red';
+    document.getElementById('logger').style.color='navy';
     document.getElementById('logger').innerHTML="Please Log In";
     document.getElementById("page_login").style.display="none";     
   }else{
     document.getElementById('logger').style.color='navy';
     document.getElementById('logger').innerHTML='Hi!, '+CURR_NAME;     
-    document.getElementById("page_login").style.display="none";      
-    v_mphoto='uploadz/'+CURR_USER+'.jpg?'+n; 
+    document.getElementById("page_login").style.display="none"; 
+    v_mphoto='data:image/png;base64,' + btoa(JBE_GETFLD('photo',DB_CLIENTS,'usercode',CURR_USER));
   }
   document.getElementById('bar_avatar').src=v_mphoto;
+  document.getElementById('owner').src=v_mphoto;
 }
 
 // ** ======================= SHOW ROUTINES ===================================
@@ -1100,3 +1014,38 @@ function speakText(text) {
   speechSynthesis.speak(utterance);
   console.log('speak:'+text);
 } 
+
+async function isAppOffline(timeout = 3000) {
+  // Basic check using navigator.onLine
+  if (!navigator.onLine) {
+    return Promise.resolve(true);
+  }
+
+  // Optional: Perform a network request to confirm connectivity
+  const controller = new AbortController();
+  const signal = controller.signal;
+
+  // Set a timer to abort the fetch if it takes too long.
+  const timer = setTimeout(() => controller.abort(), timeout);
+
+  // Here we use a HEAD request to a lightweight resource (favicon)
+  return fetch('https://www.google.com/favicon.ico', {
+    mode: 'no-cors',
+    method: 'HEAD',
+    cache: 'no-cache',
+    signal: signal
+  })
+  .then(response => {
+    clearTimeout(timer);
+    // If the response is OK, the app is online; otherwise, we treat it as offline.
+    console.log(response.ok+' ::: ayos! online kita....');
+    //return !response.ok;
+    return false;
+  })
+  .catch(() => {
+    clearTimeout(timer);
+    // On error (including timeout), assume offline.
+    console.log('wala gd. offline here....');
+    return true;
+  });
+}

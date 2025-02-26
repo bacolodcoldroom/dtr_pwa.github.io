@@ -114,6 +114,8 @@
     DEBUG_NODE=false;
   }  
   JBE_API='api/';
+  var JBE_ONLINE=true;
+  var JBE_ONLINE_NAVI=true;
   //alert(JBE_API);
   //alert(pathloc);
 </script>
@@ -249,11 +251,11 @@
     </div>
     
     <div id="user_main" style="display:block;width:100%;height:300px;padding:0px;background:none;">
-      <div id="online_stat" style="width:100%;height:25px;">
-        <div id="online_status" style="float:left;width:50%;height:100%;font-size:14px;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset: 5px;font-weight:bold;padding:3px;color:red;border:0px solid red;background:white;">O F F L I N E</div>
+      <div id="online_stat" style="width:100%;height:25px;background:whitesmoke;">
+        <div id="online_status" style="float:left;width:50%;height:100%;font-size:14px;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset: 5px;font-weight:bold;padding:3px;color:red;border:0px solid red;">O F F L I N E</div>
         <div id="logger" onclick="main_login()" style="float:right;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset: 5px;cursor:pointer;text-align:right;width:50%;height:100%;font-size:14px;font-weight:bold;padding:3px 10px 0 0;color:navy;border:0px solid red;background:none;"></div>
       </div>  
-	    <div id="img_main" style="position:relative;width:100%;height:60px;text-align:center;border:0px solid blue;padding:10px;background:none;">        
+	    <div id="img_main" style="position:relative;margin-top:0px;width:100%;height:80px;text-align:center;border:0px solid blue;padding:10px;background:none;">        
         <div style="float:left;width:25%;height:100%;text-align:center;"><img src="gfx/logoDOH.png" style="height:100%;" alt="eMeter image"/></div>        
         <div style="float:left;width:25%;height:100%;text-align:center;"><img src="gfx/logoNGC.png" style="height:100%;" alt="eMeter image"/></div>          
         <div style="float:left;width:25%;height:100%;text-align:center;"><img src="gfx/logoCHO.png" style="height:100%;" alt="eMeter image"/></div>
@@ -261,13 +263,21 @@
       </div>
       
       <div id="filler" style="width:100%;height:60px;border:0px solid blue;background:none;">
-        <div style="width:100%;height:70px;font-weight:bold;text-align:center;padding:10px 0 0 0;background:#039be5;
+        <div class="color_head" style="width:100%;height:70px;font-weight:bold;text-align:center;padding:10px 0 0 0;
               font-weight:bold;text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">        
           <div id="heeding1"></div>
           <div id="heeding2"></div>
           <div id="heeding3" style="font-style:italic;color:blue;"></div>          
         </div>
-        <div id="heed_main" style="width:100%;padding:10% 0% 0% 0%;height:100px;margin-top:0px;text-align:center;background:none;"><input type="image" src="gfx/main.png" onclick="fm_daily()" style="height:250px;width:auto;" alt="eMeter image"/></div>                  
+        <div id="heed_main" style="display:none;width:100%;padding:10% 0% 0% 0%;height:100px;margin-top:0px;text-align:center;background:coral;"><input type="image" src="gfx/main.png" onclick="fm_daily()" style="display:none;height:250px;width:auto;" alt="eMeter image"/></div>                  
+        
+        <div style="width:100%;height:100%;padding:40px 0 0 0;text-align:center;">
+          <div class="Library color_head" onclick="fm_daily()" style="position:relative;">
+            <img id="owner" src="gfx/clock.png" style="height:100%;width:100%;border-radius:50%;object-fit: cover;overflow: hidden; border:0px solid black;" />
+            <div id="btn_1" style="position:absolute;width:100%;height:10%;top:45%;left:0px;padding:2%;background:lightgray;opacity:.6;">Clock In</div>
+          </div>
+        </div>            
+
       </div>
 
       <div id="btns" style="display:none;border:1px solid yellow;">
@@ -561,6 +571,8 @@
 <!-- libs -->
 <script type='text/javascript' src='misc/jbe_fmlib.js'></script>
 
+<script type='text/javascript'  src='app_db.js'></script>
+<script type='text/javascript'  src='app_idx.js'></script>
 <script type='text/javascript'  src='app_main.js'></script>
 <script type='text/javascript'  src='app_admin.js'></script>
 
@@ -568,45 +580,9 @@
 <script type='text/javascript'  src='app_setting.js'></script>
 <script type='text/javascript'  src='app_dtr.js'></script>
 <script type='text/javascript'  src='app_reports.js'></script>
-<script type='text/javascript'  src='app_db.js'></script>
 
+<script type='text/javascript'  src='rest_api.js'></script>
 <script type='text/javascript'  src='rep_dtr.js'></script>
-
-<!--script type='text/javascript'  src='app_ptr.js'></script>
-<script type='text/javascript'  src='app_ret_print.js'></script>
-<script type='text/javascript'  src='app_ret.js'></script>
-
-<script type='text/javascript'  src='app_returns.js'></script>
-<script type='text/javascript'  src='app_adjust.js'></script>
-<script type='text/javascript'  src='app_transfer.js'></script>
-<script type='text/javascript'  src='app_area.js'></script>
-<script type='text/javascript'  src='app_supplier.js'></script>
-<script type='text/javascript'  src='app_wh.js'></script>
-<script type='text/javascript'  src='app_prod.js'></script>
-<script type='text/javascript'  src='app_stock.js'></script>
-<script type='text/javascript'  src='app_receive.js'></script>
-<script type='text/javascript'  src='app_master.js'></script>
-
-<script type='text/javascript'  src='app_signatory.js'></script>
-
-<script type='text/javascript'  src='rep_ptr_summ.js'></script>
-<script type='text/javascript'  src='rep_stockcard.js'></script>
-<script type='text/javascript'  src='rep_bincard.js'></script>
-<script type='text/javascript'  src='rep_daily.js'></script>
-<script type='text/javascript'  src='rep_stkled.js'></script>
-
-<script type='text/javascript'  src='app_camera.js'></script>
-<script type='text/javascript'  src='app_prn.js'></script-->
-
-<!--link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-  crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-  crossorigin=""></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script-->
-
-
 
 <script type='text/javascript'  src='misc/jbe_map.js'></script>
 
@@ -618,18 +594,22 @@
   
   var JBE_CLOR='#028ea5';
   //039be5
-  JBE_CLOR='#039be5';
-  var JBE_CLOR2='lightblue'; 
+  //JBE_CLOR='#039be5';
+  var JBE_CLOR2='red'; 
   var JBE_CLOR3='#0eb8cc'; 
   var JBE_CLOR4='#33cccc'; 
+
+  JBE_CLOR2='yellow';
+  JBE_CLOR3='green';
+  JBE_CLOR2='coral';
 
   var JBE_TXCLOR1='#ffffff'; 
   var JBE_TXCLOR2='#000000'; 
   var JBE_TXCLOR3='#ffffff'; 
   var JBE_TXCLOR4='#ffffff'; 
 
-  var JBE_ONLINE=true;
-  var JBE_ONLINE_NAVI=true;
+  
+  
 
   var JBE_DEF_IMG='gfx/jimage.png';
 
@@ -660,7 +640,6 @@
 
   var DB_COMMENT=[];  
   var DB_CHAT=[];  
-  var DB_SYS=[];  
   var DB_CART=[];  
   var DB_ORDER=[];  
   var DB_ORDER2=[];  
@@ -733,8 +712,7 @@
     { "id":0, "flename":"daily", "numrec":0 , "init":1 },
     { "id":1, "flename":"monthly", "numrec":0 , "init":1 },
     { "id":2, "flename":"sig", "numrec":0 , "init":1 },
-    { "id":3, "flename":"sysfile", "numrec":0 , "init":1 },
-    { "id":4, "flename":"user", "numrec":0 , "init":1 }
+    { "id":3, "flename":"user", "numrec":0 , "init":1 }    
   ];
 
   /***************************************************** */

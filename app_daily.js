@@ -94,7 +94,7 @@ function fm_daily(){
   tilt=formatter.format(new Date());
   JBE_OPENBOX('div_timeIN',tilt,dtl,dtl2);
   dtls_timeIN.style.height=(H_BODY-200-128)+'px';  
-  
+  /*
   //get_db_all('daily');  
   axios.get('/api/get_table', { params: {tbl:'daily'} })
   .then(function (response) {
@@ -102,6 +102,8 @@ function fm_daily(){
     show_daily(v_date,v_time1,v_time2,v_time3,v_time4);
   })   
   .catch(function (error) { console.log(error); });
+  */
+  show_daily(v_date,v_time1,v_time2,v_time3,v_time4);
 }
 
 function show_daily(v_date,v_time1,v_time2,v_time3,v_time4){

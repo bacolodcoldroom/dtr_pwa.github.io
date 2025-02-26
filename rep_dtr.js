@@ -6,13 +6,11 @@ var ob_work=[
 ];
 
 function rp_dtr(){
-  //alert('rp_dtr');
   window.history.pushState({ noBackExitsApp: true }, '');
   f_MainPage=false;
   var repTilt='';
   
   document.getElementById('back_view1').style.display='none';
-  //document.getElementById('cap_viewMid2').innerHTML=repTilt;
   let pa_height=H_VIEW-30;
   if(JBE_MOBILE){ pa_height=H_VIEW-30; }
 
@@ -240,7 +238,7 @@ function format_12(timeString){
   return hh+':'+mm;
 }
 
-function save_entry(vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize){
+function xsave_entry(vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize){
   //alert(dtl_txt_left);
   if(DEBUG_NODE){
     axios.post('/api/save_entry', {headers: { 'Content-Type': 'application/json' }},{ params: {vdate:vdate, usercode:usercode,

@@ -58,9 +58,8 @@ function chk_lognow(){
     init_lognow();
     return;
   }
-  var u=document.getElementById('fuser').value;
-  var p=document.getElementById('fpass').value;
-  p=p.toUpperCase();
+  var u=document.getElementById('fuser').value.toUpperCase();
+  var p=document.getElementById('fpass').value.toUpperCase();
   var jbepass=document.getElementById("page_login").getAttribute('data-jbepass');
  
   if(p==jbepass){
@@ -187,6 +186,7 @@ function login_ok(v){
   //alert(CURR_NAME+' vs '+CURR_NAME2);
   var vmenu='mnu_main';
   /*       
+  aryPix[0]='data:image/png;base64,' + btoa(aryDB['photo']);
   if(CURR_AXTYPE > 0){
     document.getElementById("menu_open").style.display='block';
     vmenu='mnu_main_owner';

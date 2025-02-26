@@ -18,7 +18,7 @@ var CURR_IDX_DB='IDB_'+CURR_CLIENT;
 initDb();
 
 function initDb() {
-  //console.log('initDb activated...'+JBE_ONLINE);
+  console.log('initDb activated...'+JBE_ONLINE);
   var request = indexedDB.open(CURR_IDX_DB, dbVersion);
   
   request.onerror = function(e) {    
@@ -32,12 +32,13 @@ function initDb() {
 
   request.onupgradeneeded = function(e) {
     db = e.target.result;
-    db.createObjectStore('daily', { keyPath:'id' });
+    db.createObjectStore('daily', { keyPath:'id', autoIncrement: true });
     db.createObjectStore('monthly', { keyPath:'id' });    
     db.createObjectStore('sig', { keyPath:'id' });    
-    db.createObjectStore('sysfile', { keyPath:'id' });
     db.createObjectStore('user', { keyPath:'id' });    
+    //db.createObjectStore('TranMeter', { keyPath:'meterno' });
     dbReady = true;
+    console.log('initDb onupgradeneeded...'+JBE_ONLINE);
   }
 }
 
@@ -95,8 +96,7 @@ function countRecordIDX(n){
 }
 
 /****************************************/
-function getAllDataFromIDX(vmode) {   
-  //alert('getAllDataFromIDX: '+JBE_STORE_IDX.length);
+function getAllDataFromIDX() {   
   var request = indexedDB.open(CURR_IDX_DB, dbVersion);  
   request.onerror = function(e) {    
     console.error('Unable to open database.');
@@ -128,7 +128,6 @@ function getDataFromIDX(i,db2) {
 
   request1.onerror = function(event) {
     console.err("error fetching data");
-    //alert("error fetching data");
   };
   
   request1.onsuccess = function(event) {        
@@ -136,35 +135,58 @@ function getDataFromIDX(i,db2) {
     if (cursor) {
       var key = cursor.primaryKey;
       var ob;
-      if(i==0){ //Sysfile
+      if(i==0){ //daily
         ob = {
-          id:i,
-          banner:cursor.value.banner,
-          hd1:cursor.value.hd1,
-          hd2:cursor.value.hd2,
-          hd3:cursor.value.hd3,
-          pg_title:cursor.value.pg_title,
-          pg_body:cursor.value.pg_body,
-          clor1:cursor.value.clor1,
-          clor2:cursor.value.clor2, 
-          clor3:cursor.value.clor3,
-          clor4:cursor.value.clor4,
-          txclor1:cursor.value.txclor1,
-          txclor2:cursor.value.txclor2, 
-          txclor3:cursor.value.txclor3,
-          txclor4:cursor.value.txclor4,
-          telno:cursor.value.telno,
-          celno:cursor.value.celno,
-          slide1:cursor.value.slide1, 
-          slide2:cursor.value.slide2, 
-          slide3:cursor.value.slide3
-        };  
-      }else if(i==1){ //User
-        ob = {
-          id:i,
+          date:cursor.value.date,
+          rank:cursor.value.rank,
           usercode:cursor.value.usercode,
-          username:cursor.value.username,            
-          photo:cursor.value.photo
+          day:cursor.value.day,
+          time1:cursor.value.time1,
+          time2:cursor.value.time2,
+          time3:cursor.value.time3,
+          time4:cursor.value.time4, 
+          txt:cursor.value.txt,
+          txt_top:cursor.value.txt_top,
+          txt_left:cursor.value.txt_left,
+          txt_width:cursor.value.txt_width, 
+          txt_fsize:cursor.value.txt_fsize
+        };  
+      }else if(i==1){ //monthly
+          ob = {
+            id:i,
+            date:cursor.value.date,
+            descrp:cursor.value.descrp
+          };  
+      }else if(i==2){ //sig
+        ob = {
+          id:i,
+          head:cursor.value.head,
+          position:cursor.value.position,            
+          office:cursor.value.office,
+          license:cursor.value.license
+        };        
+      }else if(i==3){ //User
+        ob = {
+          id:i,
+          clientno:cursor.value.clientno,
+          usercode:cursor.value.usercode,
+          userid:cursor.value.userid,
+          username:cursor.value.username,
+          username2:cursor.value.username2,
+          pword:cursor.value.pword,
+          fullname:cursor.value.fullname,
+          lastname:cursor.value.lastname,
+          firstname:cursor.value.firstname,
+          midname:cursor.value.midname,
+          photo:cursor.value.photo,
+          usertype:cursor.value.usertype,
+          addrss:cursor.value.addrss,
+          celno:cursor.value.celno,
+          fb:cursor.value.fb,
+          email:cursor.value.email,
+          d_active:cursor.value.d_active,
+          lat:cursor.value.lat,
+          lng:cursor.value.lng
         };        
       }
 
@@ -173,14 +195,20 @@ function getDataFromIDX(i,db2) {
       cursor.continue();
     }else{
       if(i==0){     
-        DB_SYS=[]; DB_SYS=aryIDB;
-        showSystem();
+        DB_DAILY=[]; DB_DAILY=aryIDB;
+        //showSystem();
       }else if(i==1){          
+        DB_MONTHLY=[]; DB_MONTHLY=aryIDB;
+        //showProfile(2);  
+      }else if(i==2){          
+        DB_SIG=[]; DB_SIG=aryIDB;
+        //showProfile(2); 
+      }else if(i==3){          
         DB_USER=[]; DB_USER=aryIDB;
-        showProfile(2);      
+        //showProfile(2);     
       }
       //alert(JBE_STORE_IDX[i]['flename']+aryIDB.length);
-      JBE_STORE_IDX[i]['numrec']=aryIDB.length;
+      //JBE_STORE_IDX[i]['numrec']=aryIDB.length;
     }    
   }
 }  
@@ -205,7 +233,7 @@ function jdata(){
 }
 
 function saveDataToIDX(aryDB,n) {    
-  //alert('saveDataToIDX '+n);
+  console.log(aryDB.length+'::: saveDataToIDX '+n);
   JBE_STORE_IDX[n]['numrec']=aryDB.length;
   for(var i=0;i<aryDB.length;i++){     
     //if(aryDB[i]['clientno']!=CURR_CLIENT){ continue; }
@@ -214,11 +242,9 @@ function saveDataToIDX(aryDB,n) {
 }
 async function putDataToIDX(i,aryDB,n){   
   //alert('i: '+i+' file#:'+n);
-  if(n != 0){ return; }
   if(n==0){ //daily   
     ob = {
-      id:i,
-      date:aryDB[i]['date'],
+      date:JBE_DATE_FORMAT(aryDB[i]['date'],'MM-DD-YYYY'),
       rank:aryDB[i]['rank'],
       usercode:aryDB[i]['usercode'],
       day:aryDB[i]['day'],
@@ -233,47 +259,49 @@ async function putDataToIDX(i,aryDB,n){
       txt_width:aryDB[i]['txt_width'],
       txt_fsize:aryDB[i]['txt_fsize']
     };
-  }else if(n==3){ //sysfile
-    var jimg=JBE_API+'gfx/banner.jpg';
-    //var jimg='gfx/banner.jpg';
-    await JBE_BLOB(n,jimg).then(result => jimg=result);
-    var slide1,slide2,slide3; 
-    //var jimg2='gfx/'; 
-    var jimg2=JBE_API+'gfx/';    
-    await JBE_BLOB(n,jimg2+'slide1.jpg').then(result => slide1=result);
-    await JBE_BLOB(n,jimg2+'slide2.jpg').then(result => slide2=result);
-    await JBE_BLOB(n,jimg2+'slide3.jpg').then(result => slide3=result);
+  }else if(n==1){ //monthly    
     ob = {
       id:i,
-      banner:jimg,
-      hd1:aryDB[i]['hd1'],
-      hd2:aryDB[i]['hd2'],
-      hd3:aryDB[i]['hd3'],              
-      pg_title:aryDB[i]['pg_title'],
-      pg_body:aryDB[i]['pg_body'],
-      clor1:aryDB[i]['clor1'],
-      clor2:aryDB[i]['clor2'],
-      clor3:aryDB[i]['clor3'],
-      clor4:aryDB[i]['clor4'],
-      txclor1:aryDB[i]['txclor1'],
-      txclor2:aryDB[i]['txclor2'],
-      txclor3:aryDB[i]['txclor3'],
-      txclor4:aryDB[i]['txclor4'],
-      telno:aryDB[i]['telno'],
-      celno:aryDB[i]['celno'],
-      slide1:slide1,
-      slide2:slide2,
-      slide3:slide3
+      date:aryDB[i]['date'],
+      descrp:aryDB[i]['descrp']
     };  
-  }else if(n==4){ //user
-    //var jimg='upload/users/'+aryDB[i]['photo'];
-    var jimg=JBE_API+'upload/users/'+aryDB[i]['photo'];   
-    await JBE_BLOB(n,jimg).then(result => jimg=result);
+  }else if(n==2){ //sig    
     ob = {
       id:i,
+      head:aryDB[i]['head'],
+      position:aryDB[i]['position'],
+      office:aryDB[i]['office'],
+      license:aryDB[i]['license']
+    }; 
+  }else if(n==3){ //user
+    var jimg='uploadz/'+aryDB[i]['photo'];  
+    if(aryDB[i]['photo']){    
+      await JBE_BLOB(n,jimg).then(result => jimg=result);
+    }else{
+      jimg='';
+    }
+    ob = {
+      id:i,
+      clientno:aryDB[i]['clientno'],
       usercode:aryDB[i]['usercode'],
-      username:aryDB[i]['username'],            
-      photo:jimg
+      userid:aryDB[i]['userid'],
+      username:aryDB[i]['username'],
+      username2:aryDB[i]['username2'],
+      pword:aryDB[i]['pword'],
+      fullname:aryDB[i]['fullname'],
+      lastname:aryDB[i]['lastname'],
+      firstname:aryDB[i]['firstname'],
+      midname:aryDB[i]['midname'],
+      photo:jimg,
+      //photo:'',
+      usertype:aryDB[i]['usertype'],
+      addrss:aryDB[i]['addrss'],
+      celno:aryDB[i]['celno'],
+      fb:aryDB[i]['fb'],
+      email:aryDB[i]['email'],
+      d_active:aryDB[i]['d_active'],
+      lat:aryDB[i]['lat'],
+      lng:aryDB[i]['lng']
     };
   }
 
