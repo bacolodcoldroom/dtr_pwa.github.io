@@ -1,0 +1,30 @@
+[
+  {
+    "clientno": "RPD",
+    "clientname": "Regent Prints",
+    "appname": "ENAD",
+    "shortname": "Regent Pri",
+    "descrp": "Regent Prints",
+    "logo": "logo.jpg",
+    "banner": "banner.jpg",
+    "hd1": "< Promo Content >",
+    "hd2": "< Category Content >",
+    "hd3": "< Items Content >",
+    "pg_title": "Regent Prints Digital",
+    "pg_body": "Body",
+    "clor1": "#0080ff",
+    "clor2": "#0080c0",
+    "clor3": "#0080ff",
+    "clor4": "#ff0000",
+    "txclor1": "#ffffff",
+    "txclor2": "#000000",
+    "txclor3": "#ffffff",
+    "txclor4": "#ffffff",
+    "active": 0,
+    "site": "regentprints",
+    "telno": "",
+    "celno": "",
+    "sys_date": "2024-12-31T16:00:00.000Z",
+    "sys_holiday": "2,11,25"
+  }
+]
