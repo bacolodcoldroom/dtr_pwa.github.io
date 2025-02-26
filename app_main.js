@@ -356,7 +356,7 @@ function myResizeFunction(){
 
   let height_filler=H_PAGE-(height_img+height_btns+height_status+0)-H_HEADER;
   let height_heed_main=height_filler-70-0;
-  let height_heed_main_gfx=250;
+  let height_heed_main_gfx=300;
  
   document.getElementById('img_main').style.height=height_img+'px'; 
   document.getElementById('filler').style.height=(height_filler)+'px'; 
