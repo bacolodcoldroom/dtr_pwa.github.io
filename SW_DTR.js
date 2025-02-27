@@ -1,5 +1,5 @@
 /* ORIG SERVICE WORKER OF ESTORE */
-const cacheName = '1234_11';
+const cacheName = '12353_110429';
 const staticAssets = [
   './',
   './index.html',
@@ -21,13 +21,16 @@ const staticAssets = [
   './app_daily.js',   
   './app_db.js', 
   './app_dtr.js', 
+  './app_idx.js', 
   './app_main.js', 
   './app_prn.js', 
   './app_report.js', 
   './app_setting.js',     
+  './rep_dtr.js', './rest_api.js',     
   
   
   './gfx/proc_logo.gif',  
+  './gfx/jprn.png', './gfx/jrefresh.png', './gfx/jpdf.png',
 
   './gfx/avatar.png',    './gfx/dots.png',    
   './gfx/jadd.png',      './gfx/jback.png',  
@@ -40,7 +43,7 @@ const staticAssets = [
   './gfx/jimg_error.png',     './gfx/jNext.png', 
   
   './gfx/jnotif.png',    './gfx/jPrev.png', 
-  './gfx/jproduct.png',    './gfx/jshare.png', 
+  './gfx/jproduct.png',   './gfx/jshare.png', 
   './gfx/jpromo.png',    './gfx/jpurchase.png',  
   './gfx/jrefresh.png',  './gfx/jsave.png',
   './gfx/jsearch.png',   './gfx/jsend.png',

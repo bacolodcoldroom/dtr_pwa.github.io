@@ -176,8 +176,7 @@ function save_dtr(row,v_work){
   }
   if(aryTime[2] && aryTime[2] < '12:31'){ 
     //snackBar('ERROR: PM Arrival Time: '+aryTime[2]); 
-    MSG_SHOW(vbOk,"ERROR: PM Arrival Time","<center>Time should be greater than 12:30</center>",function(){ document.getElementById('inp_t3').focus(); },function(){});
-    
+    MSG_SHOW(vbOk,"ERROR: PM Arrival Time","<center>Time should be greater than 12:30</center>",function(){ document.getElementById('inp_t3').focus(); },function(){});    
     return; 
   }
   //////////////////////////////////////
@@ -217,7 +216,7 @@ function save_dtr(row,v_work){
   
   //alert('dtl_txt_left:'+inp_txt.value);
 
-  save_entry(v_date,CURR_USER,aryTime[0], aryTime[1], aryTime[2], aryTime[3],dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
+  save_entry(row,v_date,CURR_USER,aryTime[0], aryTime[1], aryTime[2], aryTime[3],dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
 }
 
 function format_12(timeString){
@@ -275,6 +274,7 @@ function ref_ctr(f_print){
   let ctr=0;
   for(var i=0;i<DB_DAILY.length;i++){
     if(DB_DAILY[i].usercode != CURR_USER){ continue; }
+    //if(chk_dtr_dtl_empty(i)){ continue; }
 
     let v_date=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM');
     console.log(v_date+' <<<vs date_dtr:'+date_dtr.value);

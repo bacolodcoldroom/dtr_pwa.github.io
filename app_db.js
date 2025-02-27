@@ -137,6 +137,7 @@ function getDataFromIDX(i,db2) {
       var ob;
       if(i==0){ //daily
         ob = {
+          id:i,
           date:cursor.value.date,
           rank:cursor.value.rank,
           usercode:cursor.value.usercode,
@@ -204,7 +205,7 @@ function getDataFromIDX(i,db2) {
         DB_SIG=[]; DB_SIG=aryIDB;
         //showProfile(2); 
       }else if(i==3){          
-        DB_USER=[]; DB_USER=aryIDB;
+        DB_USER=[]; DB_USER=aryIDB; 
         //showProfile(2);     
       }
       //alert(JBE_STORE_IDX[i]['flename']+aryIDB.length);
@@ -244,6 +245,7 @@ async function putDataToIDX(i,aryDB,n){
   //alert('i: '+i+' file#:'+n);
   if(n==0){ //daily   
     ob = {
+      id:i,
       date:JBE_DATE_FORMAT(aryDB[i]['date'],'MM-DD-YYYY'),
       rank:aryDB[i]['rank'],
       usercode:aryDB[i]['usercode'],

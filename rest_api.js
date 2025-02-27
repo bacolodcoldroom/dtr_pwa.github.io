@@ -1,10 +1,11 @@
-function rest_api_start(){   
+async function rest_api_start(){   
  /*
   get_all_db_from_json();
   getAllDataFromIDX();
   return;
  */
   
+  /*
   // Usage example:
   getTableData(CURR_IDX_DB, "user",1)
   .then((data) => {    
@@ -19,7 +20,46 @@ function rest_api_start(){
   .catch((error) => {
     console.error("Error:", error);
   });
+  */
+  let data=await readAllRecords('user','do_start'); 
+  DB_USER=data; DB_CLIENTS=data;
+  alert('do_start: '+data.length);
+  if(data.length==0){
+    MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.',function(){ get_all_db_from_json(); },function(){});
+  }
+  //getAllDataFromIDX();
+  
+  DB_DAILY=await readAllRecords('daily','ttest(0)');
+  DB_MONTHLY=await readAllRecords('monthly','ttest(1');
+  DB_SIG=await readAllRecords('sig','ttest(2)');
+  dispHeaderMode();
 }
+
+function do_start(j,data){
+  DB_USER=data; DB_CLIENTS=data;
+  alert('do_start: '+data.length);
+  if(data.length==0){
+    MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.',function(){ get_all_db_from_json(); },function(){});
+  }
+  getAllDataFromIDX();
+  /*
+  readAllRecords('daily','ttest(0)');
+  readAllRecords('monthly','ttest(1');
+  readAllRecords('sig','ttest(2)');
+  */
+  let jdb=readAllRecords('daily');
+  alert(jdb);
+  dispHeaderMode();
+}
+
+function ttest(tbl,data){
+  console.log('ttest: '+tbl+' ::: '+data);
+  if(tbl=='daily'){
+    DB_DAILY=data;
+    console.log('ttest Daily: '+DB_DAILY.length);
+  }
+}
+ 
 
 function getTableData(dbName, storeName, dbVersion = 1) {
   return new Promise((resolve, reject) => {
@@ -63,7 +103,7 @@ function get_all_db_from_json(){
   fetch('./DBF/daily.json').then(res => res.json()).then(data => { DB_DAILY=data;saveDataToIDX(data,0); })  
   fetch('./DBF/monthly.json').then(res => res.json()).then(data => { DB_MONTHLY=data;saveDataToIDX(data,1); })
   fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); })
-  fetch('./DBF/user.json').then(res => res.json()).then(data => { DB_USER=data;saveDataToIDX(data,3); })
+  fetch('./DBF/user.json').then(res => res.json()).then(data => { DB_USER=data;DB_CLIENTS=data;saveDataToIDX(data,3); })
 }
 
 function rest_api_lognow(u,p){

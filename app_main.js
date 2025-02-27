@@ -21,6 +21,8 @@ function start_app(){
     }
   });
 
+  
+
   //get_lock();
   //put_lock();
 
@@ -48,6 +50,8 @@ function start_app(){
         item.style.backgroundImage = `url(${item.dataset.src})`;
     };
   }); 
+
+  //readAllRecords('tbl',func)
   
 }
 

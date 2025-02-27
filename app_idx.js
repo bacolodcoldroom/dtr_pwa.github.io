@@ -70,7 +70,7 @@ async function readRecord(id,tbl) {
 // ------------------------------
 // Read (Get) all records
 // ------------------------------
-async function readAllRecords(tbl) {
+async function readAllRecords(tbl,func) {
   return openDatabase(tbl).then(db => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(tbl, "readonly");
@@ -78,9 +78,12 @@ async function readAllRecords(tbl) {
       const request = store.getAll();
 
       request.onsuccess = (event) => {
-        resolve(event.target.result);
-        console.log(event.target.result);
-        return event.target.result;
+        let jres=event.target.result;
+        resolve(jres);
+        console.log(jres);
+        
+        //var fn = window[func];
+        //if (typeof fn === "function") fn(tbl,jres); 
       };
 
       request.onerror = (event) => {
@@ -93,7 +96,7 @@ async function readAllRecords(tbl) {
 // ------------------------------
 // Update an existing record
 // ------------------------------
-async function updateRecord(record,tbl) {
+async function updateRecord(record,tbl,func) {
   return openDatabase(tbl).then(db => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(tbl, "readwrite");
@@ -102,6 +105,8 @@ async function updateRecord(record,tbl) {
 
       request.onsuccess = () => {
         resolve(`Record updated successfully`);
+        var fn = window[func];
+        if (typeof fn === "function") fn();          
       };
 
       request.onerror = (event) => {
@@ -114,7 +119,7 @@ async function updateRecord(record,tbl) {
 // ------------------------------
 // Delete a record by key
 // ------------------------------
-function deleteRecord(id,tbl) {
+async function deleteRecord(id,tbl) {
   return openDatabase(tbl).then(db => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(tbl, "readwrite");

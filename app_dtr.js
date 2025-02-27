@@ -360,9 +360,9 @@ function clk_text(row){
   document.getElementById("myJBox_main").style.height='217px';
 }
 
-function save_entry(vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize){
+function save_entry(row,vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize){
   var ob = {
-    id:15,
+    id:row,
     date:vdate,
     rank:0,
     usercode:usercode,
@@ -379,12 +379,10 @@ function save_entry(vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_txt_t
     txt_fsize:dtl_txt_fsize
   };
 
-  updateRecord(ob,'daily','bow()');
+  updateRecord(ob,'daily','update_db');
   //createRecord(ob,'daily','xlayas()');
   //DB_DAILY=readAllRecords('daily');  
-  console.log('DB_DAILY: '+DB_DAILY.length);
-    JBE_CLOSEBOX(); 
-    ref_ctr(false);
+  
   return;
 
   var trans = db.transaction('daily', 'readwrite');
@@ -405,7 +403,16 @@ function save_entry(vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_txt_t
 }
 
 function bow(){
-  console.log('bow');
+  readAllRecords('daily','update_db');
+  //console.log('DB_DAILY: '+DB_DAILY.length);
+  
+}
+
+async function update_db(){
+  DB_DAILY=await readAllRecords('daily');
+  console.log('update_db Daily: '+DB_DAILY.length);
+  JBE_CLOSEBOX(); 
+  ref_ctr(false);
 }
 
 function xlayas(){
