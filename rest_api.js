@@ -23,7 +23,7 @@ async function rest_api_start(){
   */
   let data=await readAllRecords('user','do_start'); 
   DB_USER=data; DB_CLIENTS=data;
-  alert('do_start: '+data.length);
+  //alert('do_start: '+data.length);
   if(data.length==0){
     MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.',function(){ get_all_db_from_json(); },function(){});
   }
