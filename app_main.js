@@ -1072,8 +1072,13 @@ function get_IDX_database(){
   MSG_SHOW(vbOkAbort,'DATA RESET:','Going to Download Data from the Server.<br>Current Data will be replaced.', function(){ do_get_data_server(); },function(){ return; });
   
   function do_get_data_server(){
+    clearAllRecords('daily');
+    clearAllRecords('monthly');
+    clearAllRecords('sig');
+    clearAllRecords('user');
     get_all_db_from_json();
     getAllDataFromIDX();
+    snackBar('Data Reset Completed...');
     dispHeaderMode();
   }  
 }

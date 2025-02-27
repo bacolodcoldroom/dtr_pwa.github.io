@@ -133,3 +133,22 @@ async function deleteRecord(id,tbl) {
     });
   });
 }
+
+async function clearAllRecords(tbl) {
+  return openDatabase(tbl).then(db => {
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(tbl, "readwrite");
+      const store = transaction.objectStore(tbl);
+      const request = store.clear();
+
+      request.onsuccess = (event) => {
+        let jres=event.target.result;
+        resolve(jres);
+      };
+
+      request.onerror = (event) => {
+        reject(`Error clearing all records: ${event.target.error}`);
+      };
+    });
+  });
+}
