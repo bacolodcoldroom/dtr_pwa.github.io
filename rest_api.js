@@ -21,7 +21,7 @@ async function rest_api_start(){
     console.error("Error:", error);
   });
   */
-  let data=await readAllRecords('user','do_start'); 
+  let data=await readAllRecords('user'); 
   DB_USER=data; DB_CLIENTS=data;
   //alert('do_start: '+data.length);
   if(data.length==0){
@@ -29,9 +29,9 @@ async function rest_api_start(){
   }
   getAllDataFromIDX();
   /*
-  DB_DAILY=await readAllRecords('daily','ttest(0)');
-  DB_MONTHLY=await readAllRecords('monthly','ttest(1');
-  DB_SIG=await readAllRecords('sig','ttest(2)');
+  DB_DAILY=await readAllRecords('daily');
+  DB_MONTHLY=await readAllRecords('monthly');
+  DB_SIG=await readAllRecords('sig');
   */
   dispHeaderMode();
 }

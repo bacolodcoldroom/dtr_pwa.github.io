@@ -14,8 +14,10 @@ function start_app(){
 
   isAppOffline().then(offline => {
     if (offline) {
+      JBE_ONLINE=false;
       console.log("The app is offline!");
     } else {
+      JBE_ONLINE=true;
       console.log("The app is online!");
       document.getElementById('online_status').style.display='none';      
     }
@@ -1059,4 +1061,19 @@ async function isAppOffline(timeout = 3000) {
     console.log('wala gd. offline here....');
     return true;
   });
+}
+
+function get_IDX_database(){
+  if(!JBE_ONLINE){ 
+    snackBar('System Offline...');
+    return;
+  }
+
+  MSG_SHOW(vbOkAbort,'DATA RESET:','Going to Download Data from the Server.<br>Current Data will be replaced.', function(){ do_get_data_server(); },function(){ return; });
+  
+  function do_get_data_server(){
+    get_all_db_from_json();
+    getAllDataFromIDX();
+    dispHeaderMode();
+  }  
 }

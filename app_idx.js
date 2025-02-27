@@ -70,7 +70,7 @@ async function readRecord(id,tbl) {
 // ------------------------------
 // Read (Get) all records
 // ------------------------------
-async function readAllRecords(tbl,func) {
+async function readAllRecords(tbl) {
   return openDatabase(tbl).then(db => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(tbl, "readonly");
@@ -81,9 +81,6 @@ async function readAllRecords(tbl,func) {
         let jres=event.target.result;
         resolve(jres);
         console.log(jres);
-        
-        //var fn = window[func];
-        //if (typeof fn === "function") fn(tbl,jres); 
       };
 
       request.onerror = (event) => {
