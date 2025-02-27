@@ -934,8 +934,15 @@ if (isMobileDevice()) {
   console.log("User is not using a mobile device.");
 }
 */
-
 function exit_app(){
+  let msg='Click the Upper Right [X] button of your browser';
+  if(isMobileDevice()) {
+    msg='Click the phone Back button';
+  }
+  MSG_SHOW(vbOk,'EXIT APP','<center>'+msg+'</center>', function(){},function(){});
+}
+
+function xxexit_app(){
   let msg='Are you sure you want to exit the application?';
   MSG_SHOW(vbOkAbort,'EXIT APP','<center>'+msg+'</center>', function(){ do_exit(); },function(){});
   
