@@ -966,9 +966,9 @@ function formatPhoneNumber(phoneNumber) {
 
 function showQR(){
   var h=H_BODY-100;
-  var txt='https://updesktop.github.io/estore/app/';
+  var txt='https://bacolodcoldroom.github.io/dtr_pwa.github.io/';
   //txt=window.location.origin;
-  txt=CURR_SITE;
+  //txt=CURR_SITE;
   var dtl=     
     '<div id="main_qr" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;background-color:white;">'+     
       '<div style="width:100%;height:90%;padding:2px;background:none">'+
