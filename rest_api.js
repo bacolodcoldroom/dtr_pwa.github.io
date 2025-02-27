@@ -27,11 +27,12 @@ async function rest_api_start(){
   if(data.length==0){
     MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.',function(){ get_all_db_from_json(); },function(){});
   }
-  //getAllDataFromIDX();
-  
+  getAllDataFromIDX();
+  /*
   DB_DAILY=await readAllRecords('daily','ttest(0)');
   DB_MONTHLY=await readAllRecords('monthly','ttest(1');
   DB_SIG=await readAllRecords('sig','ttest(2)');
+  */
   dispHeaderMode();
 }
 
