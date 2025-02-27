@@ -1,5 +1,8 @@
 
 function fm_daily(){  
+  snackBar('Under construction... -JBE');
+  return;
+
   if(!JBE_CHK_USER(0)){ 
     speakText("Please Log In. Thank you.");
     return; 
