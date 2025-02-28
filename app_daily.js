@@ -97,16 +97,6 @@ function fm_daily(){
   );
   tilt=formatter.format(new Date());
   JBE_OPENBOX('div_timeIN',tilt,dtl,dtl2);
-  //dtls_timeIN.style.height=(H_BODY-200-128)+'px';  
-  /*
-  //get_db_all('daily');  
-  axios.get('/api/get_table', { params: {tbl:'daily'} })
-  .then(function (response) {
-    DB_DAILY=response.data;
-    show_daily(v_date,v_time1,v_time2,v_time3,v_time4);
-  })   
-  .catch(function (error) { console.log(error); });
-  */
   show_daily(v_date,v_time1,v_time2,v_time3,v_time4);
 }
 
@@ -144,22 +134,23 @@ function show_daily(v_date,v_time1,v_time2,v_time3,v_time4){
         '<div style="float:left;width:35%;height:100%;padding:8px 0 0 5px;">'+v_username+'</div>'+
         '<div style="float:left;width:30%;height:100%;padding:8px 0 0 5px;">'+DB_DAILY[i].time1+'</div>'+
       '</div>';        
-   }
-   
-   if(!f_found){ 
-     let oras = sv_last.split(':');
-     let hh = oras[0].padStart(2, '0');
-     let mm = oras[1].padStart(2, '0');
-     
-     let xhh=Number(hh);
-     let xmm=Number(mm)+1;
-     if(xmm==60){ 
-        xmm=1;  xhh++;
-        if(xhh > 12){ xhh=1; }
-     }
-     v_time1=xhh.toString().padStart(2, '0')+':'+xmm.toString().padStart(2, '0');
-   }
-   //alert('v_time1:'+v_time1);        
+  }
+   /*
+  if(!f_found){ 
+    let oras = sv_last.split(':');
+    let hh = oras[0].padStart(2, '0');
+    let mm = oras[1].padStart(2, '0');
+    
+    let xhh=Number(hh);
+    let xmm=Number(mm)+1;
+    if(xmm==60){ 
+      xmm=1;  xhh++;
+      if(xhh > 12){ xhh=1; }
+    }
+    v_time1=xhh.toString().padStart(2, '0')+':'+xmm.toString().padStart(2, '0');
+  }
+  */
+  //alert('v_time1:'+v_time1);        
   //dtls_timeIN.innerHTML=dtl;
   btn_save.value=v_save;
   btn_save.style.backgroundColor=bgsave;
@@ -193,21 +184,22 @@ function save_daily(){
   f_found=btn_save.getAttribute('data-found');
   let v_date=JBE_DATE_FORMAT(new Date(),'YYYY-MM-DD');
   let row=parseInt(v_date.substring(8,10));
+  alert('save_daily row: '+row);
   let otime1=inp_time1.getAttribute('data-otime1');
   let time1=format_12(document.getElementById('inp_time1').value);
   
   //if(!time1){ speakText("Invalid Entry: Please enter the correct time."); inp_time1.focus(); return; }
 
-  console.log('time1:'+time1+' otime1:'+otime1+'  f_found:'+f_found);
-  if((time1==otime1)){ speakText('Time unchanged.');JBE_CLOSEBOX(); return; }
+  //console.log('time1:'+time1+' otime1:'+otime1+'  f_found:'+f_found);
+  //if((time1==otime1)){ speakText('Time unchanged.');JBE_CLOSEBOX(); return; }
   
   let time2=document.getElementById('inp_time2').value;
   let time3=document.getElementById('inp_time3').value;
   let time4=document.getElementById('inp_time4').value; 
   save_entry(row,v_date,CURR_USER,time1, time2, time3, time4);
-  let msg="Congratulations! You're time in "+time1+"o'clock is saved.";
+  let msg="Congratulations! You're time entries are saved.";
   if(f_found){    
-    msg="Time changed, from "+otime1+" to "+time1+" o'clock!";
+    msg="Time changed successfully!";
   }
   console.log(msg);
   speakText(msg);

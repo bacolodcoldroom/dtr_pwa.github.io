@@ -314,12 +314,12 @@ function edit_dtr(row,f_print){
         '<div onclick="clear_dtr_entry('+row+')" style="float:left;width:25%;height:100%;background:none;">'+
           '<div class="class_footer">'+
             '<img src="gfx/jdele.png"  alt="home image" />'+
-            '<span>Clear</span>'+
+            '<span>Clear Time</span>'+
           '</div>'+
         '</div>'+
         '<div id="id_clk_text" onclick="clk_text('+row+')" style="display:'+iif(txt,'none','block')+';float:left;width:25%;height:100%;background:none;">'+
           '<div class="class_footer">'+
-            '<img src="gfx/jcategory.png"  alt="home image" />'+
+            '<img src="gfx/jedit.png"  alt="home image" />'+
             '<span>Text</span>'+
           '</div>'+
         '</div>'+
@@ -362,6 +362,11 @@ function clk_text(row){
 }
 
 function save_entry(row,vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize){
+  console.log('time1:'+time1);
+  console.log('time2:'+time2);
+  console.log('time3:'+time3);
+  console.log('time4:'+time4);
+  
   var ob = {
     id:row,
     date:vdate,
@@ -379,32 +384,7 @@ function save_entry(row,vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_t
     txt_width:dtl_txt_width,
     txt_fsize:dtl_txt_fsize
   };
-
-  
-  updateRecord(ob,'daily','update_db');  
-  return;
-
-  var trans = db.transaction('daily', 'readwrite');
-  var addReq = trans.objectStore('daily').put(ob);
-  addReq.onerror = function(e) {
-    console.log('ERROR: putToIDX Meter');
-    console.error(e);
-  }
-
-  trans.oncomplete = function(e) {
-    console.log('putToIDX Meter with value');
-    DB_DAILY.push(ob);
-    //nietos.push(obj);
-    JBE_CLOSEBOX(); 
-    ref_ctr(false);
-  }
-  
-}
-
-function bow(){
-  readAllRecords('daily','update_db');
-  //console.log('DB_DAILY: '+DB_DAILY.length);
-  
+  updateRecord(ob,'daily','update_db');    
 }
 
 async function update_db(){
@@ -413,52 +393,3 @@ async function update_db(){
   JBE_CLOSEBOX(); 
   //ref_ctr(false);
 }
-
-function xlayas(){
-  DB_DAILY.push(ob);
-    //nietos.push(obj);
-    JBE_CLOSEBOX(); 
-    ref_ctr(false);
-}
-
-function putDataToIndexedDB(dbName, storeName, data, dbVersion = 1) {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(dbName, dbVersion);
-
-    request.onupgradeneeded = (event) => {
-      const db = event.target.result;
-      // Create the object store if it doesn't exist.
-      if (!db.objectStoreNames.contains(storeName)) {
-        db.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
-      }
-    };
-
-    request.onerror = (event) => {
-      reject(`Error opening database: ${event.target.errorCode}`);
-    };
-
-    request.onsuccess = (event) => {
-      const db = event.target.result;
-      const transaction = db.transaction(storeName, "readwrite");
-      const store = transaction.objectStore(storeName);
-
-      // Use add() to insert new data.
-      // If you want to update existing records, use put() instead.
-      const addRequest = store.add(data);
-
-      addRequest.onerror = (event) => {
-        reject(`Error adding data: ${event.target.error}`);
-      };
-
-      addRequest.onsuccess = (event) => {
-        resolve(`Data added successfully with key ${event.target.result}`);
-      };
-    };
-  });
-}
-/*
-// Usage example:
-putDataToIndexedDB("myDatabase", "myStore", { name: "Alice", age: 25 })
-  .then((message) => console.log(message))
-  .catch((error) => console.error(error));
-  */
