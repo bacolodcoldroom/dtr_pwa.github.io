@@ -144,6 +144,7 @@ function mnu_fm_dtr(){
 
 function refresh_dtr(){
   ref_ctr(false);
+  disp_user_time(JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM'),false);
   snackBar(`Refreshed...`);
 }
  
@@ -379,10 +380,8 @@ function save_entry(row,vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_t
     txt_fsize:dtl_txt_fsize
   };
 
-  updateRecord(ob,'daily','update_db');
-  //createRecord(ob,'daily','xlayas()');
-  //DB_DAILY=readAllRecords('daily');  
   
+  updateRecord(ob,'daily','update_db');  
   return;
 
   var trans = db.transaction('daily', 'readwrite');
@@ -412,7 +411,7 @@ async function update_db(){
   DB_DAILY=await readAllRecords('daily');
   console.log('update_db Daily: '+DB_DAILY.length);
   JBE_CLOSEBOX(); 
-  ref_ctr(false);
+  //ref_ctr(false);
 }
 
 function xlayas(){

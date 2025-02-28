@@ -73,12 +73,22 @@ function refresh_all_db(){
 
 
 function jeff(){ 
+  let msg=
+    'DB_DAILY: '+DB_DAILY.length+
+    '<br>DB_MONTHLY: '+DB_MONTHLY.length+
+    '<br>DB_SIG: '+DB_SIG.length+
+    '<br>DB_USER: '+DB_USER.length+
+    '<br>DB_CLIENTS: '+DB_CLIENTS.length;
+
+  MSG_SHOW(vbOk,'Tables:',msg,function(){},function(){});
+  /*
   alert(          
     'DB_DAILY: '+DB_DAILY.length+
     '\nDB_MONTHLY: '+DB_MONTHLY.length+
     '\nDB_USER: '+DB_USER.length+
     '\nDB_CLIENTS: '+DB_CLIENTS.length
   );
+  */
 }
 
 //=======APP DB AND DISPLAY==========================================================
@@ -200,13 +210,11 @@ function showMainPage(){
   openPage('page_main'); 
  
   var vmenu='mnu_main'; 
-  var v_curr_user=CURR_USER;   
-  if(CURR_AXTYPE > 0){
-    v_curr_user='';
+  //if(CURR_AXTYPE > 0){
     vmenu='mnu_main_owner';
-  }
+  //}
   dispMenu(true,vmenu);
-  if(!JBE_ONLINE) { return; }
+  //if(!JBE_ONLINE) { return; }
 }
 
 function dispHeaderMode(){
@@ -377,9 +385,9 @@ function myResizeFunction(){
 
 /***************************************************** */
 function openNav() {
-  if(!JBE_CHK_USER(0)){ return; };
-  if(!JBE_ONLINE){
-    snackBar('OFFLINE');
+  //if(!JBE_CHK_USER(0)){ return; };
+  if(!CURR_USER){
+    snackBar('Please Log In...');
     return;
   }
  
@@ -457,75 +465,36 @@ function openPage(m){
   document.getElementById(m).style.display='block';       
 }
 
-function callText(){
-  if(!JBE_ONLINE){
-    //snackBar('OFFLINE');
-    //return;
-  }
-  var tilt='Call/Text Contact';
-  var vimgCall='gfx/jcall.png';
-  var vimgSms='gfx/jsms.png';
- 
+function show_credits(){    
+  var h=H_BODY-250;
   var dtl=     
-    //'<div id="div_calltext" data-zoom=0 style="width:100%;height:'+(H_BODY-350)+'px;overflow:auto;text-align:center;padding:0px;background-color:white;">'+
-    '<div id="div_calltext" data-zoom=0 style="width:100%;height:'+105+'px;overflow:auto;text-align:center;padding:0px;background-color:white;">'+
-      /*
-      for(var i=0;i<DB_CLIENTS.length;i++){
-       
-        if(DB_CLIENTS[i]['usertype']=='0') { continue; }
-        //alert(DB_CLIENTS[i]['username']);
-        dtl+=
-          '<div style="width:100%;height:40px;margin-top:5px;padding:5px;text-align:left;font-size:12px;background-color:lightgray;">'+
-            '<div style="float:left;width:35%;height:100%;padding:8px 0 0 5px;background-color:none;">'+DB_CLIENTS[i]['username']+'</div>'+
-            '<div style="float:left;width:35%;height:100%;padding:8px 0 0 5px;background-color:none;">'+DB_CLIENTS[i]['celno']+'</div>'+
-            '<input onclick="callTextGO(&quot;call&quot;,&quot;'+DB_SYS[0]['telno']+'&quot;)" type="image" src="'+vimgCall+'" style="float:right;text-align:right;padding:0px 5px 0 0;height:100%;margin-left:10px;background:none;" />'+
-            '<input onclick="callTextGO(&quot;txt&quot;,&quot;'+DB_SYS[0]['celno']+'&quot;)" type="image" src="'+vimgSms+'" style="float:right;text-align:right;padding:0px 5px 0 0;height:100%;background:none;" />'+
-          '</div>';
-      }
-      */
-     
-      '<div style="width:100%;height:40px;margin-top:5px;padding:5px;text-align:left;font-size:12px;background-color:lightgray;">'+
-            '<div style="float:left;width:35%;height:100%;padding:8px 0 0 5px;background-color:none;">Telephone</div>'+           
-            '<div style="float:left;width:35%;height:100%;padding:8px 0 0 5px;background-color:none;">'+DB_USER.celno+'</div>'+
-            '<input onclick="callTextGO(&quot;call&quot;,&quot;'+DB_USER.celno+'&quot;)" type="image" src="'+vimgCall+'" style="float:right;text-align:right;padding:0px 5px 0 0;height:100%;margin-left:10px;background:none;" />'+
-            '<input onclick="callTextGO(&quot;txt&quot;,&quot;'+DB_USER.celno+'&quot;)" type="image" src="'+vimgSms+'" style="float:right;text-align:right;padding:0px 5px 0 0;height:100%;background:none;" />'+
-      '</div>'+
-      '<div style="width:100%;height:40px;margin-top:5px;padding:5px;text-align:left;font-size:12px;background-color:lightgray;">'+
-            '<div style="float:left;width:35%;height:100%;padding:8px 0 0 5px;background-color:none;">Mobile</div>'+
-            '<div style="float:left;width:35%;height:100%;padding:8px 0 0 5px;background-color:none;">'+DB_USER.celno+'</div>'+
-            '<input onclick="callTextGO(&quot;call&quot;,&quot;'+DB_USER.celno+'&quot;)" type="image" src="'+vimgCall+'" style="float:right;text-align:right;padding:0px 5px 0 0;height:100%;margin-left:10px;background:none;" />'+
-            '<input onclick="callTextGO(&quot;txt&quot;,&quot;'+DB_USER.celno+'&quot;)" type="image" src="'+vimgSms+'" style="float:right;text-align:right;padding:0px 5px 0 0;height:100%;background:none;" />'+
-      '</div>';
-         
-    dtl+='</div>';
- 
-  var dtl2=     
-    '<div style="width:100%;height:100%;padding:11px 0 0 0;text-align:center;color:'+JBE_TXCLOR1+';background:none;">'+
-      tilt+     
-    '</div>';  
+    '<div id="main_credit" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;background-color:white;">'+     
+      '<div style="width:100%;height:100%;padding:2px;background:none">'+
+        '<div style="height:60px;width:100%;background:lightgray;text-align:center;padding:10px 0 0 0;font-size:30px;">*** C R E D I T S ***</div>'+
+        '<hr style="margin-top:20px;">'+
+        
+        '<div class="cls_sidenav">'+
+          '<div>Paulynne Rojo-Sustento</div>'+
+          '<p>Chief System Analyst</p>'+
+        '</div>'+
+              
+        '<div class="cls_sidenav">'+
+          '<div>Irene I. Mojica</div>'+
+          '<div>Dax H. Parreño</div>'+
+          '<p>System UI/UX Designers</p>'+
+        '</div>'+
 
-  JBE_OPENBOX('div_calltext',tilt,dtl,dtl2);
-  //showMenu('mnu_callText');
-}
-function callTextGO(m,celno){ 
-  //alert(m+' vs '+celno); 
-  if(celno.substring(0,1)=='0'){
-    celno='+63'+celno.substring(1);
-  }
- 
-  var vhref='';
-  if(m=='call') {     
-    //window.location.href="tel:+63-948-952-3337";
-    vhref='tel:'+celno;
-  }else if(m=='txt') {
-    //window.location.href="sms://+639489523337?body=I%27m%20interested%20in%20your%20product.%20Please%20contact%20me."
-    vhref='sms://'+celno+'?body=I%27m%20interested%20in%20your%20product.%20Please%20contact%20me.';
-  } 
-  window.location.href=vhref;
-  //window.location.href="sms://+639489523337?body=I%27m%20interested%20in%20your%20product.%20Please%20contact%20me."
-}
-function close_calltext(){
-  //showMenu('mnu_main');   
+        '<div class="cls_sidenav">'+
+          '<div>Jeffrey B. Enad</div>'+
+          '<p>System Developer/Programmer</p>'+
+        '</div>'+
+      '</div>'+        
+    '</div>';
+  var dtl2=     
+    '<div style="width:100%;height:100%;padding:0px 0 0 0;text-align:center;color:'+JBE_TXCLOR1+';background:none;">'+
+      '<input type="button" onclick="JBE_CLOSEBOX()" style="width:100px;height:100%;" value="Close" />'+     
+    '</div>';  
+  JBE_OPENBOX('main_credit','Men & Women of Coldroom',dtl,dtl2);
 }
 
 function reportHead(tilt,date){
@@ -1009,6 +978,8 @@ function share_app(){
   }
 }
 
+
+
 function not_yet(){
   MSG_SHOW(vbOk,"SORRY:","Still under construction.",function(){},function(){});
 }
@@ -1064,19 +1035,25 @@ async function isAppOffline(timeout = 3000) {
 }
 
 function get_IDX_database(){
+  if(!CURR_USER){ 
+    snackBar('Please Log In...');
+    return;
+  }
+  /*
   if(!JBE_ONLINE){ 
     snackBar('System Offline...');
     return;
   }
+    */
 
-  MSG_SHOW(vbOkAbort,'DATA RESET:','Going to Download Data from the Server.<br>Current Data will be replaced.', function(){ do_get_data_server(); },function(){ return; });
+  MSG_SHOW(vbOkAbort,'DATA RESET:','<center>Going to Download Data from the Server.<br>Current Data will be replaced.<br><br>Are you sure to do this?</center>', function(){ do_get_data_server(); },function(){ return; });
   
   function do_get_data_server(){
-    clearAllRecords('daily');
+    //clearAllRecords('daily');
     clearAllRecords('monthly');
     clearAllRecords('sig');
     clearAllRecords('user');
-    get_all_db_from_json();
+    get_all_db_from_json(false);
     getAllDataFromIDX();
     snackBar('Data Reset Completed...');
     dispHeaderMode();

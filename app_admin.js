@@ -1,8 +1,4 @@
 function showLogin(){ 
-  if(!JBE_ONLINE){
-    snackBar('OFFLINE');
-    return;
-  }
   window.history.pushState({ noBackExitsApp: true }, '');
   f_MainPage=false;
 
@@ -184,7 +180,7 @@ function login_ok(v){
   createCookie('cok_name_'+CURR_CLIENT,CURR_NAME,1);
   createCookie('cok_name2_'+CURR_CLIENT,CURR_NAME2,1);
   //alert(CURR_NAME+' vs '+CURR_NAME2);
-  var vmenu='mnu_main';
+  var vmenu='mnu_main_owner';
   /*       
   aryPix[0]='data:image/png;base64,' + btoa(aryDB['photo']);
   if(CURR_AXTYPE > 0){
@@ -205,11 +201,6 @@ function login_ok(v){
 }
 
 function main_login(){
-  if(!JBE_ONLINE){
-    snackBar('OFFLINE');
-    return;
-  }
-
   if(!CURR_USER){
     showLogin();
   }else{
@@ -339,7 +330,7 @@ function logout(){
   //refreshNOTIF('');
   closeLogin();
 
-  var vmenu='mnu_main';
+  var vmenu='mnu_main_owner';
   if(CURR_AXTYPE > 0){ vmenu='mnu_main_owner'; } 
   dispMenu(true,vmenu);
 }

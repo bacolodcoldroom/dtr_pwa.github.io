@@ -25,7 +25,7 @@ async function rest_api_start(){
   DB_USER=data; DB_CLIENTS=data;
   //alert('do_start: '+data.length);
   if(data.length==0){
-    MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.',function(){ get_all_db_from_json(); },function(){});
+    MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.',function(){ get_all_db_from_json(true); },function(){});
   }
   getAllDataFromIDX();
   /*
@@ -100,8 +100,8 @@ function getTableData(dbName, storeName, dbVersion = 1) {
   });
 }
 
-function get_all_db_from_json(){  
-  fetch('./DBF/daily.json').then(res => res.json()).then(data => { DB_DAILY=data;saveDataToIDX(data,0); })  
+function get_all_db_from_json(f_daily){  
+  if(f_daily){ fetch('./DBF/daily.json').then(res => res.json()).then(data => { DB_DAILY=data;saveDataToIDX(data,0); }) }
   fetch('./DBF/monthly.json').then(res => res.json()).then(data => { DB_MONTHLY=data;saveDataToIDX(data,1); })
   fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); })
   fetch('./DBF/user.json').then(res => res.json()).then(data => { DB_USER=data;DB_CLIENTS=data;saveDataToIDX(data,3); })

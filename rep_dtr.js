@@ -155,6 +155,7 @@ function toggle_dtl_dtr(row,v_empty){
 }
 
 function save_dtr(row,v_work){ 
+  alert('save_dtr');
   //display and save
   let ctr=0;
   let f_empty=false;
@@ -201,11 +202,12 @@ function save_dtr(row,v_work){
   let dtl_txt_fsize=inp_txt_fsize.value;
 
   document.getElementById('dtl_txt'+row).innerHTML=dtl_txt;
+  document.getElementById('dtl_txt'+row).style.backgroundColor='gold';
   document.getElementById('dtl_txt_top_'+row).innerHTML=dtl_txt_top;
   document.getElementById('dtl_txt_left_'+row).innerHTML=dtl_txt_left;
   document.getElementById('dtl_txt_width_'+row).innerHTML=dtl_txt_width;
   document.getElementById('dtl_txt_fsize_'+row).innerHTML=dtl_txt_fsize;
-
+  alert('dtl_txt: '+dtl_txt);
   document.getElementById('dtl_txt'+row).innerHTML=dtl_txt;
   document.getElementById('dtl_txt'+row).style.top=dtl_txt_top+'px';
   document.getElementById('dtl_txt'+row).style.left=dtl_txt_left+'px';
@@ -215,6 +217,14 @@ function save_dtr(row,v_work){
   document.getElementById('dtl_txt'+row).style.border=iif(dtl_txt,'1','0')+'px solid green';
   
   //alert('dtl_txt_left:'+inp_txt.value);
+  /*
+  document.getElementById('dtl_txt'+row).style.textAlign='left';
+  document.getElementById('dtl_txt'+row).style.display='block'; 
+  document.getElementById('dtl_txt'+row).style.top=dtl_txt_top;
+  document.getElementById('dtl_txt'+row).style.left=dtl_txt_left;
+  document.getElementById('dtl_txt'+row).style.width=dtl_txt_width;
+  document.getElementById('dtl_txt'+row).style.fontSize=dtl_txt_fsize;
+  */
 
   save_entry(row,v_date,CURR_USER,aryTime[0], aryTime[1], aryTime[2], aryTime[3],dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
 }
@@ -277,7 +287,7 @@ function ref_ctr(f_print){
     //if(chk_dtr_dtl_empty(i)){ continue; }
 
     let v_date=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM');
-    console.log(v_date+' <<<vs date_dtr:'+date_dtr.value);
+    //console.log(v_date+' <<<vs date_dtr:'+date_dtr.value);
     if(v_date != date_dtr.value){ continue; }
 
     ctr++;
@@ -456,7 +466,7 @@ function ret_dtr(vDate,f_print){
         '<div id="dtl_mm_'+i+'" class="pBox" style="display:block;width:8%;"></div>'+
         '<div id="dtl_xx_'+i+'" class="pBox" style="position:absolute;display:none;left:6%;width:84%;font-weight:bold;padding:'+rowPad+'px 0 0 0;border:0px solid cyan;background:none;"></div>'+
         '<div id="dtl_txt'+i+'" class="pBox" style="position:absolute;display:none;width:auto;height:auto;font-weight:bold;text-align:left;border:'+iif(!f_print,1,0)+'px solid green;background:none;"></div>'+
-        '<div id="dtl_txt_top_'+i+'" style="display:none;">2</div>'+
+        '<div id="dtl_txt_top_'+i+'" style="display:none;">0</div>'+
         '<div id="dtl_txt_left_'+i+'" style="display:none;">19</div>'+
         '<div id="dtl_txt_width_'+i+'" style="display:none;">100</div>'+
         '<div id="dtl_txt_fsize_'+i+'" style="display:none;">11</div>'+
