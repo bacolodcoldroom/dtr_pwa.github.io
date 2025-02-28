@@ -152,3 +152,49 @@ async function clearAllRecords(tbl) {
     });
   });
 }
+
+
+async function fetchTextPortion(url, start, end) {
+  try {
+      // Validate parameters
+      const startNum = Number(start);
+      if (isNaN(startNum)) {
+          throw new Error('Start must be a valid number');
+      }
+     
+      let endNum;
+      if (typeof end !== 'undefined') {
+          endNum = Number(end);
+          if (isNaN(endNum)) {
+              throw new Error('End must be a valid number');
+          }
+      }
+
+      // Fetch the file
+      const response = await fetch(url);
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+     
+      // Get full text
+      const fullText = await response.text();
+     
+      // Calculate indices
+      const startIndex = Math.max(0, startNum);
+      let endIndex = typeof end !== 'undefined' ? endNum : fullText.length;
+      endIndex = Math.min(endIndex, fullText.length);
+
+      // Handle invalid range
+      if (startIndex >= endIndex) {
+          return '';
+      }
+
+      // Return the requested portion
+      return fullText.substring(startIndex, endIndex);
+     
+  } catch (error) {
+      console.error('Error fetching text portion:', error);
+      throw error; // Re-throw for caller to handle
+  }
+}
+

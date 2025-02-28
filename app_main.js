@@ -23,10 +23,24 @@ function start_app(){
     }
   });
 
-  
-
-  //get_lock();
-  //put_lock();
+  //searchContentInFile('SW_DTR.js', 'cacheName')
+  // Get text from character 10 to 50
+  fetchTextPortion('SW_DTR.js', 17, 22)
+  .then(portion => {
+    console.log('Text portion:', portion);      
+    document.getElementById('ver_sion').innerHTML=CURR_VER;
+    document.getElementById('ver_build').innerHTML=portion;
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+  /*
+  // Get text from character 100 to end
+  fetchTextPortion('sample.txt', 100)
+  .then(portion => {
+      console.log('Text portion:', portion);
+  }); 
+  */
 
   if(!CURR_NAME2){ CURR_NAME2=''; }
   //speakText('Hello '+CURR_NAME2+'! Welcome to the Bahcolod City Cold Chain Facility.');
