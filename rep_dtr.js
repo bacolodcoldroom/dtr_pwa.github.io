@@ -155,7 +155,6 @@ function toggle_dtl_dtr(row,v_empty){
 }
 
 function save_dtr(row,v_work){ 
-  alert('save_dtr');
   //display and save
   let ctr=0;
   let f_empty=false;
@@ -202,12 +201,11 @@ function save_dtr(row,v_work){
   let dtl_txt_fsize=inp_txt_fsize.value;
 
   document.getElementById('dtl_txt'+row).innerHTML=dtl_txt;
-  document.getElementById('dtl_txt'+row).style.backgroundColor='gold';
+  document.getElementById('dtl_txt'+row).style.backgroundColor='none';
   document.getElementById('dtl_txt_top_'+row).innerHTML=dtl_txt_top;
   document.getElementById('dtl_txt_left_'+row).innerHTML=dtl_txt_left;
   document.getElementById('dtl_txt_width_'+row).innerHTML=dtl_txt_width;
   document.getElementById('dtl_txt_fsize_'+row).innerHTML=dtl_txt_fsize;
-  alert('dtl_txt: '+dtl_txt);
   document.getElementById('dtl_txt'+row).innerHTML=dtl_txt;
   document.getElementById('dtl_txt'+row).style.top=dtl_txt_top+'px';
   document.getElementById('dtl_txt'+row).style.left=dtl_txt_left+'px';
