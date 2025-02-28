@@ -1,5 +1,5 @@
 /* ORIG SERVICE WORKER OF ESTORE */
-const cacheName = '1353_110429';
+const cacheName = '13543_110429';
 const staticAssets = [
   './',
   './index.html',
