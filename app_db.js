@@ -206,6 +206,8 @@ function getDataFromIDX(i,db2) {
         //showProfile(2); 
       }else if(i==3){          
         DB_USER=[]; DB_USER=aryIDB; 
+        console.log('DB_USER getDataFromIDX');
+        console.log(DB_USER);
         //showProfile(2);     
       }
       //alert(JBE_STORE_IDX[i]['flename']+aryIDB.length);
@@ -227,7 +229,7 @@ function jdata(){
   var jd=
     'From IDX '+JBE_STORE_IDX[0]['flename']+' : '+JBE_STORE_IDX[0]['numrec']+' vs '+DB_CAT.length+' Array<br>'+
     'From IDX '+JBE_STORE_IDX[1]['flename']+' : '+JBE_STORE_IDX[1]['numrec']+' vs '+DB_STOCK.length+' Array<br>'+
-    'From Array CLIENTS '+DB_CLIENTS.length+' Array<br>'+
+    'From Array CLIENTS '+DB_USER.length+' Array<br>'+
     'From Array BELLS '+DB_BELL.length+' Array<br>';    
 
   MSG_SHOW(vbOk,"DATA:",jd,function(){},function(){}); 

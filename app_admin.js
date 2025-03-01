@@ -218,12 +218,13 @@ function preLogOut(){
 
 //************************************************************************************************ */
 function fm_admin(){
+  console.log('fm_admin DB_USER');  
+  console.log(DB_USER); 
   window.history.pushState({ noBackExitsApp: true }, '');
   f_MainPage=false;
   var n = new Date().toLocaleTimeString('it-IT');
   mnu_fm_admin();
   document.getElementById('back_view1').style.display='block';
-
   var menuMenu='';
  
   var profileImg=document.getElementById('bar_avatar').src;
@@ -251,7 +252,6 @@ function fm_admin(){
   vdisp_location='block';
   if(CURR_AXTYPE == 5){ menuMenu=menuEditStaff+menuEditProfile; }
   if(CURR_AXTYPE == 9){ menuMenu=menuEditStaff }
-
   var dtl=
     '<div id="div_main_admin" style="width:100%;height:100%;padding:0px;overflow-x:hidden;overflow-y:auto;background:none;">'+
      
@@ -339,7 +339,7 @@ function fm_profile(vmode){
   //alert('fm_profile:'+vmode+'  len USER:'+DB_USER.length);
   if(vmode==1){
       GEO_MODE=0;
-      JBE_GETLOCATION();
+      //JBE_GETLOCATION();
       document.getElementById('page_login').style.display='none';
   }
   var n = new Date().toLocaleTimeString('it-IT');
@@ -368,6 +368,7 @@ function fm_profile(vmode){
 
 
   var profileImg='gfx/avatar.png'+'?'+n;
+  var userRow='';
   var userid='';
   var username='';
   username2='';
@@ -382,10 +383,13 @@ function fm_profile(vmode){
   var v_disabled='';
 
   if(vmode==2){
-    //alert('CURR_USER:'+CURR_USER);
-    //alert('exist:'+usercode);
-    var aryDB=JBE_GETARRY(DB_USER,'usercode',CURR_USER);
     profileImg=document.getElementById('bar_avatar').src;
+    foto=profileImg;
+    
+    let aryDB=JBE_GETARRY(DB_USER,'usercode',CURR_USER);   
+    //alert('DB_USER.length:'+aryDB.id);    
+    userRow=aryDB['id'];
+    //alert(CURR_NAME+': '+aryDB['id']+' ::: userRow: '+userRow);
     usercode=aryDB['usercode'];
     userid=aryDB['userid'];
     pword=aryDB['pword'];
@@ -394,7 +398,8 @@ function fm_profile(vmode){
     fullname=aryDB['fullname'];
     addrss=aryDB['addrss'];
     celno=aryDB['celno'];
-    foto=aryDB['photo'];
+    //foto=aryDB['photo'];
+    
     lat=parseFloat(aryDB['lat']);
     lng=parseFloat(aryDB['lng']);
     d_active=JBE_DATE_FORMAT(aryDB['d_active'],'YYYY-MM-DD');
@@ -403,11 +408,12 @@ function fm_profile(vmode){
   }
 
   //alert(vmode+' usercode:'+usercode+' CURR_USER:'+CURR_USER);
+  //return;
  
   //alert('Mode: '+vmode+' : '+ lat+' vs '+lng);
  
   var dtl=
-    '<div id="div_admin_profile" data-mode='+vmode+' data-usercode="'+usercode+'" style="width:100%;height:100%;padding:0px;overflow-x:hidden;overflow-y:auto;background:white;">'+
+    '<div id="div_admin_profile" data-mode='+vmode+' data-usercode="'+usercode+'" data-userRow='+userRow+' style="width:100%;height:100%;padding:0px;overflow-x:hidden;overflow-y:auto;background:white;">'+
            
       '<div style="height:100px;width:100%;margin-top:20px;text-align:center;padding:5px;color:black;background:none;">'+
 
@@ -494,7 +500,6 @@ function fm_profile(vmode){
     '</div>';       
 
   JBE_OPEN_VIEW(dtl,'My Profile','close_profile');
- 
 }
 function chk_fld(u,p,vmode){
   if(vmode != 1) { return; };
@@ -518,7 +523,8 @@ function close_profile(){
 
 function save_profile(){ 
   var vmode=document.getElementById('div_admin_profile').getAttribute('data-mode');
-  //alert('going to save. data mode:'+vmode);
+  var userRow=parseInt(document.getElementById('div_admin_profile').getAttribute('data-userRow'));
+  //alert('going to save. data mode:'+vmode+'\nuserRow: '+userRow);
 
   if(vmode==1){ GEO_MODE=0; }
   var profileImg=document.getElementById('bar_avatar').src;
@@ -534,9 +540,11 @@ function save_profile(){
   var lng=document.getElementById('flng2').value; 
   var d_active=document.getElementById('dv_d_active').innerHTML; 
  
-  var foto=document.getElementById('img_eavatar'+vmode).getAttribute('data-img');
-  foto=profileImg;
-  //alert('profileImg:'+profileImg);
+  //var foto=document.getElementById('img_eavatar'+vmode).getAttribute('data-img');
+  var foto=document.getElementById('img_eavatar'+vmode).src;
+  
+  //foto=profileImg;
+  //alert('foto:'+foto);
 
  
   if(u=='' || p=='' || n=='' || c=='' || a=='' || foto==''){
@@ -552,7 +560,7 @@ function save_profile(){
     MSG_SHOW(vbOk,"ERROR: Pls. complete the form.",vmsg,function(){},function(){});
     return;
   }
-   
+   /*
   var photo=usercode+'.jpg';  
  
   var targetDIR='uploadz/'; 
@@ -564,7 +572,8 @@ function save_profile(){
     if(vmode==1){ ob=[]; }
     uploadNOW(THISFILE[0],photo,targetDIR,ob,false,false);
   } 
-  rest_api_save_profile(vmode,usercode,u,p,n,n2,n2full,a,photo,c,lat,lng,d_active,0);
+    */
+  rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,n2full,a,foto,c,lat,lng,d_active,0);
 }
  
 function update_curr_user(usercode,n){
@@ -579,7 +588,6 @@ function update_curr_user(usercode,n){
 
 /************************************** */
 function editStaff(){ 
-  //get_db_clients(); 
   window.history.pushState({ noBackExitsApp: true }, '');
   f_MainPage=false;
  
@@ -614,7 +622,7 @@ function close_editStaff(){
 }
 
 function disp_editStaff(){ 
-  var aryDB=DB_CLIENTS; 
+  var aryDB=DB_USER; 
   aryDB.sort(sortByMultipleKey(['usertype','username']));
   var n = new Date().toLocaleTimeString('it-IT');
   //document.getElementById('div_sel_orders').innerHTML=newOptionsHtml1; 
@@ -678,7 +686,7 @@ function chgLevel(usercode,usertype){
   .then(function (response) {          
     showProgress(false);     
     console.log(response.data);       
-    DB_CLIENTS=response.data;
+    DB_USER=response.data;
     CURR_AXTYPE=usertype;
   })
   .catch(function (error) {
@@ -688,13 +696,13 @@ function chgLevel(usercode,usertype){
 }
 
 function del_staff(usercode){
-  var axlevel=JBE_GETFLD('usertype',DB_CLIENTS,'usercode',usercode);
+  var axlevel=JBE_GETFLD('usertype',DB_USER,'usercode',usercode);
   if(axlevel=='5'){
     snackBar('Access Denied...');
     return;
   }
-  var username=JBE_GETFLD('username',DB_CLIENTS,'usercode',usercode);
-  var photo=JBE_GETFLD('photo',DB_CLIENTS,'usercode',usercode);
+  var username=JBE_GETFLD('username',DB_USER,'usercode',usercode);
+  var photo=JBE_GETFLD('photo',DB_USER,'usercode',usercode);
   var ddir='upload/users/';
 
   MSG_SHOW(vbYesNo,"CONFIRM: ","Are you sure to Delete user: "+username+"?",function(){
@@ -713,7 +721,7 @@ function del_staff(usercode){
     .then(function (response) {
       showProgress(false);     
       console.log(response.data);       
-      DB_CLIENTS=response.data; 
+      DB_USER=response.data; 
       disp_editStaff(); 
     })
     .catch(function (error) {

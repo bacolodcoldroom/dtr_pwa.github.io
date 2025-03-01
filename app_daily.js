@@ -26,7 +26,7 @@ function fm_daily(){
 
   DB_DAILY.sort(JBE_SORT_ARRAY(['time1']));
   var dtl=     
-    '<div id="div_timeIN" style="width:100%;height:'+(H_BODY-390)+'px;text-align:center;padding:0px;background-color:white;">'+
+    '<div id="div_timeIN" style="width:100%;height:230px;text-align:center;padding:0px;background-color:white;">'+
       //'<div id="div_date" style="display:none;">'+v_date+'</div>'+
       //  '<div id="dtls_timeIN" style="display:none;width:100%;height:'+(H_BODY-260)+'px;overflow:auto;text-align:center;padding:0px;border:1px solid black;">'+
       //'</div>'+
@@ -111,7 +111,7 @@ function show_daily(v_date,v_time1,v_time2,v_time3,v_time4){
   for(var i=0;i<DB_DAILY.length;i++){
     if(JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM-DD') != v_date){ continue; }
     
-    let v_username=JBE_GETFLD('username',DB_CLIENTS,'usercode',DB_DAILY[i].usercode);
+    let v_username=JBE_GETFLD('username',DB_USER,'usercode',DB_DAILY[i].usercode);
     let v_color='black';
     ctr++;
     

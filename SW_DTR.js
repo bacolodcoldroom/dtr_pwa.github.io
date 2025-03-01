@@ -1,4 +1,4 @@
-const cacheName='02.25';
+const cacheName='03.21';
 const staticAssets = [
   './',
   './index.html',
@@ -27,7 +27,7 @@ const staticAssets = [
   './app_setting.js',     
   './rep_dtr.js', './rest_api.js',     
   
-  
+  './gfx/snd/chimes.mp3', 
   './gfx/proc_logo.gif',  
   './gfx/jprn.png', './gfx/jrefresh.png', './gfx/jpdf.png',
 

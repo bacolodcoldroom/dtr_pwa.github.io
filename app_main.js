@@ -87,107 +87,20 @@ function refresh_all_db(){
 
 
 function jeff(){ 
+  console.log('DB_USER jeff');
+  console.log(DB_USER);
   let msg=
     'DB_DAILY: '+DB_DAILY.length+
     '<br>DB_MONTHLY: '+DB_MONTHLY.length+
     '<br>DB_SIG: '+DB_SIG.length+
-    '<br>DB_USER: '+DB_USER.length+
-    '<br>DB_CLIENTS: '+DB_CLIENTS.length;
+    '<br>DB_USER: '+DB_USER.length
 
   MSG_SHOW(vbOk,'Tables:',msg,function(){},function(){});
-  /*
-  alert(          
-    'DB_DAILY: '+DB_DAILY.length+
-    '\nDB_MONTHLY: '+DB_MONTHLY.length+
-    '\nDB_USER: '+DB_USER.length+
-    '\nDB_CLIENTS: '+DB_CLIENTS.length
-  );
-  */
 }
 
 //=======APP DB AND DISPLAY==========================================================
 function get_app_default(){   
   rest_api_start();
-}
-
-function get_app_var(u,f_showprofile){ 
-  //get_db_clients(u);
-  //get_db_all('user');
-  //get_db_chat(u);
-  //get_db_user(u,f_showprofile);
-}
-
-function get_db_users(){
-  DB_USER=[]; 
-  axios.get('/api/get_users', JBE_HEADER)
-  .then(function (response) {
-    console.log(response.data);
-    DB_USER = response.data;
-    //refreshNOTIF('chat');
-    //alert('DB_USER len:'+DB_USER.length);
-  })   
-  .catch(function (error) { console.log(error); });
-}
-
-
-function get_db_userOnly(){
-  DB_USER=[]; 
-  axios.get('/api/get_userOnly', { params: { usercode:CURR_USER} }, JBE_HEADER)
-  .then(function (response) {   
-    DB_USER = response.data;
-  })   
-  .catch(function (error) { console.log('DB_USER: '+error); });
-}
-
-function get_db_sys(){ 
-  //alert('get_db_sys:  clientno: '+CURR_CLIENT);
-  DB_SYS=[]; DB_SLIDER=[];
-  axios.post(JBE_API+'z_sysfile.php', { clientno:CURR_CLIENT,site:CURR_SITE,request: 1 },JBE_HEADER)
-  .then(function (response) {
-    console.log(DB_SYS);            
-    //alert('get_db_sys:  Slider : '+response.data.length);
-    DB_SYS = response.data[0];
-    DB_SLIDER = response.data[1];
-    if(DB_SYS.length > 0){
-      //alert('xxxcopy sysfile to idx '+DB_SYS.length);     
-      clearStore(JBE_STORE_IDX[0]['flename']); saveDataToIDX(DB_SYS,0);      
-    }    
-    showSystem();
-  })   
-  .catch(function (error) { showOffline(); console.log(error); });
-}
-function get_db_order(u){
-  DB_ORDER=[];DB_ORDER2=[];
-  var req=1;
-  if(CURR_AXTYPE > 0){
-    req=0;
-  }
-  axios.post(JBE_API+'z_order.php', { clientno:CURR_CLIENT,request: req, usercode: u },JBE_HEADER)    
-  .then(function (response) {
-    console.log(response.data);
-    DB_ORDER = response.data[0];
-    DB_ORDER2 = response.data[1];
-    refreshNOTIF('order');    
-    //alert(DB_ORDER.length+' vs '+DB_ORDER2.length);
-  })   
-  .catch(function (error) { console.log(error); });
-}
-
-function get_db_bell(u){
-  DB_BELL=[];
-  var req=1;
-  if(CURR_AXTYPE > 0){
-    req=0;
-  }
-  axios.post(JBE_API+'z_bell.php', { clientno:CURR_CLIENT,request: req, usercode: u },JBE_HEADER)    
-  .then(function (response) { console.log(response.data); DB_BELL = response.data; refreshNOTIF('bell'); })   
-  .catch(function (error) { console.log(error); });
-}
-
-function getExt(filename){
-  var ext = filename.split('.').pop();
-  if(ext == filename) return "";
-  return ext;
 }
 
 function dispMenu(f_main,m){
@@ -242,7 +155,7 @@ function dispHeaderMode(){
     document.getElementById('logger').style.color='navy';
     document.getElementById('logger').innerHTML='Hi!, '+CURR_NAME;     
     document.getElementById("page_login").style.display="none"; 
-    v_mphoto='data:image/png;base64,' + btoa(JBE_GETFLD('photo',DB_CLIENTS,'usercode',CURR_USER));
+    v_mphoto='data:image/png;base64,' + btoa(JBE_GETFLD('photo',DB_USER,'usercode',CURR_USER));
   }
   document.getElementById('bar_avatar').src=v_mphoto;
   document.getElementById('owner').src=v_mphoto;
@@ -480,12 +393,12 @@ function openPage(m){
 }
 
 function show_credits(){    
-  var h=H_BODY-250;
+  var h=330;
   var dtl=     
     '<div id="main_credit" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;background-color:white;">'+     
       '<div style="width:100%;height:100%;padding:2px;background:none">'+
         '<div style="height:60px;width:100%;background:lightgray;text-align:center;padding:10px 0 0 0;font-size:30px;">*** C R E D I T S ***</div>'+
-        '<hr style="margin-top:20px;">'+
+        //'<hr style="margin-top:20px;">'+
         
         '<div class="cls_sidenav">'+
           '<div>Paulynne Rojo-Sustento</div>'+
@@ -1062,14 +975,17 @@ function get_IDX_database(){
 
   MSG_SHOW(vbOkAbort,'DATA RESET:','<center>Going to Download Data from the Server.<br>Current Data will be replaced.<br><br>Are you sure to do this?</center>', function(){ do_get_data_server(); },function(){ return; });
   
-  function do_get_data_server(){
+  async function do_get_data_server(){
     //clearAllRecords('daily');
     clearAllRecords('monthly');
     clearAllRecords('sig');
     clearAllRecords('user');
     get_all_db_from_json(false);
-    getAllDataFromIDX();
+    //getAllDataFromIDX();
+    DB_DAILY=await readAllRecords('daily');
+    DB_MONTHLY=await readAllRecords('monthly');
+    DB_SIG=await readAllRecords('sig');
     snackBar('Data Reset Completed...');
-    dispHeaderMode();
+    //dispHeaderMode();
   }  
 }
