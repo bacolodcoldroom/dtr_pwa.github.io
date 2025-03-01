@@ -468,7 +468,7 @@ function JBE_FILTER_ARRAY(db,cond){
 }
 
 function JBE_GETARRY(r_arry,r_fld,r_key){   
-  //JBE_GETFLD('usertype',DB_CLIENTS,'usercode',usercode);  
+  //JBE_GETFLD('usertype',DB_USER,'usercode',usercode);  
   var rval=[];
   for(var i=0; i<r_arry.length; i++) {    
     if(r_key==r_arry[i][r_fld]){
@@ -550,7 +550,6 @@ function jbe_updatePosition(position) {
     },JBE_HEADER)     
     .then(function (response) {        
         DB_USER = response.data;
-        get_db_clients();     
         //alert(response.data.length);
         showProgress(false);
         if(GEO_MODE!=0){
@@ -624,9 +623,9 @@ function JBE_getBLOB(n,jimg,callback){
   //img.src = "https://somesite.com/someimage.jpg"  
   //img.setAttribute('crossorigin', 'anonymous'); // works for me
   img.src=jimg;
-  if(!JBE_ONLINE){
-    img.onerror=img.onerror=null;img.src="gfx/jsite.png"; 
-  }
+  //if(!JBE_ONLINE){
+  //  img.onerror=img.onerror=null;img.src="gfx/jimg_error.png"; 
+  //}
 
   img.onload =  function() {
     canvas.width=img.width;
