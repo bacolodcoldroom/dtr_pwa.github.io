@@ -32,11 +32,12 @@ function initDb() {
 
   request.onupgradeneeded = function(e) {
     db = e.target.result;
-    db.createObjectStore('daily', { keyPath:'id', autoIncrement: true });
+    db.createObjectStore('daily', { keyPath:['usercode','date'] });
     db.createObjectStore('monthly', { keyPath:'id' });    
     db.createObjectStore('sig', { keyPath:'id' });    
     db.createObjectStore('user', { keyPath:'id' });    
     //db.createObjectStore('TranMeter', { keyPath:'meterno' });
+    
     dbReady = true;
     console.log('initDb onupgradeneeded...'+JBE_ONLINE);
   }
@@ -246,9 +247,11 @@ function saveDataToIDX(aryDB,n) {
 async function putDataToIDX(i,aryDB,n){   
   //alert('i: '+i+' file#:'+n);
   if(n==0){ //daily   
+    let dte=JBE_DATE_FORMAT(aryDB[i]['date'],'MM-DD-YYYY');
+    let jid=aryDB[i]['usercode']+aryDB[i]['usercode']+dte;
     ob = {
-      id:i,
-      date:JBE_DATE_FORMAT(aryDB[i]['date'],'MM-DD-YYYY'),
+      //common:jid,
+      date:dte,
       rank:aryDB[i]['rank'],
       usercode:aryDB[i]['usercode'],
       day:aryDB[i]['day'],
