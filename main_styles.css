@@ -611,19 +611,19 @@ background-color: rgba(241, 128, 23, 0.6) !important;
   font-size: 14px;
 }
 .user_custom_icon{ 
-  background-image: url("../main_jslib/images/jRedMarker.png"); background-repeat: no-repeat;  
+  background-image: url("js/images/jRedMarker.png"); background-repeat: no-repeat;  
   z-index:1000; color:white;
 }
 .searchIcon{  
-  background-image: url("../main_jslib/images/jblueMarker.png"); background-repeat: no-repeat;    
+  background-image: url("js/images/jblueMarker.png"); background-repeat: no-repeat;    
   z-index:10;
 }
 .member_custom_icon{  
-  background-image: url("../main_jslib/images/jblueMarker.png"); background-repeat: no-repeat;    
+  background-image: url("js/images/jblueMarker.png"); background-repeat: no-repeat;    
   z-index:10;
 }
 .landmark_custom_icon{      
-  background-image: url("../main_jslib/images/jgreenMarker.png"); background-repeat: no-repeat;    
+  background-image: url("js/images/jgreenMarker.png"); background-repeat: no-repeat;    
   color: black;
   z-index:10;
 }
