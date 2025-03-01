@@ -281,6 +281,13 @@ function fm_admin(){
           '<img src="gfx/jshare.png" style="float:left;height:100%;"/>'+
           '<span style="float:left;margin-left:5px;padding:5px;">Share the App</span>'+
         '</div>'+
+        
+        '<hr style="margin-top:20px;">'+
+        '<div onclick="get_IDX_database()" style="width:100%;height:40px;margin-top:10px;padding:5px;cursor:pointer;background:none;">'+
+          '<img src="gfx/jdown.png" style="float:left;height:100%;"/>'+
+          '<span style="float:left;margin-left:5px;padding:5px;">Factory Reset</span>'+
+        '</div>'+
+        '<hr style="margin-top:10px;">'+
 
         '<div onclick="layas()" style="width:100%;height:40px;margin-top:50px;padding:5px;cursor:pointer;background:none;">'+
           '<img src="gfx/jedit.png" style="float:left;height:100%;"/>'+

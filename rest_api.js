@@ -9,8 +9,7 @@ async function rest_api_start(){
   
   DB_DAILY=await readAllRecords('daily');
   DB_MONTHLY=await readAllRecords('monthly');
-  DB_SIG=await readAllRecords('sig');
-  
+  DB_SIG=await readAllRecords('sig');  
   dispHeaderMode();
 }
 

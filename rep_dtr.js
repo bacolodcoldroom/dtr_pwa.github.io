@@ -131,21 +131,6 @@ function clear_dtr_entry(row){
   } 
 }
 
-function xtoggle_dtl_dtr(row,v_empty){ 
-  let v_disp_nn='none'; let v_disp_tt='block';
-  if(v_empty){ v_disp_nn='block'; v_disp_tt='none';}
-
-  document.getElementById('dtl_nn_'+row).style.display=v_disp_nn;
-  for(var j=1;j<=4;j++){
-    document.getElementById('dtl_t'+j+'_'+row).style.display=v_disp_tt;
-  }
-  //document.getElementById('dtl_hh_'+row).style.display=v_disp_tt;
-  document.getElementById('dtl_mm_'+row).style.display=v_disp_tt;
-
-  //document.getElementById('dtl_'+row).setAttribute('data-work',work_stat);
-  document.getElementById('dtl_xx_'+row).style.display=v_disp_nn;
-}
-
 function toggle_dtl_dtr(row,v_empty){ 
   //alert('togggle_dtl_dtr:'+v_empty);  
   let v_disp_xx='block';
@@ -245,23 +230,6 @@ function format_12(timeString){
   return hh+':'+mm;
 }
 
-function xref_ctr(f_print){
-  //alert(f_print); 
-  let ctr=0;  
-  for(var i=0;i<DB_DAILY.length;i++){
-    if(DB_DAILY[i].usercode != CURR_USER){ continue; }
-    if(JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM') != date_dtr.value){ continue; }
-    let vtimes=DB_DAILY[i].time1+DB_DAILY[i].time2+DB_DAILY[i].time3+DB_DAILY[i].time4;
-    if(vtimes.trim().length==0 && DB_DAILY[i].txt.trim().length==0){ continue; }
-    
-    ctr++;
-  }
-  if(f_print){ ctr=0; }
-  document.getElementById('div_total').innerHTML=ctr;
-}
-
-
-
 function querySel_dtr(){
   document.querySelectorAll('.rightBox').forEach(function(el) {  
     el.style.borderRight='1px solid black';
@@ -346,11 +314,7 @@ function ret_dtr(vDate,f_print){
   v_width='320px';
   let max_days=31;
   let aryUSER=JBE_GETARRY(DB_USER,'usercode',CURR_USER);
-  console.log('ret_dtr user');
-  console.log(aryUSER); 
-  console.log('aryUSER len: '+Object.keys(aryUSER).length);
-  console.log(DB_USER);
-  let empname=aryUSER.lastname+', '+aryUSER.firstname; //+' '+aryUSER.midname.substring(0,1)+'.';
+  let empname=aryUSER.lastname+', '+aryUSER.firstname+' '+aryUSER.midname.substring(0,1)+'.';
 
   //let max_days=document.getElementById('dv_dtr').getAttribute('data-maxdays');
   var dtl=

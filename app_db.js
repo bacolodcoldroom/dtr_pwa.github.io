@@ -248,9 +248,7 @@ async function putDataToIDX(i,aryDB,n){
   //alert('i: '+i+' file#:'+n);
   if(n==0){ //daily   
     let dte=JBE_DATE_FORMAT(aryDB[i]['date'],'MM-DD-YYYY');
-    let jid=aryDB[i]['usercode']+aryDB[i]['usercode']+dte;
     ob = {
-      //common:jid,
       date:dte,
       rank:aryDB[i]['rank'],
       usercode:aryDB[i]['usercode'],

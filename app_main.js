@@ -102,7 +102,7 @@ function dispMenu(f_main,m){
   document.querySelectorAll('.menu_class').forEach(function(el) {
     el.style.display = 'none'; 
   });
-  document.getElementById('mnu_main').style.display='none';
+  //document.getElementById('mnu_main').style.display='none';
   document.getElementById('mnu_main_owner').style.display='none';
   if(f_main){
     document.getElementById('mnu_mainmenu').style.display='block';   
@@ -128,14 +128,10 @@ function showMainPage(){
   }
  
   console.log('mainpage '+f_MainPage);
-  openPage('page_main'); 
- 
-  var vmenu='mnu_main'; 
-  //if(CURR_AXTYPE > 0){
-    vmenu='mnu_main_owner';
-  //}
+  openPage('page_main');  
+
+  vmenu='mnu_main_owner';
   dispMenu(true,vmenu);
-  //if(!JBE_ONLINE) { return; }
 }
 
 function dispHeaderMode(){
@@ -837,20 +833,6 @@ function exit_app(){
   MSG_SHOW(vbOk,'EXIT APP','<center>'+msg+'</center>', function(){},function(){});
 }
 
-function xxexit_app(){
-  let msg='Are you sure you want to exit the application?';
-  MSG_SHOW(vbOkAbort,'EXIT APP','<center>'+msg+'</center>', function(){ do_exit(); },function(){});
-  
-  function do_exit(){
-    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
-      window.close(); // This works for installed PWAs on some platforms
-      window.location.href = 'about:blank'; // Fallback
-    } else {
-      window.location.href = 'about:blank'; // For browsers
-    }
-  }
-}
-
 function formatPhoneNumber(phoneNumber) {
   // Remove non-digit characters from the input
   phoneNumber = phoneNumber.replace(/\D/g, '');
@@ -973,7 +955,7 @@ function get_IDX_database(){
   MSG_SHOW(vbOkAbort,'DATA RESET:','<center>Going to Download Data from the Server.<br>Current Data will be replaced.<br><br>Are you sure to do this?</center>', function(){ do_get_data_server(); },function(){ return; });
   
   async function do_get_data_server(){
-    //clearAllRecords('daily');
+    clearAllRecords('daily');
     clearAllRecords('monthly');
     clearAllRecords('sig');
     clearAllRecords('user');

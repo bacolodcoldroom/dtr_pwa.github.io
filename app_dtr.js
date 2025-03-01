@@ -35,10 +35,10 @@ function fm_dtr(){
 }
 
 function disp_user_time(vDate,f){
-  let str=vDate.split('-');
-  let numDays = (y, m) => new Date(y, m, 0).getDate();
-  let max_days=numDays(str[0], str[1]);
-  let vDate2=vDate+'-01';
+  let fg='black'; let bg='white';
+  if(vDate==JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM')){ fg='white'; bg=JBE_CLOR4; }
+  document.getElementById('date_dtr').style.color=fg;
+  document.getElementById('date_dtr').style.backgroundColor=bg;
   
   for(var i=0;i<DB_DAILY.length;i++){
     if(DB_DAILY[i].usercode != CURR_USER){ continue; }

@@ -181,16 +181,6 @@ function closeSETTING(){
   showMainPage();
 }
 
-function xmnu_setting(){
-  var jmenu=
-      '<div style="width:100%;height:100%;">'+
-        '<div style="width:100%;height:100%;padding:12px 0 0 0;text-align:center;background:none;">'+
-          'EnadSys &copy; 2024'+
-        '</div>'+
-      '</div>';
-  dispMenu(false,jmenu);
-}
-
 function mnu_setting(){  
   var jmenu=  
   '<div style="width:100%;height:100%;">'+
