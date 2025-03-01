@@ -34,20 +34,17 @@ function fm_dtr(){
   disp_user_time(JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM'),false);
 }
 
-function disp_user_time(vDate,f){
+function disp_user_time(vDate,f_print){
   let fg='black'; let bg='white';
-  if(vDate==JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM')){ fg='white'; bg=JBE_CLOR4; }
+  if(!f_print && vDate==JBE_DATE_FORMAT(new Date(),'YYYY-MM')){ fg='white'; bg=JBE_CLOR4; }
   document.getElementById('date_dtr').style.color=fg;
   document.getElementById('date_dtr').style.backgroundColor=bg;
   
   for(var i=0;i<DB_DAILY.length;i++){
-    if(DB_DAILY[i].usercode != CURR_USER){ continue; }
+    if(DB_DAILY[i].usercode != CURR_USER){ continue; }   
+    if(JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM') != vDate){ continue; }
 
-    //let curdate=JBE_DATE_FORMAT(vDate2,'YYYY-MM');
-    let curdate=vDate;
-    let v_date=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM');
-    let v_txt=DB_DAILY[i].txt;    
-    if(v_date != curdate){ continue; }
+    let v_txt=DB_DAILY[i].txt;  
           
     let vdate=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM-DD');
     let vday=parseInt(vdate.substring(8,10));  
@@ -60,14 +57,13 @@ function disp_user_time(vDate,f){
     }
     
     //document.getElementById('dtl_ymd'+'_'+vday).innerHTML=vdate;
-    if(DB_DAILY[i].time1){ document.getElementById('dtl_t1'+'_'+vday).innerHTML=DB_DAILY[i].time1.replace(/^0+/, "")+iif(f,' am',''); }
-    if(DB_DAILY[i].time2){ document.getElementById('dtl_t2'+'_'+vday).innerHTML=DB_DAILY[i].time2.replace(/^0+/, "")+iif(f,' pm',''); }   
-    if(DB_DAILY[i].time3){ document.getElementById('dtl_t3'+'_'+vday).innerHTML=DB_DAILY[i].time3.replace(/^0+/, "")+iif(f,' pm',''); }
-    if(DB_DAILY[i].time4){ document.getElementById('dtl_t4'+'_'+vday).innerHTML=DB_DAILY[i].time4.replace(/^0+/, "")+iif(f,' pm',''); }   
+    if(DB_DAILY[i].time1){ document.getElementById('dtl_t1'+'_'+vday).innerHTML=DB_DAILY[i].time1.replace(/^0+/, "")+iif(f_print,' am',''); }
+    if(DB_DAILY[i].time2){ document.getElementById('dtl_t2'+'_'+vday).innerHTML=DB_DAILY[i].time2.replace(/^0+/, "")+iif(f_print,' pm',''); }   
+    if(DB_DAILY[i].time3){ document.getElementById('dtl_t3'+'_'+vday).innerHTML=DB_DAILY[i].time3.replace(/^0+/, "")+iif(f_print,' pm',''); }
+    if(DB_DAILY[i].time4){ document.getElementById('dtl_t4'+'_'+vday).innerHTML=DB_DAILY[i].time4.replace(/^0+/, "")+iif(f_print,' pm',''); }   
     
     //console.log('====>>> Day '+vdate);
     let vtop=parseInt(DB_DAILY[i].txt_top);
-    //if(f){ vtop-5 };
     document.getElementById('dtl_txt'+vday).innerHTML=v_txt;
     document.getElementById('dtl_txt'+vday).style.display='none';
     let dtl_txt_top=parseInt(vtop)+'px';
@@ -89,7 +85,7 @@ function disp_user_time(vDate,f){
     }
 
   }
-  ref_ctr(f);
+  ref_ctr(f_print);
 }
 
 function chg_dtr_month(v){
@@ -114,14 +110,8 @@ function close_fm_dtr(){
 
 function mnu_fm_dtr(){
   var jmenu=
-    '<div style="width:100%;height:100%;">'+
-      '<div onclick="refresh_dtr()" style="float:left;width:25%;height:100%;background:none;">'+
-        '<div class="class_footer">'+
-          '<img src="gfx/jrefresh.png" alt="call image" />'+
-          '<span>Refresh</span>'+
-        '</div>'+
-      '</div>'+       
-      '<div style="float:left;width:50%;height:100%;padding:12px 0 0 0;text-align:center;background:none;">'+
+    '<div style="width:100%;height:100%;">'+           
+      '<div style="float:left;width:75%;height:100%;padding:12px;text-align:left;background:none;">'+
         'DTR File Maintenance'+
       '</div>'+
       '<div onclick="showMainPage()" style="float:right;width:25%;height:100%;background:none;">'+
@@ -135,7 +125,7 @@ function mnu_fm_dtr(){
 }
 
 function refresh_dtr(){
-  disp_user_time(JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM'),false);
+  disp_user_time(document.getElementById('date_dtr','YYYY-MM'),false);
   snackBar(`Refreshed...`);
 }
  
