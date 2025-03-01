@@ -387,9 +387,9 @@ function openPage(m){
 }
 
 function show_credits(){    
-  get_all_db_from_json(true);
-  snackBar('Copied....');
-  return;
+  // get_all_db_from_json(true);
+  // snackBar('Copied....');
+  // return;
   var h=330;
   var dtl=     
     '<div id="main_credit" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;background-color:white;">'+     
