@@ -403,8 +403,7 @@ function fm_profile(vmode){
     lat=parseFloat(aryDB['lat']);
     lng=parseFloat(aryDB['lng']);
     d_active=JBE_DATE_FORMAT(aryDB['d_active'],'YYYY-MM-DD');
-    v_disabled='disabled';
-   
+    v_disabled='disabled';   
   }
 
   //alert(vmode+' usercode:'+usercode+' CURR_USER:'+CURR_USER);
@@ -425,8 +424,7 @@ function fm_profile(vmode){
             '<img src="gfx/jcam.png" onclick="JBE_GET_IMAGE(0,id_efile'+vmode+'.id,img_eavatar'+vmode+'.id,&quot;&quot;,false)" style="width:95%;"/>'+
           '</div>'+
         '</div>'+
-
-        //'<form onsubmit="return false" class="class_admin" style="font-size:12px;margin-top:20px;margin-bottom:10px;height:auto;background:none;">'+
+        
         '<div class="class_admin" style="font-size:12px;margin-top:20px;margin-bottom:10px;height:auto;background:none;">'+
 
           '<div id="dv_usercode" style="margin-top:10px; height:auto; width:100%;background:none;">'+

@@ -215,14 +215,14 @@ function save_dtr(row,v_work){
   document.getElementById('dtl_txt'+row).style.border=iif(dtl_txt,'1','0')+'px solid green';
   
   //alert('dtl_txt_left:'+inp_txt.value);
-  /*
+  
   document.getElementById('dtl_txt'+row).style.textAlign='left';
   document.getElementById('dtl_txt'+row).style.display='block'; 
   document.getElementById('dtl_txt'+row).style.top=dtl_txt_top;
   document.getElementById('dtl_txt'+row).style.left=dtl_txt_left;
   document.getElementById('dtl_txt'+row).style.width=dtl_txt_width;
   document.getElementById('dtl_txt'+row).style.fontSize=dtl_txt_fsize;
-  */
+  
 
   save_entry(row,v_date,CURR_USER,aryTime[0], aryTime[1], aryTime[2], aryTime[3],dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
 }
@@ -245,54 +245,19 @@ function format_12(timeString){
   return hh+':'+mm;
 }
 
-function xsave_entry(vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize){
-  //alert(dtl_txt_left);
-  if(DEBUG_NODE){
-    axios.post('/api/save_entry', {headers: { 'Content-Type': 'application/json' }},{ params: {vdate:vdate, usercode:usercode,
-      time1:time1,time2:time2,time3:time3,time4:time4,
-      dtl_txt:dtl_txt,
-      dtl_txt_top:dtl_txt_top,
-      dtl_txt_left:dtl_txt_left,
-      dtl_txt_width:dtl_txt_width,
-      dtl_txt_fsize:dtl_txt_fsize
-    } })
-    .then(function (response){ api_save_entry(response); }).catch(function (error) { console.log(error); });
-  }else{
-    axios.post('z_tanan.php', { request: 200,  vdate:vdate, usercode:usercode,
-      time1:time1,time2:time2,time3:time3,time4:time4,
-      dtl_txt:dtl_txt,
-      dtl_txt_top:dtl_txt_top,
-      dtl_txt_left:dtl_txt_left,
-      dtl_txt_width:dtl_txt_width,
-      dtl_txt_fsize:dtl_txt_fsize
-     }, JBE_HEADER)
-    .then(function (response){ api_save_entry(response); }).catch(function (error) { console.log(error); });
-  }  
-  
-  function api_save_entry(response){
-    showProgress(false);       
-    DB_DAILY=response.data;
-    JBE_CLOSEBOX(); 
-    ref_ctr(false);
-   }
-}
-
 function ref_ctr(f_print){
   //alert(f_print); 
-  let ctr=0;
+  let ctr=0;  
   for(var i=0;i<DB_DAILY.length;i++){
     if(DB_DAILY[i].usercode != CURR_USER){ continue; }
-    //if(chk_dtr_dtl_empty(i)){ continue; }
-
-    let v_date=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM');
-    //console.log(v_date+' <<<vs date_dtr:'+date_dtr.value);
-    if(v_date != date_dtr.value){ continue; }
-
+    if(JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM') != date_dtr.value){ continue; }
+    let vtimes=DB_DAILY[i].time1+DB_DAILY[i].time2+DB_DAILY[i].time3+DB_DAILY[i].time4;
+    if(vtimes.trim().length==0 && DB_DAILY[i].txt.trim().length==0){ continue; }
+    
     ctr++;
   }
   if(f_print){ ctr=0; }
   document.getElementById('div_total').innerHTML=ctr;
-  //snackBar('Refreshed...');
 }
 
 function querySel_dtr(){
@@ -379,7 +344,11 @@ function ret_dtr(vDate,f_print){
   v_width='320px';
   let max_days=31;
   let aryUSER=JBE_GETARRY(DB_USER,'usercode',CURR_USER);
-  let empname=aryUSER.lastname+', '+aryUSER.firstname+' '+aryUSER.midname.substring(0,1)+'.';
+  console.log('ret_dtr user');
+  console.log(aryUSER); 
+  console.log('aryUSER len: '+Object.keys(aryUSER).length);
+  console.log(DB_USER);
+  let empname=aryUSER.lastname+', '+aryUSER.firstname; //+' '+aryUSER.midname.substring(0,1)+'.';
 
   //let max_days=document.getElementById('dv_dtr').getAttribute('data-maxdays');
   var dtl=

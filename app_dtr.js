@@ -39,7 +39,6 @@ function disp_user_time(vDate,f){
   let numDays = (y, m) => new Date(y, m, 0).getDate();
   let max_days=numDays(str[0], str[1]);
   let vDate2=vDate+'-01';
-  let ctr=0;
   
   for(var i=0;i<DB_DAILY.length;i++){
     if(DB_DAILY[i].usercode != CURR_USER){ continue; }
@@ -47,21 +46,15 @@ function disp_user_time(vDate,f){
     //let curdate=JBE_DATE_FORMAT(vDate2,'YYYY-MM');
     let curdate=vDate;
     let v_date=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM');
-    let v_txt=DB_DAILY[i].txt;
-
-    //console.log(CURR_USER+' - '+ctr+':: vdate:'+v_date+' vs curdate:'+curdate);
-    
+    let v_txt=DB_DAILY[i].txt;    
     if(v_date != curdate){ continue; }
-
-    ctr++;
-    //console.log(ctr+':: vdate:'+v_date+' vs curdate:'+curdate);
           
     let vdate=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM-DD');
     let vday=parseInt(vdate.substring(8,10));  
     
     //*** CHECK IF NON WORKING DAY */    
     let f_nowork=parseInt(document.getElementById('dtl_'+vday).getAttribute('data-work'));
-    console.log(f_nowork);
+    //console.log(f_nowork);
     if( f_nowork != -1){
       document.getElementById('dtl_xx_'+vday).style.display='none';
     }
@@ -96,8 +89,7 @@ function disp_user_time(vDate,f){
     }
 
   }
-  if(f){ ctr=0; }
-  document.getElementById('div_total').innerHTML=ctr;
+  ref_ctr(f);
 }
 
 function chg_dtr_month(v){
@@ -143,7 +135,6 @@ function mnu_fm_dtr(){
 }
 
 function refresh_dtr(){
-  ref_ctr(false);
   disp_user_time(JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM'),false);
   snackBar(`Refreshed...`);
 }
@@ -391,5 +382,5 @@ async function update_db(){
   DB_DAILY=await readAllRecords('daily');
   console.log('update_db Daily: '+DB_DAILY.length);
   JBE_CLOSEBOX(); 
-  //ref_ctr(false);
+  ref_ctr(false);
 }
