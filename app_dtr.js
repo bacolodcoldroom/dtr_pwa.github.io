@@ -357,6 +357,7 @@ function save_entry(row,vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_t
   console.log('time2:'+time2);
   console.log('time3:'+time3);
   console.log('time4:'+time4);
+  console.log('row|id :'+row);
   
   var ob = {
     id:row,

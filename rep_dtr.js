@@ -245,6 +245,21 @@ function format_12(timeString){
   return hh+':'+mm;
 }
 
+function xref_ctr(f_print){
+  //alert(f_print); 
+  let ctr=0;  
+  for(var i=0;i<DB_DAILY.length;i++){
+    if(DB_DAILY[i].usercode != CURR_USER){ continue; }
+    if(JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM') != date_dtr.value){ continue; }
+    let vtimes=DB_DAILY[i].time1+DB_DAILY[i].time2+DB_DAILY[i].time3+DB_DAILY[i].time4;
+    if(vtimes.trim().length==0 && DB_DAILY[i].txt.trim().length==0){ continue; }
+    
+    ctr++;
+  }
+  if(f_print){ ctr=0; }
+  document.getElementById('div_total').innerHTML=ctr;
+}
+
 function ref_ctr(f_print){
   //alert(f_print); 
   let ctr=0;  

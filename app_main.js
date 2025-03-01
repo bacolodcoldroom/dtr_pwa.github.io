@@ -80,12 +80,6 @@ function allow_start(v){
   document.getElementById('wrapper').style.pointerEvents=vv;
 }
 
-function refresh_all_db(){
-  get_app_default();
-  snackBar('Refreshed...');
-}
-
-
 function jeff(){ 
   console.log('DB_USER jeff');
   console.log(DB_USER);
