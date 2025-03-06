@@ -945,20 +945,22 @@ function get_IDX_database(){
     snackBar('Please Log In...');
     return;
   }
-  /*
+  
   if(!JBE_ONLINE){ 
     snackBar('System Offline...');
     return;
   }
-    */
+  
 
   MSG_SHOW(vbOkAbort,'DATA RESET:','<center>Going to Download Data from the Server.<br>Current Data will be replaced.<br><br>Are you sure to do this?</center>', function(){ do_get_data_server(); },function(){ return; });
   
   async function do_get_data_server(){
-    clearAllRecords('daily');
-    clearAllRecords('monthly');
-    clearAllRecords('sig');
-    clearAllRecords('user');
+    //deleteDatabase(CURR_IDX_DB);
+    //initDb();
+    await clearAllRecords('daily');
+    await clearAllRecords('monthly');
+    await clearAllRecords('sig');
+    await clearAllRecords('user');
     get_all_db_from_json(false);
     //getAllDataFromIDX();
     DB_DAILY=await readAllRecords('daily');
