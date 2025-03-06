@@ -1,4 +1,4 @@
-var dbVersion = 1;
+var dbVersion = 2;
 var dbReady = false;
 var db;
 
