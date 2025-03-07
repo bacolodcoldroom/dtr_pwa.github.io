@@ -1,23 +1,22 @@
 async function rest_api_start(){  
   DB_USER=await readAllRecords('user'); 
-  console.log('DB_USER');
-  console.log(DB_USER);
   if(DB_USER.length==0){
-    MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.',function(){ get_all_db_from_json(true); },function(){});
+    MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.',function(){ get_all_db_from_json(); },function(){});
   }
   //getAllDataFromIDX();
   
   DB_DAILY=await readAllRecords('daily');
   DB_MONTHLY=await readAllRecords('monthly');
   DB_SIG=await readAllRecords('sig');  
+  
   dispHeaderMode();
 }
 
-function get_all_db_from_json(f_daily){  
-  if(f_daily){ fetch('./DBF/daily.json').then(res => res.json()).then(data => { DB_DAILY=data;saveDataToIDX(data,0); }) }
-  fetch('./DBF/monthly.json').then(res => res.json()).then(data => { DB_MONTHLY=data;saveDataToIDX(data,1); })
-  fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); })
-  fetch('./DBF/user.json').then(res => res.json()).then(data => { DB_USER=data;saveDataToIDX(data,3); })
+async function get_all_db_from_json(){  
+  await fetch('./DBF/daily.json').then(res => res.json()).then(data => { DB_DAILY=data;saveDataToIDX(data,0); }) 
+  await fetch('./DBF/monthly.json').then(res => res.json()).then(data => { DB_MONTHLY=data;saveDataToIDX(data,1); })
+  await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); })
+  await fetch('./DBF/user.json').then(res => res.json()).then(data => { DB_USER=data;saveDataToIDX(data,3); })
 }
 
 function rest_api_lognow(u,p){

@@ -383,9 +383,6 @@ function openPage(m){
 }
 
 function show_credits(){    
-  // get_all_db_from_json(true);
-  // snackBar('Copied....');
-  // return;
   var h=330;
   var dtl=     
     '<div id="main_credit" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;background-color:white;">'+     
@@ -957,15 +954,27 @@ function get_IDX_database(){
   async function do_get_data_server(){
     //deleteDatabase(CURR_IDX_DB);
     //initDb();
+    DB_DAILY=[];
+    DB_MONTHLY=[];;
+    DB_SIG=[];;
+    DB_USER=[];;
+
     await clearAllRecords('daily');
     await clearAllRecords('monthly');
     await clearAllRecords('sig');
     await clearAllRecords('user');
-    get_all_db_from_json(false);
+    
+    console.log('before');
+    await get_all_db_from_json();
+    console.log('after');
     //getAllDataFromIDX();
+    /*
     DB_DAILY=await readAllRecords('daily');
     DB_MONTHLY=await readAllRecords('monthly');
     DB_SIG=await readAllRecords('sig');
+    DB_USER=await readAllRecords('user');
+    console.log('clearing user :'+DB_USER.length);
+    */
     snackBar('Data Reset Completed...');
     //dispHeaderMode();
   }  

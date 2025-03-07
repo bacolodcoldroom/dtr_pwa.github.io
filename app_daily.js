@@ -184,7 +184,7 @@ function save_daily(){
   f_found=btn_save.getAttribute('data-found');
   let v_date=JBE_DATE_FORMAT(new Date(),'YYYY-MM-DD');
   let row=parseInt(v_date.substring(8,10));
-  alert('save_daily row: '+row);
+  //alert('save_daily row: '+row);
   let otime1=inp_time1.getAttribute('data-otime1');
   let time1=format_12(document.getElementById('inp_time1').value);
   

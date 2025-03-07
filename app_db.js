@@ -1,4 +1,4 @@
-var dbVersion = 2;
+var dbVersion = 1;
 var dbReady = false;
 var db;
 
@@ -16,7 +16,9 @@ if (navigator.storage && navigator.storage.persist)
 
 var CURR_IDX_DB='IDB_'+CURR_CLIENT;
 initDb();
-
+//=========================================================================================================================
+//=========================================================================================================================
+//=========================================================================================================================
 function initDb() {
   console.log('initDb activated...'+JBE_ONLINE);
   var request = indexedDB.open(CURR_IDX_DB, dbVersion);
@@ -42,14 +44,6 @@ function initDb() {
     console.log('initDb onupgradeneeded...'+JBE_ONLINE);
   }
 }
-
-/*
-saveDataToIDX(DB_DAILY,0);
-saveDataToIDX(DB_MONTHLY,1);
-saveDataToIDX(DB_SIG,2);
-saveDataToIDX(DB_SYS,3);
-saveDataToIDX(DB_USER,4);
-*/
 
 function clearStore(jstore){   
   //alert(jstore);
@@ -237,8 +231,8 @@ function jdata(){
 }
 
 function saveDataToIDX(aryDB,n) {    
-  console.log(aryDB.length+'::: saveDataToIDX '+n);
   JBE_STORE_IDX[n]['numrec']=aryDB.length;
+  console.log(JBE_STORE_IDX[n]['flename']+' ::: '+aryDB.length+'::: saveDataToIDX '+n);
   for(var i=0;i<aryDB.length;i++){     
     //if(aryDB[i]['clientno']!=CURR_CLIENT){ continue; }
     putDataToIDX(i,aryDB,n);
@@ -248,6 +242,10 @@ async function putDataToIDX(i,aryDB,n){
   //alert('i: '+i+' file#:'+n);
   if(n==0){ //daily   
     let dte=JBE_DATE_FORMAT(aryDB[i]['date'],'MM-DD-YYYY');
+    if(!dte){      
+      dte=JBE_DATE_FORMAT(new Date(),'MM-DD-YYYY');
+    }
+    
     ob = {
       date:dte,
       rank:aryDB[i]['rank'],
@@ -310,6 +308,7 @@ async function putDataToIDX(i,aryDB,n){
     };
   }
 
+  console.log('>>> putDataToIDX: flename: '+JBE_STORE_IDX[n]['flename']);
   var trans = db.transaction([JBE_STORE_IDX[n]['flename']], 'readwrite');
   var addReq = trans.objectStore(JBE_STORE_IDX[n]['flename']).put(ob);
   addReq.onerror = function(e) {

@@ -142,6 +142,7 @@ async function clearAllRecords(tbl) {
 
       request.onsuccess = (event) => {
         let jres=event.target.result;
+        console.log(event.target.result);
         resolve(jres);
       };
 
@@ -197,7 +198,7 @@ async function fetchTextPortion(url, start, end) {
   }
 }
 
-function deleteDatabase(dbName) {
+function xxdeleteDatabase(dbName) {
   const request = indexedDB.deleteDatabase(dbName);
 
   request.onerror = function(event) {

@@ -298,8 +298,10 @@ function ret_clocks(){
   let aryTime=[];
   let minutos = new Date().getMinutes().toString().padStart(2, '0');
   aryTime[0]='07:'+minutos;
-  aryTime[1]='12:'+randomInteger(1,9).toString().padStart(2, '0');
-  aryTime[2]='12:'+randomInteger(45,59).toString().padStart(2, '0');
+  //aryTime[1]='12:'+randomInteger(1,9).toString().padStart(2, '0');
+  //aryTime[2]='12:'+randomInteger(45,59).toString().padStart(2, '0');
+  aryTime[1]='12:29';
+  aryTime[2]='12:31';
   aryTime[3]='05:'+randomInteger(1,10).toString().padStart(2, '0');
   return aryTime;
 }
