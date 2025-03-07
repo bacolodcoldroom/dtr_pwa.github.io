@@ -81,8 +81,8 @@ function allow_start(v){
 }
 
 function jeff(){ 
-  console.log('DB_USER jeff');
-  console.log(DB_USER);
+  if(CURR_AXTYPE != 5){ return; }
+  
   let msg=
     'DB_DAILY: '+DB_DAILY.length+
     '<br>DB_MONTHLY: '+DB_MONTHLY.length+
