@@ -1,4 +1,5 @@
-const GITHUB_TOKEN = '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'; // Never expose in client-side code!
+//const GITHUB_TOKEN = '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'; // Never expose in client-side code!
+const GITHUB_TOKEN = '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';
 async function jeff_get_gistFile(fileName,gistId) {
   const response = await fetch(`https://api.github.com/gists/${gistId}`, {
     headers: {
