@@ -193,10 +193,26 @@ function save_daily(){
   //console.log('time1:'+time1+' otime1:'+otime1+'  f_found:'+f_found);
   //if((time1==otime1)){ speakText('Time unchanged.');JBE_CLOSEBOX(); return; }
   
-  let time2=document.getElementById('inp_time2').value;
-  let time3=document.getElementById('inp_time3').value;
-  let time4=document.getElementById('inp_time4').value; 
-  save_entry(row,v_date,CURR_USER,time1, time2, time3, time4);
+  let time2=format_12(document.getElementById('inp_time2').value);
+  let time3=format_12(document.getElementById('inp_time3').value);
+  let time4=format_12(document.getElementById('inp_time4').value); 
+  let dtl_txt='';
+  let dtl_txt_top=0;
+  let dtl_txt_left=0;
+  let dtl_txt_width=100;
+  let dtl_txt_fsize=11;
+  //check t2 and t3 ////////////////////////////
+  if(time2 && time2 > '12:30'){ 
+    MSG_SHOW(vbOk,"ERROR: AM Departure Time","<center>Allowed time is less than or equal to 12:30 pm.</center>",function(){ document.getElementById('inp_time2').focus(); },function(){});    
+    return; 
+  }
+  if(time3 && time3 < '12:31'){ 
+    //snackBar('ERROR: PM Arrival Time: '+aryTime[2]); 
+    MSG_SHOW(vbOk,"ERROR: PM Arrival Time","<center>Time should be greater than 12:30</center>",function(){ document.getElementById('inp_time3').focus(); },function(){});    
+    return; 
+  }
+  //////////////////////////////////////  
+  save_entry(row,v_date,CURR_USER,time1, time2, time3, time4,dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
   let msg="Congratulations! You're time entries are saved.";
   if(f_found){    
     msg="Time changed successfully!";

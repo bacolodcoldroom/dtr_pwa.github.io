@@ -372,8 +372,7 @@ function save_entry(row,vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_t
 async function update_db(){
   DB_DAILY=await readAllRecords('daily');
   console.log('update_db Daily: '+DB_DAILY.length);
-  JBE_CLOSEBOX(); 
-  ref_ctr(false);
+  JBE_CLOSEBOX();   
 }
 
 function ref_ctr(f_print){

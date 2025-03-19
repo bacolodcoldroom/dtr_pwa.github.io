@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update GitHub Gist</title>
+</head>
+<body>
+  <h1>Update GitHub Gist JSON File</h1>
+  <button id="updateGistButton">Update Gist</button>
+
+  <script>
+    // Replace with your GitHub Personal Access Token (PAT)
+    const GITHUB_TOKEN = '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';
+
+    // Replace with your Gist ID
+    const GIST_ID = '4d7deba3d959c3756c6f14a6627aa6ea';
+
+    // Replace with the filename within the Gist you want to update
+    const FILENAME = 'xdata.json';
+
+    // New content for the JSON file
+    const newContent = {
+      key1: 'Updated Value x1',
+      key2: 'Updated Value x2'
+    };
+
+    document.getElementById('updateGistButton').addEventListener('click', () => {
+      update_GistFile(newContent);
+    });
+
+    async function update_GistFile(content) {
+      const url = `https://api.github.com/gists/${GIST_ID}`;
+
+      // Fetch the current Gist data
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+
+      if (!response.ok) {
+        console.error('Error fetching Gist:', response.status, response.statusText);
+        return;
+      }
+
+      const gistData = await response.json();
+
+      // Update the specific file content
+      gistData.files[FILENAME].content = JSON.stringify(content, null, 2);
+
+      // Prepare the payload for the update request
+      const updatePayload = {
+        files: {
+          [FILENAME]: {
+            content: gistData.files[FILENAME].content
+          }
+        }
+      };
+
+      // Send the update request
+      const updateResponse = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatePayload)
+      });
+
+      if (updateResponse.ok) {
+        console.log('Gist updated 3 successfully!');
+      } else {
+        console.error('Error updating Gist:', updateResponse.status, updateResponse.statusText);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+const token='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';
 async function rest_api_start(){  
   DB_USER=await readAllRecords('user'); 
   if(DB_USER.length==0){
@@ -95,3 +96,35 @@ async function upd_save_profile(){
   JBE_CLOSE_VIEW();
 }
   
+//=============================
+function time_empty(t1,t2,t3,t4){
+  let rval=true;
+  let ctr=0;
+  if(t1){ ctr++; }
+  if(t2){ ctr++; }
+  if(t3){ ctr++; }
+  if(t4){ ctr++; }
+
+  if(ctr > 0){ rval=false; }
+  return rval;
+}
+
+async function upload2server(){
+  if(!CURR_USER){
+    snackBar("Please Log In");
+    return;
+  }
+  
+  MSG_SHOW(vbYesNo,'CONFIRM:','Are you sure to Upload your Data?',function(){ 
+    const gistId = 'd6118f2621c83b3bd648c8fc0c085a59';
+    const fileName = 'dtr_daily.json';
+    let fld='usercode';
+    let val=CURR_USER;  
+    const result = DB_DAILY.filter(item => 
+      item.usercode === val && !time_empty(item.time1,item.time2,item.time3,item.time4)
+    );
+    jeff_update_gistFile(gistId, fileName,result,fld,val);
+  },function(){});
+}
+
+

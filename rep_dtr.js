@@ -210,6 +210,7 @@ function save_dtr(row,v_work){
   
 
   save_entry(row,v_date,CURR_USER,aryTime[0], aryTime[1], aryTime[2], aryTime[3],dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
+  ref_ctr(false);
 }
 
 function format_12(timeString){

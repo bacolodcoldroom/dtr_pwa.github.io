@@ -1,4 +1,4 @@
-const cacheName='01.34';
+const cacheName='03.35';
 const staticAssets = [
   './',
   './index.html',
@@ -39,7 +39,7 @@ const staticAssets = [
   './gfx/jchat.png',     './gfx/jdele.png',  
   './gfx/jedit.png',     './gfx/jham.png',   
   './gfx/jhome.png',     './gfx/jimage.png', 
-  './gfx/jimg_error.png',     './gfx/jNext.png', 
+  './gfx/jimg_error.png','./gfx/jNext.png', 
   
   './gfx/jnotif.png',    './gfx/jPrev.png', 
   './gfx/jproduct.png',   './gfx/jshare.png', 
@@ -47,7 +47,7 @@ const staticAssets = [
   './gfx/jrefresh.png',  './gfx/jsave.png',
   './gfx/jsearch.png',   './gfx/jsend.png',
   './gfx/jsite.png',     './gfx/jsms.png',   
-  './gfx/landmark.png',  
+  './gfx/landmark.png',  './gfx/qrcode.png',  
     
   './manifest.webmanifest'
 ];

@@ -271,7 +271,7 @@ function fm_admin(){
           '<img src="gfx/landmark.png" style="float:left;height:100%;"/>'+
           '<span style="float:left;margin-left:5px;padding:5px;">My Location</span>'+
         '</div>'+
-       
+
         '<div onclick="showQR()" style="width:100%;height:40px;margin-top:20px;padding:5px;cursor:pointer;background:none;">'+
           '<img src="gfx/qrcode.png" style="float:left;height:100%;"/>'+
           '<span style="float:left;margin-left:5px;padding:5px;">App QR-Code</span>'+
@@ -281,15 +281,20 @@ function fm_admin(){
           '<img src="gfx/jshare.png" style="float:left;height:100%;"/>'+
           '<span style="float:left;margin-left:5px;padding:5px;">Share the App</span>'+
         '</div>'+
-        
+
+        '<div id="down_load" onclick="show_download()" disabled style="opacity:0.4;pointer-events:none; width:100%;height:40px;margin-top:15px;padding:5px;cursor:pointer;background:none;">'+
+          '<img src="gfx/jdown.png" style="float:left;height:100%;"/>'+
+          '<span style="float:left;margin-left:5px;padding:5px;">Download Data from Server</span>'+
+        '</div>'+                              
+
         '<hr style="margin-top:20px;">'+
         '<div onclick="get_IDX_database()" style="width:100%;height:40px;margin-top:10px;padding:5px;cursor:pointer;background:none;">'+
-          '<img src="gfx/jdown.png" style="float:left;height:100%;"/>'+
+          '<img src="gfx/jcategory.png" style="float:left;height:100%;"/>'+
           '<span style="float:left;margin-left:5px;padding:5px;">Factory Reset</span>'+
         '</div>'+
         '<hr style="margin-top:10px;">'+
 
-        '<div onclick="layas()" style="width:100%;height:40px;margin-top:50px;padding:5px;cursor:pointer;background:none;">'+
+        '<div onclick="layas()" style="width:100%;height:40px;margin-top:60px;padding:5px;cursor:pointer;background:none;">'+
           '<img src="gfx/jedit.png" style="float:left;height:100%;"/>'+
           '<span style="float:left;margin-left:5px;padding:5px;color:red;">Log Out</span>'+
         '</div>'+
@@ -299,6 +304,11 @@ function fm_admin(){
     '</div>';       
 
   JBE_OPEN_VIEW(dtl,'My Account','close_admin');   
+  if(JBE_ONLINE){
+    document.getElementById('down_load').disabled=false;
+    document.getElementById('down_load').style.opacity=1;
+    document.getElementById('down_load').style.pointerEvents='auto';
+  }
 }
 
 function close_admin(){

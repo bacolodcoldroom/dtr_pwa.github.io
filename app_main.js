@@ -15,14 +15,18 @@ function start_app(){
   isAppOffline().then(offline => {
     if (offline) {
       JBE_ONLINE=false;
+      document.getElementById('mnu_upload').style.display='none';
       console.log("The app is offline!");
     } else {
       JBE_ONLINE=true;
+      document.getElementById('mnu_upload').style.display='block';
       console.log("The app is online!");
       document.getElementById('online_status').style.display='none';      
     }
   });
-
+  
+  let dly=jeff_get_gistFile('dtr_daily.json','d6118f2621c83b3bd648c8fc0c085a59');
+  console.log(dly);
   //searchContentInFile('SW_DTR.js', 'cacheName')
   // Get text from character 10 to 50
   fetchTextPortion('SW_DTR.js', 17, 22)
@@ -34,13 +38,8 @@ function start_app(){
   .catch(error => {
       console.error('Error:', error);
   });
-  /*
-  // Get text from character 100 to end
-  fetchTextPortion('sample.txt', 100)
-  .then(portion => {
-      console.log('Text portion:', portion);
-  }); 
-  */
+  
+  
 
   if(!CURR_NAME2){ CURR_NAME2=''; }
   //speakText('Hello '+CURR_NAME2+'! Welcome to the Bahcolod City Cold Chain Facility.');
@@ -66,9 +65,7 @@ function start_app(){
         item.style.backgroundImage = `url(${item.dataset.src})`;
     };
   }); 
-
-  //readAllRecords('tbl',func)
-  
+  //readAllRecords('tbl',func)  
 }
 
 
@@ -412,6 +409,52 @@ function show_credits(){
       '<input type="button" onclick="JBE_CLOSEBOX()" style="width:100px;height:100%;" value="Close" />'+     
     '</div>';  
   JBE_OPENBOX('main_credit','Men & Women of Coldroom',dtl,dtl2);
+}
+
+function show_download(){    
+  var h=220;
+  var date=new Date();
+  let cur_date=JBE_DATE_FORMAT(new Date(),'YYYY-MM-DD');
+  let v_month=date.getMonth()+1;
+  var s_date=v_month.toString().padStart(2, '0')+'-01-'+date.getFullYear();
+  //je_msg('s_date',s_date);
+  var dum_date=(v_month+1).toString().padStart(2, '0')+'-01-'+date.getFullYear();
+  if(v_month==12){ dum_date='01-01-'+(date.getFullYear()+1); }
+  //je_msg('dum_date',dum_date);
+  var dum2_date = new Date(dum_date);
+  dum2_date.setDate(dum2_date.getDate()-1);  
+  s_date=JBE_DATE_FORMAT(s_date,'YYYY-MM-DD');
+  var e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
+
+  var dtl=     
+    '<div id="div_dload" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;padding:10px;background-color:none;">'+     
+      '<div style="width:100%;height:45%;padding:2px;background:'+JBE_CLOR+';">'+
+        '<div style="width:100%;height:50%;padding:3%;">From Date:</div>'+
+        '<input id="d1" style="width:100%;height:50%;text-align:center;" type="date" value="'+JBE_DATE_FORMAT(s_date,'YYYY-MM-DD')+'"  placeholder="Date" />'+              
+      '</div>'+       
+      '<div style="margin-top:5%;width:100%;height:45%;padding:2px;background:'+JBE_CLOR+';">'+
+        '<div style="width:100%;height:50%;padding:3%;"> To Date:</div>'+
+        '<input id="d2" style="width:100%;height:50%;text-align:center;" type="date" value="'+JBE_DATE_FORMAT(e_date,'YYYY-MM-DD')+'"  placeholder="Date" />'+              
+      '</div>'+     
+    '</div>';
+  var dtl2=     
+    '<div style="width:100%;height:100%;padding:0px 0 0 0;text-align:center;color:'+JBE_TXCLOR1+';background:none;">'+      
+      '<div class="class_footer" style="float:left;width:25%;" onclick="do_download(d1.value,d2.value)">'+
+        '<img src="gfx/jdown.png" alt="call image" />'+
+        '<span>Download</span>'+
+      '</div>'+
+      '<div class="class_footer" style="float:right;width:25%;" onclick="JBE_CLOSEBOX()">'+
+        '<img src="gfx/jclose.png" alt="call image" />'+
+        '<span>Close</span>'+
+      '</div>'+
+    '</div>';  
+  JBE_OPENBOX('div_dload','Download Data',dtl,dtl2);
+}
+
+function do_download(s_date,e_date){
+  alert(s_date+' vs '+e_date);
+  snackBar('Download Successful...');
+  JBE_CLOSEBOX();
 }
 
 function reportHead(tilt,date){
@@ -979,3 +1022,4 @@ function get_IDX_database(){
     //dispHeaderMode();
   }  
 }
+
