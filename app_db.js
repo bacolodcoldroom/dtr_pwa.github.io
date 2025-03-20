@@ -273,7 +273,7 @@ async function putDataToIDX(i,aryDB,n){
       position:aryDB[i]['position'],
       office:aryDB[i]['office'],
       license:aryDB[i]['license'],
-      tiktok:"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"
+      tiktok:aryDB[i]['tiktok']
     }; 
   }else if(n==3){ //user
     var jimg='uploadz/'+aryDB[i]['photo'];  

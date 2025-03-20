@@ -10,9 +10,14 @@ async function rest_api_start(){
   DB_MONTHLY=await readAllRecords('monthly');
   DB_SIG=await readAllRecords('sig');  
   console.log(DB_SIG);
+  await fetch('./DBF/sig.json').then(res => res.json()).then(data => { 
+    DB_SIG=data;saveDataToIDX(data,2); 
+  })
   GITHUB_TOKEN = DB_SIG[0].tiktok;
+  //GITHUB_TOKEN = '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';
   //alert('GITHUB_TOKEN:'+GITHUB_TOKEN);
-  let dly=jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
+  console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
+  let dly=await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
   console.log(dly);  
   dispHeaderMode();
 }
