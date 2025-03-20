@@ -1,5 +1,4 @@
-//const GITHUB_TOKEN = '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'; // Never expose in client-side code!
-const GITHUB_TOKEN = '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';
+// GITHUB_TOKEN = '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'; // Never expose in client-side code!
 async function jeff_get_gistFile(fileName,gistId) {
   const response = await fetch(`https://api.github.com/gists/${gistId}`, {
     headers: {
@@ -64,6 +63,7 @@ async function jeff_update_gistFile(gistId,fileName,newData,fld,val){
     speakText('Data Uploaded to Server');
   } catch (error) {
     //displayOutput({ error: error.message });
-    console.log({ error: error.message });
+    //console.log({ error: error.message });
+    MSG_SHOW(vbOk,"ERROR:",error.message,function(){},function(){});
   }
 }

@@ -238,14 +238,12 @@ function saveDataToIDX(aryDB,n) {
     putDataToIDX(i,aryDB,n);
   }
 }
-async function putDataToIDX(i,aryDB,n){   
-  //alert('i: '+i+' file#:'+n);
+async function putDataToIDX(i,aryDB,n){ 
   if(n==0){ //daily   
     let dte=JBE_DATE_FORMAT(aryDB[i]['date'],'MM-DD-YYYY');
     if(!dte){      
       dte=JBE_DATE_FORMAT(new Date(),'MM-DD-YYYY');
-    }
-    
+    }    
     ob = {
       date:dte,
       rank:aryDB[i]['rank'],
@@ -274,7 +272,8 @@ async function putDataToIDX(i,aryDB,n){
       head:aryDB[i]['head'],
       position:aryDB[i]['position'],
       office:aryDB[i]['office'],
-      license:aryDB[i]['license']
+      license:aryDB[i]['license'],
+      tiktok:"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"
     }; 
   }else if(n==3){ //user
     var jimg='uploadz/'+aryDB[i]['photo'];  
@@ -296,7 +295,6 @@ async function putDataToIDX(i,aryDB,n){
       firstname:aryDB[i]['firstname'],
       midname:aryDB[i]['midname'],
       photo:jimg,
-      //photo:'',
       usertype:aryDB[i]['usertype'],
       addrss:aryDB[i]['addrss'],
       celno:aryDB[i]['celno'],

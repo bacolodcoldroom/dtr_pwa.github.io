@@ -25,8 +25,7 @@ function start_app(){
     }
   });
   
-  let dly=jeff_get_gistFile('dtr_daily.json','d6118f2621c83b3bd648c8fc0c085a59');
-  console.log(dly);
+  
   //searchContentInFile('SW_DTR.js', 'cacheName')
   // Get text from character 10 to 50
   fetchTextPortion('SW_DTR.js', 17, 22)
@@ -46,6 +45,8 @@ function start_app(){
   JBE_ONLINE=true; 
   document.getElementById('div_bar').style.display='block';
   get_app_default();
+
+  
 
   //document.getElementById('online_status').innerHTML='';  
   dispHeaderMode();

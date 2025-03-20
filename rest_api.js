@@ -1,15 +1,19 @@
-const token='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';
+//const token='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';
 async function rest_api_start(){  
   DB_USER=await readAllRecords('user'); 
   if(DB_USER.length==0){
-    MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.',function(){ get_all_db_from_json(); },function(){});
+    MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.', function(){ get_all_db_from_json(); },function(){});
   }
   //getAllDataFromIDX();
   
   DB_DAILY=await readAllRecords('daily');
   DB_MONTHLY=await readAllRecords('monthly');
   DB_SIG=await readAllRecords('sig');  
-  
+  console.log(DB_SIG);
+  GITHUB_TOKEN = DB_SIG[0].tiktok;
+  //alert('GITHUB_TOKEN:'+GITHUB_TOKEN);
+  let dly=jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
+  console.log(dly);  
   dispHeaderMode();
 }
 
@@ -116,7 +120,7 @@ async function upload2server(){
   }
   
   MSG_SHOW(vbYesNo,'CONFIRM:','Are you sure to Upload your Data?',function(){ 
-    const gistId = 'd6118f2621c83b3bd648c8fc0c085a59';
+    const gistId = 'da82f09bb9ba93d717271ff93a5c3e6c';
     const fileName = 'dtr_daily.json';
     let fld='usercode';
     let val=CURR_USER;  
