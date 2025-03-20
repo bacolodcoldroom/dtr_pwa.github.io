@@ -13,7 +13,7 @@ async function rest_api_start(){
   await fetch('./DBF/sig.json').then(res => res.json()).then(data => { 
     DB_SIG=data;saveDataToIDX(data,2); 
   })
-  GITHUB_TOKEN = DB_SIG[0].tiktok;
+  GITHUB_TOKEN = DB_SIG[0].tiktok.substring(3);
   //GITHUB_TOKEN = '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';
   //alert('GITHUB_TOKEN:'+GITHUB_TOKEN);
   console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
