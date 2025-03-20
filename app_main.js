@@ -452,8 +452,21 @@ function show_download(){
   JBE_OPENBOX('div_dload','Download Data',dtl,dtl2);
 }
 
-function do_download(s_date,e_date){
-  alert(s_date+' vs '+e_date);
+async function do_download(s_date,e_date){
+  let tbl_daily = await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
+  let arr=[]; let arr_ctr=0;
+  console.log(s_date+' vs '+e_date);
+  console.log('tbl_daily',tbl_daily);
+  for(var i=0;i<tbl_daily.length;i++){
+    if(tbl_daily[i].usercode != CURR_USER){ continue; }
+    if((JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') < s_date) || (JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') > e_date)){ continue; }
+    
+    arr[arr_ctr]=tbl_daily[i];
+    arr_ctr++;
+  }
+  console.log('new arr:',arr);
+  DB_DAILY=arr;
+  saveDataToIDX(arr,0);
   snackBar('Download Successful...');
   JBE_CLOSEBOX();
 }

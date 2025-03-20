@@ -284,13 +284,13 @@ function fm_admin(){
 
         '<div id="down_load" onclick="show_download()" disabled style="opacity:0.4;pointer-events:none; width:100%;height:40px;margin-top:15px;padding:5px;cursor:pointer;background:none;">'+
           '<img src="gfx/jdown.png" style="float:left;height:100%;"/>'+
-          '<span style="float:left;margin-left:5px;padding:5px;">Download Data from Server</span>'+
+          '<span style="float:left;margin-left:5px;padding:5px;color:blue;">Download Data from Server</span>'+
         '</div>'+                              
 
         '<hr style="margin-top:20px;">'+
         '<div onclick="get_IDX_database()" style="width:100%;height:40px;margin-top:10px;padding:5px;cursor:pointer;background:none;">'+
           '<img src="gfx/jcategory.png" style="float:left;height:100%;"/>'+
-          '<span style="float:left;margin-left:5px;padding:5px;">Factory Reset</span>'+
+          '<span style="float:left;margin-left:5px;padding:5px;color:red;">Factory Reset</span>'+
         '</div>'+
         '<hr style="margin-top:10px;">'+
 
