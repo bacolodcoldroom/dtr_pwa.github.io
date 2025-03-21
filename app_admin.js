@@ -267,36 +267,36 @@ function fm_admin(){
       '<div id="div_dtl_admin" style="width:100%;height:'+(H_VIEW-55)+'px;overflow-x:hidden;overflow-y:auto;background:white;padding:2px;">'+
         menuMenu+      
         //'<div onclick="upd_location()" style="display:'+vdisp_location+';width:100%;height:40px;margin-top:20px;padding:5px;cursor:pointer;background:none;">'
-        '<div onclick="my_location()" style="display:'+vdisp_location+';width:100%;height:40px;margin-top:20px;padding:5px;cursor:pointer;background:none;">'+
-          '<img src="gfx/landmark.png" style="float:left;height:100%;"/>'+
-          '<span style="float:left;margin-left:5px;padding:5px;">My Location</span>'+
+        '<div class="cls_system" onclick="my_location()" style="display:'+vdisp_location+';">'+
+          '<img src="gfx/landmark.png" />'+
+          '<span style="">My Location</span>'+
         '</div>'+
 
-        '<div onclick="showQR()" style="width:100%;height:40px;margin-top:20px;padding:5px;cursor:pointer;background:none;">'+
-          '<img src="gfx/qrcode.png" style="float:left;height:100%;"/>'+
-          '<span style="float:left;margin-left:5px;padding:5px;">App QR-Code</span>'+
+        '<div class="cls_system" onclick="showQR()">'+
+          '<img src="gfx/qrcode.png" />'+
+          '<span>App QR-Code</span>'+
         '</div>'+
        
-        '<div onclick="share_app()" style="width:100%;height:40px;margin-top:20px;padding:5px;cursor:pointer;background:none;">'+
-          '<img src="gfx/jshare.png" style="float:left;height:100%;"/>'+
-          '<span style="float:left;margin-left:5px;padding:5px;">Share the App</span>'+
+        '<div class="cls_system" onclick="share_app()">'+
+          '<img src="gfx/jshare.png" />'+
+          '<span>Share the App</span>'+
         '</div>'+
 
-        '<div id="down_load" onclick="show_download()" disabled style="opacity:0.4;pointer-events:none; width:100%;height:40px;margin-top:15px;padding:5px;cursor:pointer;background:none;">'+
-          '<img src="gfx/jdown.png" style="float:left;height:100%;"/>'+
-          '<span style="float:left;margin-left:5px;padding:5px;color:blue;">Download Data from Server</span>'+
+        '<div class="cls_system" id="down_load" onclick="show_download()" disabled style="opacity:0.4;pointer-events:none;">'+
+          '<img src="gfx/jdown.png" />'+
+          '<span style="color:blue;">Download Data from Server</span>'+
         '</div>'+                              
 
         '<hr style="margin-top:20px;">'+
-        '<div onclick="get_IDX_database()" style="width:100%;height:40px;margin-top:10px;padding:5px;cursor:pointer;background:none;">'+
-          '<img src="gfx/jcategory.png" style="float:left;height:100%;"/>'+
-          '<span style="float:left;margin-left:5px;padding:5px;color:red;">Factory Reset</span>'+
+        '<div class="cls_system" onclick="get_IDX_database()">'+
+          '<img src="gfx/jcategory.png" />'+
+          '<span style="color:red;">Factory Reset</span>'+
         '</div>'+
         '<hr style="margin-top:10px;">'+
 
-        '<div onclick="layas()" style="width:100%;height:40px;margin-top:60px;padding:5px;cursor:pointer;background:none;">'+
-          '<img src="gfx/jedit.png" style="float:left;height:100%;"/>'+
-          '<span style="float:left;margin-left:5px;padding:5px;color:red;">Log Out</span>'+
+        '<div class="cls_system" onclick="layas()">'+
+          '<img src="gfx/jedit.png" />'+
+          '<span style="color:'+JBE_CLOR+';font-weight:bold;">Log Out</span>'+
         '</div>'+
         
       '</div>'+

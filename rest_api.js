@@ -123,7 +123,111 @@ async function upload2server(){
     snackBar("Please Log In");
     return;
   }
+  var h=220;
+  var date=new Date();
+  var dtl=     
+    '<div id="div_upload" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;padding:10px;background-color:none;">'+     
+      '<div style="width:100%;height:45%;padding:2px;background:'+JBE_CLOR+';">'+
+        '<div style="width:100%;height:50%;padding:3%;">From Date:</div>'+
+        '<input id="d1" style="width:100%;height:50%;text-align:center;" onchange="chg_date_server(d1.value,d2.value)" type="month" value="'+JBE_DATE_FORMAT(date,'YYYY-MM')+'"  placeholder="Date" />'+              
+      '</div>'+       
+      '<div style="margin-top:5%;width:100%;height:45%;padding:2px;background:'+JBE_CLOR+';">'+
+        '<div style="width:100%;height:50%;padding:3%;"> To Date:</div>'+
+        '<input id="d2" style="width:100%;height:50%;text-align:center;" onchange="chg_date_server(d1.value,d2.value)" type="month" value="'+JBE_DATE_FORMAT(date,'YYYY-MM')+'"  placeholder="Date" />'+              
+      '</div>'+     
+    '</div>';
+  var dtl2=     
+    '<div style="width:100%;height:100%;padding:0px 0 0 0;text-align:center;color:'+JBE_TXCLOR1+';background:none;">'+      
+      '<div class="class_footer" style="float:left;width:25%;" onclick="do_upload(d1.value,d2.value)">'+
+        '<img src="gfx/jupload.png" alt="call image" />'+
+        '<span>Upload</span>'+
+      '</div>'+
+      '<div class="class_footer" style="float:left;width:50%;">'+
+        '<div id="div_tot_entries">100</div>'+
+        '<span id="div_tot_label" style="padding:5px;color:black;">Entries to Upload</span>'+
+      '</div>'+
+      '<div class="class_footer" style="float:right;width:25%;" onclick="JBE_CLOSEBOX()">'+
+        '<img src="gfx/jclose.png" alt="call image" />'+
+        '<span>Close</span>'+
+      '</div>'+
+    '</div>';  
+  JBE_OPENBOX('div_upload','Upload Data',dtl,dtl2);
+  chg_date_server(d1.value,d2.value);
+}
+
+function chg_date_server(d1,d2){
+  if(d1 > d2){ snackBar('ERROR: Invalid Dates'); return; }
+  let v_month=new Date(d2).getMonth()+1;
+  let dum_date=(v_month+1).toString().padStart(2, '0')+'-01-'+new Date(d2).getFullYear();
+  if(v_month==12){ dum_date='01-01-'+(new Date(d2).getFullYear()+1); }
   
+  var dum2_date = new Date(dum_date);
+  dum2_date.setDate(dum2_date.getDate()-1);
+
+  let s_date=JBE_DATE_FORMAT(d1+'-01','YYYY-MM-DD');
+  let e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
+
+  let ctr=0;
+  for(var i=0;i<DB_DAILY.length;i++){
+    if(DB_DAILY[i].usercode != CURR_USER){ continue; }
+    let vdate=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM-DD');    
+    if( vdate < s_date || vdate > e_date){ continue; }
+
+    console.log(i,'vdate',vdate);
+    ctr++;
+  }  
+  document.getElementById('div_tot_entries').innerHTML=ctr;
+}
+
+function do_upload(d1,d2){
+  if(parseInt(document.getElementById('div_tot_entries').innerHTML)==0){ 
+    snackBar('Nothing to Upload...');
+    return; 
+  }
+  let v_month=new Date(d2).getMonth()+1;
+  let dum_date=(v_month+1).toString().padStart(2, '0')+'-01-'+new Date(d2).getFullYear();
+  if(v_month==12){ dum_date='01-01-'+(new Date(d2).getFullYear()+1); }
+  
+  var dum2_date = new Date(dum_date);
+  dum2_date.setDate(dum2_date.getDate()-1);
+
+  let s_date=JBE_DATE_FORMAT(d1+'-01','YYYY-MM-DD');
+  let e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
+  console.log('UPLOAD: s_date,e_date',s_date,e_date);
+
+  MSG_SHOW(vbYesNo,'CONFIRM:','Are you sure to Upload your Data?',function(){ 
+    const gistId = 'da82f09bb9ba93d717271ff93a5c3e6c';
+    const fileName = 'dtr_daily.json';
+    let fld='usercode';
+    let val=CURR_USER;  
+    const result = DB_DAILY.filter(item => 
+      item.usercode === val && (JBE_DATE_FORMAT(DB_DAILY,'YYYY-MM-DD') >= s_date && JBE_DATE_FORMAT(DB_DAILY,'YYYY-MM-DD') <= e_date) && !time_empty(item.time1,item.time2,item.time3,item.time4) 
+    );
+    jeff_update_gistFile(gistId, fileName,result,fld,val);
+    snackBar('Download Successful...');    
+  },function(){ return; });
+  JBE_CLOSEBOX();
+  return;
+
+
+  let tbl_daily = jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
+  let arr=[]; let arr_ctr=0;
+  console.log(s_date+' vs '+e_date);
+  console.log('tbl_daily',tbl_daily);
+  for(var i=0;i<tbl_daily.length;i++){
+    if(tbl_daily[i].usercode != CURR_USER){ continue; }
+    if((JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') < s_date) || (JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') > e_date)){ continue; }
+    
+    arr[arr_ctr]=tbl_daily[i];
+    arr_ctr++;
+  }
+  console.log('new arr:',arr);
+  DB_DAILY=arr;
+  //saveDataToIDX(arr,0);
+  snackBar('Download Successful...');
+  JBE_CLOSEBOX();
+
+  /*
   MSG_SHOW(vbYesNo,'CONFIRM:','Are you sure to Upload your Data?',function(){ 
     const gistId = 'da82f09bb9ba93d717271ff93a5c3e6c';
     const fileName = 'dtr_daily.json';
@@ -134,6 +238,7 @@ async function upload2server(){
     );
     jeff_update_gistFile(gistId, fileName,result,fld,val);
   },function(){});
+  */
 }
 
 
