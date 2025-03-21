@@ -265,8 +265,9 @@ function fm_admin(){
       '</div>'+
 
       '<div id="div_dtl_admin" style="width:100%;height:'+(H_VIEW-55)+'px;overflow-x:hidden;overflow-y:auto;background:white;padding:2px;">'+
-        menuMenu+      
-        //'<div onclick="upd_location()" style="display:'+vdisp_location+';width:100%;height:40px;margin-top:20px;padding:5px;cursor:pointer;background:none;">'
+        //menuMenu+      
+        '<div style="width:auto;height:auto;margin:5px;font-size:11px;color:darkgray;background:none;">System Code: '+CURR_USER+'</div>'+
+
         '<div class="cls_system" onclick="my_location()" style="display:'+vdisp_location+';">'+
           '<img src="gfx/landmark.png" />'+
           '<span style="">My Location</span>'+

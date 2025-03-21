@@ -240,9 +240,9 @@ function saveDataToIDX(aryDB,n) {
 }
 async function putDataToIDX(i,aryDB,n){ 
   if(n==0){ //daily   
-    let dte=JBE_DATE_FORMAT(aryDB[i]['date'],'MM-DD-YYYY');
+    let dte=JBE_DATE_FORMAT(aryDB[i]['date'],'YYYY-MM-DD');
     if(!dte){      
-      dte=JBE_DATE_FORMAT(new Date(),'MM-DD-YYYY');
+      dte=JBE_DATE_FORMAT(new Date(),'YYYY-MM-DD');
     }    
     ob = {
       date:dte,

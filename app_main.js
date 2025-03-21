@@ -413,75 +413,7 @@ function show_credits(){
 }
 
 function show_download(){    
-  var h=220;
-  var date=new Date();
-  /*
-  let cur_date=JBE_DATE_FORMAT(new Date(),'YYYY-MM-DD');
-  let v_month=date.getMonth()+1;
-  var s_date=v_month.toString().padStart(2, '0')+'-01-'+date.getFullYear();
-  //je_msg('s_date',s_date);
-  var dum_date=(v_month+1).toString().padStart(2, '0')+'-01-'+date.getFullYear();
-  if(v_month==12){ dum_date='01-01-'+(date.getFullYear()+1); }
-  //je_msg('dum_date',dum_date);
-  var dum2_date = new Date(dum_date);
-  dum2_date.setDate(dum2_date.getDate()-1);  
-  s_date=JBE_DATE_FORMAT(s_date,'YYYY-MM-DD');
-  var e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
-  */
-  var dtl=     
-    '<div id="div_dload" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;padding:10px;background-color:none;">'+     
-      '<div style="width:100%;height:45%;padding:2px;background:'+JBE_CLOR+';">'+
-        '<div style="width:100%;height:50%;padding:3%;">From Date:</div>'+
-        '<input id="d1" style="width:100%;height:50%;text-align:center;" type="month" value="'+JBE_DATE_FORMAT(date,'YYYY-MM')+'"  placeholder="Date" />'+              
-      '</div>'+       
-      '<div style="margin-top:5%;width:100%;height:45%;padding:2px;background:'+JBE_CLOR+';">'+
-        '<div style="width:100%;height:50%;padding:3%;"> To Date:</div>'+
-        '<input id="d2" style="width:100%;height:50%;text-align:center;" type="month" value="'+JBE_DATE_FORMAT(date,'YYYY-MM')+'"  placeholder="Date" />'+              
-      '</div>'+     
-    '</div>';
-  var dtl2=     
-    '<div style="width:100%;height:100%;padding:0px 0 0 0;text-align:center;color:'+JBE_TXCLOR1+';background:none;">'+      
-      '<div class="class_footer" style="float:left;width:25%;" onclick="do_download(d1.value,d2.value)">'+
-        '<img src="gfx/jdown.png" alt="call image" />'+
-        '<span>Download</span>'+
-      '</div>'+
-      '<div class="class_footer" style="float:right;width:25%;" onclick="JBE_CLOSEBOX()">'+
-        '<img src="gfx/jclose.png" alt="call image" />'+
-        '<span>Close</span>'+
-      '</div>'+
-    '</div>';  
-  JBE_OPENBOX('div_dload','Download Data',dtl,dtl2);
-}
-
-async function do_download(d1,d2){    
-  let v_month=new Date(d2).getMonth()+1;
-  let dum_date=(v_month+1).toString().padStart(2, '0')+'-01-'+new Date(d2).getFullYear();
-  if(v_month==12){ dum_date='01-01-'+(new Date(d2).getFullYear()+1); }
-  
-  var dum2_date = new Date(dum_date);
-  dum2_date.setDate(dum2_date.getDate()-1);
-
-  let s_date=JBE_DATE_FORMAT(d1+'-01','YYYY-MM-DD');
-  let e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
-
-  console.log('download: s_date,e_date',s_date,e_date);
-    
-  let tbl_daily = await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
-  let arr=[]; let arr_ctr=0;
-  console.log(s_date+' vs '+e_date);
-  console.log('tbl_daily',tbl_daily);
-  for(var i=0;i<tbl_daily.length;i++){
-    if(tbl_daily[i].usercode != CURR_USER){ continue; }
-    if((JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') < s_date) || (JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') > e_date)){ continue; }
-    
-    arr[arr_ctr]=tbl_daily[i];
-    arr_ctr++;
-  }
-  console.log('new arr:',arr);
-  DB_DAILY=arr;
-  saveDataToIDX(arr,0);
-  snackBar('Download Successful...');
-  JBE_CLOSEBOX();
+  updownForm(2);
 }
 
 function reportHead(tilt,date){
