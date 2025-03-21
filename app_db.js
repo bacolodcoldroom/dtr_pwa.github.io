@@ -244,7 +244,8 @@ async function putDataToIDX(i,aryDB,n){
     if(!dte){      
       dte=JBE_DATE_FORMAT(new Date(),'YYYY-MM-DD');
     }    
-    ob = {
+    ob = {      
+      id:aryDB[i]['id'],
       date:dte,
       rank:aryDB[i]['rank'],
       usercode:aryDB[i]['usercode'],
