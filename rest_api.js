@@ -9,19 +9,10 @@ async function rest_api_start(){
   DB_DAILY=await readAllRecords('daily');
   DB_MONTHLY=await readAllRecords('monthly');
   DB_SIG=await readAllRecords('sig');  
-  console.log(DB_SIG);
-  await fetch('./DBF/sig.json').then(res => res.json()).then(data => { 
-    DB_SIG=data;saveDataToIDX(data,2); 
-  })
-  //GITHUB_TOKEN = DB_SIG[0].tiktok.substring(3);
+  console.log(DB_SIG.length);
+  await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); })
   GITHUB_TOKEN = DB_SIG[0].sys_pat.substring(3);
-  //GITHUB_TOKEN = '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';
-  //alert('GITHUB_TOKEN:'+GITHUB_TOKEN);
   console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
-  //let dly=await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
-  //let dly=await readFile();
-
-  //let currentData = await zreadFile('dtr/daily.json');
   let currentData = await getFile('dtr/daily.json');
   let data2=currentData.content;
   console.log('All Data',data2);
@@ -31,9 +22,6 @@ async function rest_api_start(){
     arr[arr_ctr]=data2[i]; 
     arr_ctr++;
   }
-  
-  //console.log('Current content:', currentData?.content);
-  //console.log('Current content:', currentData?.sha);
   console.log('Current content:',arr);  
   dispHeaderMode();
 }

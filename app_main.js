@@ -954,14 +954,14 @@ function get_IDX_database(){
     //deleteDatabase(CURR_IDX_DB);
     //initDb();
     DB_DAILY=[];
-    DB_MONTHLY=[];;
-    DB_SIG=[];;
-    DB_USER=[];;
-
+    DB_MONTHLY=[];
+    DB_SIG=[];
+    DB_USER=[];
+    
     await clearAllRecords('daily');
     await clearAllRecords('monthly');
     await clearAllRecords('sig');
-    await clearAllRecords('user');
+    await clearAllRecords('user');    
     
     console.log('before');
     await get_all_db_from_json();

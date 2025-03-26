@@ -45,7 +45,7 @@ function initDb() {
   }
 }
 
-function clearStore(jstore){   
+async function clearStore(jstore){   
   //alert(jstore);
   var request = indexedDB.open(CURR_IDX_DB, dbVersion);
   request.onerror = function(e) {    

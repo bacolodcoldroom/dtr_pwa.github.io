@@ -8,7 +8,7 @@ const token = "your-personal-access-token"; // Your GitHub PAT
 //const apiBase = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 // GitHub API configuration
 const API_BASE = 'https://api.github.com';
-const REPO_OWNER = 'updesktop';
+const REPO_OWNER = 'bacolodcoldroom';
 const REPO_NAME = 'JDB';
 var apiBase = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/`;
 
