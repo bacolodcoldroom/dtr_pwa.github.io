@@ -229,29 +229,6 @@ function fm_admin(){
  
   var profileImg=document.getElementById('bar_avatar').src;
   var username=CURR_NAME;
-  var menuPurchase='';
-  var menuEditStaff=
-    '<div style="width:100%;height:auto;padding:10px;font-size:12px;">System Code: '+CURR_CLIENT+'</div>'+
-    '<div onclick="editStaff()" style="width:100%;height:40px;margin-top:10px;padding:5px;cursor:pointer;background:none;">'+
-      '<img src="gfx/jpurchase.png" style="float:left;height:100%;"/>'+
-      '<span style="float:left;margin-left:5px;padding:5px;">Edit Users</span>'+
-    '</div>'; 
-
-  var menuEditProfile=
-    '<div onclick="fm_profile(2)" style="width:100%;height:40px;margin-top:20px;padding:5px;cursor:pointer;background:none;">'+
-      '<img src="gfx/avatar.png" style="float:left;height:100%;"/>'+
-      '<span style="float:left;margin-left:5px;padding:5px;">Edit Profile</span>'+
-    '</div>';
- 
-  menuMenu=menuPurchase+menuEditProfile;
-  var vdisp_location='block';
-  if(CURR_AXTYPE > 0){
-      menuMenu=menuEditProfile;
-      vdisp_location='none';
-  }
-  vdisp_location='block';
-  if(CURR_AXTYPE == 5){ menuMenu=menuEditStaff+menuEditProfile; }
-  if(CURR_AXTYPE == 9){ menuMenu=menuEditStaff }
   var dtl=
     '<div id="div_main_admin" style="width:100%;height:100%;padding:0px;overflow-x:hidden;overflow-y:auto;background:none;">'+
      
@@ -265,12 +242,22 @@ function fm_admin(){
       '</div>'+
 
       '<div id="div_dtl_admin" style="width:100%;height:'+(H_VIEW-55)+'px;overflow-x:hidden;overflow-y:auto;background:white;padding:2px;">'+
-        //menuMenu+      
+
         '<div style="width:auto;height:auto;margin:5px;font-size:11px;color:darkgray;background:none;">System Code: '+CURR_USER+'</div>'+
 
-        '<div class="cls_system" onclick="my_location()" style="display:'+vdisp_location+';">'+
+        '<div class="cls_system" onclick="editStaff()" style="display:'+iif(CURR_AXTYPE==5,'block','none')+';">'+
+          '<img src="gfx/jpurchase.png" style="float:left;height:100%;"/>'+
+          '<span style="float:left;margin-left:5px;padding:5px;">Edit Users</span>'+
+        '</div>'+         
+
+        '<div class="cls_system" onclick="fm_profile(2)">'+
+          '<img src="gfx/avatar.png" />'+
+          '<span>Edit Profile</span>'+
+        '</div>'+
+
+        '<div class="cls_system" onclick="my_location()">'+
           '<img src="gfx/landmark.png" />'+
-          '<span style="">My Location</span>'+
+          '<span>My Location</span>'+
         '</div>'+
 
         '<div class="cls_system" onclick="showQR()">'+
@@ -289,13 +276,13 @@ function fm_admin(){
         '</div>'+                              
 
         '<hr style="margin-top:20px;">'+
-        '<div class="cls_system" onclick="get_IDX_database()">'+
+        '<div class="cls_system" onclick="get_IDX_database()" style="margin-top:10px;">'+
           '<img src="gfx/jcategory.png" />'+
           '<span style="color:red;">Factory Reset</span>'+
         '</div>'+
         '<hr style="margin-top:10px;">'+
 
-        '<div class="cls_system" onclick="layas()">'+
+        '<div class="cls_system" onclick="layas()" style="margin-top:40px;">'+
           '<img src="gfx/jedit.png" />'+
           '<span style="color:'+JBE_CLOR+';font-weight:bold;">Log Out</span>'+
         '</div>'+

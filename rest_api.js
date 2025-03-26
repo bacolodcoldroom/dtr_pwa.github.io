@@ -13,12 +13,28 @@ async function rest_api_start(){
   await fetch('./DBF/sig.json').then(res => res.json()).then(data => { 
     DB_SIG=data;saveDataToIDX(data,2); 
   })
-  GITHUB_TOKEN = DB_SIG[0].tiktok.substring(3);
+  //GITHUB_TOKEN = DB_SIG[0].tiktok.substring(3);
+  GITHUB_TOKEN = DB_SIG[0].sys_pat.substring(3);
   //GITHUB_TOKEN = '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';
   //alert('GITHUB_TOKEN:'+GITHUB_TOKEN);
   console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
-  let dly=await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
-  console.log(dly);  
+  //let dly=await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
+  //let dly=await readFile();
+
+  //let currentData = await zreadFile('dtr/daily.json');
+  let currentData = await getFile('dtr/daily.json');
+  let data2=currentData.content;
+  console.log('All Data',data2);
+  let arr=[]; let arr_ctr=0;
+  for(let i=0;i<data2.length;i++){
+    if(data2[i].usercode != CURR_USER){ continue; }
+    arr[arr_ctr]=data2[i]; 
+    arr_ctr++;
+  }
+  
+  //console.log('Current content:', currentData?.content);
+  //console.log('Current content:', currentData?.sha);
+  console.log('Current content:',arr);  
   dispHeaderMode();
 }
 
@@ -106,9 +122,10 @@ async function upd_save_profile(){
 }
   
 //=============================
-function time_empty(t1,t2,t3,t4){
+function time_empty(txt,t1,t2,t3,t4){
   let rval=true;
   let ctr=0;
+  if(txt){ ctr++; }
   if(t1){ ctr++; }
   if(t2){ ctr++; }
   if(t3){ ctr++; }
@@ -116,6 +133,26 @@ function time_empty(t1,t2,t3,t4){
 
   if(ctr > 0){ rval=false; }
   return rval;
+}
+
+async function xupload2server(){
+  if(!CURR_USER){
+    snackBar("Please Log In");
+    return;
+  }
+  
+  MSG_SHOW(vbYesNo,'CONFIRM:','Are you sure to Upload your Data?',function(){ 
+    const gistId = 'da82f09bb9ba93d717271ff93a5c3e6c';
+    const fileName = 'dtr_daily.json';
+    let fld='usercode';
+    let val=CURR_USER;  
+    const result = DB_DAILY.filter(item => 
+      item.usercode === val && !time_empty(item.txt,item.time1,item.time2,item.time3,item.time4)
+    );
+    //jeff_update_gistFile(gistId, fileName,result,fld,val);
+    jeff_update_File('dtr/daily.json',result,fld,val);
+    console.log(result);
+  },function(){});
 }
 
 async function upload2server(){
@@ -135,11 +172,11 @@ function updownForm(jmode){
     '<div id="div_updownForm" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;padding:10px;background-color:none;">'+     
       '<div style="width:100%;height:45%;padding:2px;background:'+JBE_CLOR+';">'+
         '<div style="width:100%;height:50%;padding:3%;">From Date:</div>'+
-        '<input id="d1" style="width:100%;height:50%;text-align:center;" onchange="chg_date_updownForm(d1.value,d2.value)" type="month" value="'+JBE_DATE_FORMAT(date,'YYYY-MM')+'"  placeholder="Date" />'+              
+        '<input id="d1" style="width:100%;height:50%;text-align:center;" onchange="chg_date_updownForm('+jmode+',d1.value,d2.value)" type="month" value="'+JBE_DATE_FORMAT(date,'YYYY-MM')+'"  placeholder="Date" />'+              
       '</div>'+
       '<div style="margin-top:5%;width:100%;height:45%;padding:2px;background:'+JBE_CLOR+';">'+
         '<div style="width:100%;height:50%;padding:3%;"> To Date:</div>'+
-        '<input id="d2" style="width:100%;height:50%;text-align:center;" onchange="chg_date_updownForm(d1.value,d2.value)" type="month" value="'+JBE_DATE_FORMAT(date,'YYYY-MM')+'"  placeholder="Date" />'+              
+        '<input id="d2" style="width:100%;height:50%;text-align:center;" onchange="chg_date_updownForm('+jmode+',d1.value,d2.value)" type="month" value="'+JBE_DATE_FORMAT(date,'YYYY-MM')+'"  placeholder="Date" />'+              
       '</div>'+     
     '</div>';
   let dtl2=     
@@ -162,6 +199,8 @@ function updownForm(jmode){
 }
 
 async function chg_date_updownForm(jmode,d1,d2){
+  //console.log('chg_date_updownForm',d1,d2);
+  document.getElementById('div_tot_entries').innerHTML=0;
   if(d1 > d2){ snackBar('ERROR: Invalid Dates'); return; }
   let v_month=new Date(d2).getMonth()+1;
   let dum_date=(v_month+1).toString().padStart(2, '0')+'-01-'+new Date(d2).getFullYear();
@@ -185,7 +224,10 @@ async function chg_date_updownForm(jmode,d1,d2){
       ctr++;
     }  
   }else if(jmode==2){
-    let tbl_daily = await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
+    //let tbl_daily = await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');    
+    let currentData = await getFile('dtr/daily.json');
+    let tbl_daily=currentData.content;
+
     for(var i=0;i<tbl_daily.length;i++){
       if(tbl_daily[i].usercode != CURR_USER){ continue; }
       if((JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') < s_date) || (JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') > e_date)){ continue; }      
@@ -221,15 +263,15 @@ function do_upload(d1,d2){
   console.log('UPLOAD: s_date,e_date',s_date,e_date);
 
   MSG_SHOW(vbYesNo,'CONFIRM:','Are you sure to Upload your Data?',function(){ 
-    const gistId = 'da82f09bb9ba93d717271ff93a5c3e6c';
-    const fileName = 'dtr_daily.json';
     let fld='usercode';
     let val=CURR_USER;  
     const result = DB_DAILY.filter(item => 
-      item.usercode === val && (JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') >= s_date && JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') <= e_date) && !time_empty(item.time1,item.time2,item.time3,item.time4) 
+      item.usercode === val && (JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') >= s_date && JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') <= e_date) && !time_empty(item.txt,item.time1,item.time2,item.time3,item.time4) 
     );
     console.log('For Upload ------:',result);
-    jeff_update_gistFile(gistId, fileName,result,fld,val);
+    //jeff_update_gistFile(gistId, fileName,result,fld,val);
+    jeff_update_File('dtr/daily.json',result,fld,val);
+    console.log(result);
     snackBar('Upload Successful...');    
   },function(){ return; });
   JBE_CLOSEBOX();
@@ -248,7 +290,9 @@ async function do_download(d1,d2){
 
   console.log('download: s_date,e_date',s_date,e_date);
     
-  let tbl_daily = await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
+  //let tbl_daily = await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
+  let currentData = await getFile('dtr/daily.json');
+  let tbl_daily=currentData.content;
   let arr=[]; let arr_ctr=0;
   console.log(s_date+' vs '+e_date);
   console.log('tbl_daily',tbl_daily);
@@ -265,5 +309,7 @@ async function do_download(d1,d2){
   snackBar('Download Successful...');
   JBE_CLOSEBOX();
 }
+
+
 
 

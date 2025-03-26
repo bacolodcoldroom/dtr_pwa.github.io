@@ -366,7 +366,8 @@ function save_entry(row,vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_t
     txt_width:dtl_txt_width,
     txt_fsize:dtl_txt_fsize
   };
-  updateRecord(ob,'daily','update_db');    
+  updateRecord(ob,'daily','update_db'); 
+  //addEntry('dtr/daily.json',ob);
 }
 
 async function update_db(){

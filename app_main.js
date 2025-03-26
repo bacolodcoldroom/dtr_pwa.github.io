@@ -13,16 +13,17 @@ function start_app(){
   //****************
 
   isAppOffline().then(offline => {
+    let msg='offline';
     if (offline) {
       JBE_ONLINE=false;
-      document.getElementById('mnu_upload').style.display='none';
-      console.log("The app is offline!");
+      document.getElementById('mnu_upload').style.display='none';      
     } else {
       JBE_ONLINE=true;
-      document.getElementById('mnu_upload').style.display='block';
-      console.log("The app is online!");
+      msg='ONLINE';
+      document.getElementById('mnu_upload').style.display='block';      
       document.getElementById('online_status').style.display='none';      
     }
+    console.log("The app is "+msg);
   });
   
   
@@ -927,14 +928,10 @@ async function isAppOffline(timeout = 3000) {
   .then(response => {
     clearTimeout(timer);
     // If the response is OK, the app is online; otherwise, we treat it as offline.
-    console.log(response.ok+' ::: ayos! online kita....');
-    //return !response.ok;
     return false;
   })
   .catch(() => {
     clearTimeout(timer);
-    // On error (including timeout), assume offline.
-    console.log('wala gd. offline here....');
     return true;
   });
 }
