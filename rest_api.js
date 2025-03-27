@@ -19,7 +19,7 @@ async function rest_api_start(){
   let arr=[]; let arr_ctr=0;
   for(let i=0;i<data2.length;i++){
     if(data2[i].usercode != CURR_USER){ continue; }
-    arr[arr_ctr]=data2[i]; 
+    arr[arr_ctr]=data2[i];
     arr_ctr++;
   }
   console.log('Current content:',arr);  

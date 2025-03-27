@@ -145,6 +145,7 @@ function dispHeaderMode(){
     document.getElementById('logger').innerHTML='Hi!, '+CURR_NAME;     
     document.getElementById("page_login").style.display="none"; 
     v_mphoto='data:image/png;base64,' + btoa(JBE_GETFLD('photo',DB_USER,'usercode',CURR_USER));
+    //let v_mphoto='data:image/png;base64,' + btoa(aryDB[i].photo);
   }
   document.getElementById('bar_avatar').src=v_mphoto;
   document.getElementById('owner').src=v_mphoto;

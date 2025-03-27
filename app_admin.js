@@ -641,12 +641,15 @@ function disp_editStaff(){
     }
 
     //alert(aryDB[i]['photo']);
-   
+    //let v_mphoto='data:image/png;base64,' + btoa(JBE_GETFLD('photo',aryDB,'usercode',CURR_USER));
+    let v_mphoto='data:image/png;base64,' + btoa(aryDB[i].photo);
+
     dtl+=
       '<div style="width:100%;height:40px;margin-top:10px;padding:0px;background:none;">'+
         '<div style="float:left;height:100%;width:45px;background:none;">'+         
           //'<img src="'+JBE_API+'upload/users/'+aryDB[i]['usercode']+'.jpg?'+n+'" class="asyncImage" style="float:left;height:100%;width:40px;border-radius:50%;border:2px solid black;background:none;"/>'+
-          '<img src="uploadz/'+aryDB[i]['usercode']+'.jpg?'+n+'" class="asyncImage" style="float:left;height:100%;width:40px;border-radius:50%;border:2px solid black;background:none;"/>'+
+          //'<img src="uploadz/'+aryDB[i]['usercode']+'.jpg?'+n+'" class="asyncImage" style="float:left;height:100%;width:40px;border-radius:50%;border:2px solid black;background:none;"/>'+
+          '<img src="'+v_mphoto+'" class="asyncImage" style="float:left;height:100%;width:40px;border-radius:50%;border:2px solid black;background:none;"/>'+
         '</div>'+
         '<div id="staff_name_width" style="float:left;height:100%;text-align:center;padding:2px;background:black;">'+
           '<div style="width:100%;height:50%;padding:0px;color:white;background:none;">'+aryDB[i]['username']+'</div>'+
