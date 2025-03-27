@@ -9,10 +9,12 @@ async function rest_api_start(){
   DB_DAILY=await readAllRecords('daily');
   DB_MONTHLY=await readAllRecords('monthly');
   DB_SIG=await readAllRecords('sig');  
-  console.log(DB_SIG.length);
+  console.log('DB_SIG',DB_SIG.length);
   await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); })
   GITHUB_TOKEN = DB_SIG[0].sys_pat.substring(3);
   console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
+  dispHeaderMode();
+
   let currentData = await getFile('dtr/daily.json');
   let data2=currentData.content;
   console.log('All Data',data2);
@@ -23,7 +25,7 @@ async function rest_api_start(){
     arr_ctr++;
   }
   console.log('Current content:',arr);  
-  dispHeaderMode();
+  
 }
 
 async function get_all_db_from_json(){  

@@ -50,7 +50,7 @@ function start_app(){
   
 
   //document.getElementById('online_status').innerHTML='';  
-  dispHeaderMode();
+  //dispHeaderMode();
   showMainPage();
  
   // Page is loaded
@@ -143,9 +143,14 @@ function dispHeaderMode(){
   }else{
     document.getElementById('logger').style.color='navy';
     document.getElementById('logger').innerHTML='Hi!, '+CURR_NAME;     
-    document.getElementById("page_login").style.display="none"; 
-    v_mphoto='data:image/png;base64,' + btoa(JBE_GETFLD('photo',DB_USER,'usercode',CURR_USER));
-    //let v_mphoto='data:image/png;base64,' + btoa(aryDB[i].photo);
+    document.getElementById("page_login").style.display="none";
+    for(var i=0;i<DB_USER.length;i++){
+      //console.log('seee',DB_USER[i].usercode,CURR_USER);
+      if(DB_USER[i].usercode==CURR_USER){
+        v_mphoto='data:image/png;base64,' + btoa(DB_USER[i].photo);
+        break;
+      }
+    }
   }
   document.getElementById('bar_avatar').src=v_mphoto;
   document.getElementById('owner').src=v_mphoto;
@@ -164,15 +169,6 @@ function showProfile(v){
   if(DB_USER.length==0 || !CURR_USER){
     return;
   }
-  //v_mphoto='upload/users/'+CURR_USER+'.jpg?'+n;
-  v_mphoto=JBE_API+'uploads/users/'+CURR_USER+'.jpg?'+n;
-  v_mphoto=JBE_API+'uploadz/'+CURR_USER+'.jpg?'+n;
-  if(!JBE_ONLINE){
-    //v_mphoto='data:image/png;base64,' + btoa(DB_USER[0]['photo']);
-  }
-   
-  document.getElementById('bar_avatar').src=v_mphoto;
-  document.getElementById('log_avatar').src=v_mphoto;
 }
 
 function showSystem(){ 
