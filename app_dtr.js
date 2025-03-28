@@ -295,7 +295,7 @@ function edit_dtr(row,f_print){
         '<div onclick="clear_dtr_entry('+row+')" style="float:left;width:25%;height:100%;background:none;">'+
           '<div class="class_footer">'+
             '<img src="gfx/jdele.png"  alt="home image" />'+
-            '<span>Clear Time</span>'+
+            '<span>Clear</span>'+
           '</div>'+
         '</div>'+
         '<div id="id_clk_text" onclick="clk_text('+row+')" style="display:'+iif(txt,'none','block')+';float:left;width:25%;height:100%;background:none;">'+

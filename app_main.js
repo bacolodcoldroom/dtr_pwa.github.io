@@ -964,13 +964,13 @@ function get_IDX_database(){
     await get_all_db_from_json();
     console.log('after');
     //getAllDataFromIDX();
-    /*
+    
     DB_DAILY=await readAllRecords('daily');
     DB_MONTHLY=await readAllRecords('monthly');
     DB_SIG=await readAllRecords('sig');
     DB_USER=await readAllRecords('user');
     console.log('clearing user :'+DB_USER.length);
-    */
+    
     snackBar('Data Reset Completed...');
     //dispHeaderMode();
   }  

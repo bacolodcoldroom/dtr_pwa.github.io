@@ -155,14 +155,15 @@ function save_dtr(row,v_work){
     console.log('ai:'+aryTime[j-1]);
   }
   //check t2 and t3 ////////////////////////////
-  if(aryTime[1] && aryTime[1] > '12:30'){ 
-    MSG_SHOW(vbOk,"ERROR: AM Departure Time","<center>Allowed time is less than or equal to 12:30 pm.</center>",function(){ document.getElementById('inp_t2').focus(); },function(){});    
-    return; 
+  //alert(format_12(aryTime[1]));
+  if(aryTime[1] && format_12(aryTime[1]) > '12:30'){ 
+    MSG_SHOW(vbOk,"WARNING: AM Departure Time","<center>Allowed time is less than or equal to 12:30 pm.</center>",function(){ document.getElementById('inp_t2').focus(); },function(){});    
+    //return; 
   }
   if(aryTime[2] && aryTime[2] < '12:31'){ 
     //snackBar('ERROR: PM Arrival Time: '+aryTime[2]); 
-    MSG_SHOW(vbOk,"ERROR: PM Arrival Time","<center>Time should be greater than 12:30</center>",function(){ document.getElementById('inp_t3').focus(); },function(){});    
-    return; 
+    MSG_SHOW(vbOk,"WARNING: PM Arrival Time","<center>Time should be greater than 12:30</center>",function(){ document.getElementById('inp_t3').focus(); },function(){});    
+    //return; 
   }
   //////////////////////////////////////
   document.getElementById('dtl_t1'+'_'+row).innerHTML=aryTime[0].replace(/^0+/, ""); 

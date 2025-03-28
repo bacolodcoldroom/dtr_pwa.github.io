@@ -125,26 +125,6 @@ function time_empty(txt,t1,t2,t3,t4){
   return rval;
 }
 
-async function xupload2server(){
-  if(!CURR_USER){
-    snackBar("Please Log In");
-    return;
-  }
-  
-  MSG_SHOW(vbYesNo,'CONFIRM:','Are you sure to Upload your Data?',function(){ 
-    const gistId = 'da82f09bb9ba93d717271ff93a5c3e6c';
-    const fileName = 'dtr_daily.json';
-    let fld='usercode';
-    let val=CURR_USER;  
-    const result = DB_DAILY.filter(item => 
-      item.usercode === val && !time_empty(item.txt,item.time1,item.time2,item.time3,item.time4)
-    );
-    //jeff_update_gistFile(gistId, fileName,result,fld,val);
-    jeff_update_File('dtr/daily.json',result,fld,val);
-    console.log(result);
-  },function(){});
-}
-
 async function upload2server(){
   if(!CURR_USER){
     snackBar("Please Log In");
@@ -156,7 +136,8 @@ async function upload2server(){
 function updownForm(jmode){
   let lb_mode='Upload'; let vgfx='jupload.png';  
   if(jmode==2){ lb_mode='Download';vgfx='jdownload.png'; }
-  let h=220;
+  let h=420;
+  if(JBE_MOBILE){ h=220; }
   let date=new Date();
   let dtl=     
     '<div id="div_updownForm" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;padding:10px;background-color:none;">'+     
@@ -177,7 +158,7 @@ function updownForm(jmode){
       '</div>'+
       '<div class="class_footer" style="float:left;width:50%;">'+
         '<div id="div_tot_entries"></div>'+
-        '<span id="div_tot_label" style="padding:5px;color:black;">Entries to '+lb_mode+'</span>'+
+        '<span id="div_tot_label" style="padding:5px;color:black;background:green;">Entries to '+lb_mode+'</span>'+
       '</div>'+
       '<div class="class_footer" style="float:right;width:25%;" onclick="JBE_CLOSEBOX()">'+
         '<img src="gfx/jclose.png" alt="call image" />'+
