@@ -276,7 +276,7 @@ function fm_admin(){
         '</div>'+                              
 
         '<hr style="margin-top:20px;">'+
-        '<div class="cls_system" onclick="get_IDX_database()" style="margin-top:10px;">'+
+        '<div class="cls_system" onclick="factoryReset()" style="margin-top:10px;">'+
           '<img src="gfx/jcategory.png" />'+
           '<span style="color:red;">Factory Reset</span>'+
         '</div>'+
@@ -376,8 +376,11 @@ function fm_profile(vmode){
   var userRow='';
   var userid='';
   var username='';
-  username2='';
-  fullname='';
+  var username2='';
+  var lastname='';
+  var firstname='';
+  var middlename='';
+  var fullname='';
   var pword='';
   var addrss='';
   var celno='';
@@ -401,6 +404,14 @@ function fm_profile(vmode){
     username=aryDB['username'];
     username2=aryDB['username2'];
     fullname=aryDB['fullname'];
+    //'Paul Steve Panakkal'.split(' '); // returns ["Paul", "Steve", "Panakkal"]
+    //'Paul Steve Panakkal'.split(' ').slice(0, -1).join(' '); // returns "Paul Steve"
+    //'Paul Steve Panakkal'.split(' ').slice(-1).join(' '); // returns "Panakkal"
+    lastname=extractNames(fullname).lastName;
+    firstname=extractNames(fullname).firstName;
+    middlename=extractNames(fullname).middleName;
+
+    console.log('lastname',lastname,firstname,middlename);
     addrss=aryDB['addrss'];
     celno=aryDB['celno'];
     //foto=aryDB['photo'];
@@ -456,14 +467,14 @@ function fm_profile(vmode){
           '</div>'+
          
           '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            '<span style="height:15px; width:100%; background:none;">Name 2</span>'+
-            '<input id="fname22" class="class_profile" type="text" placeholder="User Name2"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
+            '<span style="height:15px; width:100%; background:none;">Voice Name</span>'+
+            '<input id="fname22" class="class_profile" type="text" placeholder="Voice Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
                 'value="'+username2+'"/>'+           
           '</div>'+
          
           '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            '<span style="height:15px; width:100%; background:none;">Fullname</span>'+
-            '<input id="ffullname22" class="class_profile" type="text" placeholder="User Full Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
+            '<span style="height:15px; width:100%; background:none;">Full Name: [Last Name], [First Name] [Middle Name].</span>'+
+            '<input id="fullname" class="class_profile" type="text" placeholder="User Full Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
                 'value="'+fullname+'"/>'+           
           '</div>'+
 
@@ -504,6 +515,32 @@ function fm_profile(vmode){
 
   JBE_OPEN_VIEW(dtl,'My Profile','close_profile');
 }
+
+function extractNames(fullName) {
+  let lastName = "", firstName = "", middleName = "";
+  
+  // Check if the name is in "Last, First Middle" format
+  if (fullName.includes(",")) {
+      let parts = fullName.split(",");
+      lastName = parts[0].trim();
+      let firstMiddle = parts[1].trim().split(" ");
+      firstName = firstMiddle[0];
+      middleName = firstMiddle.slice(1).join(" ");
+  } else {
+      // Otherwise assume "First Middle Last" format
+      let parts = fullName.trim().split(" ");
+      if (parts.length === 2) {
+          [firstName, lastName] = parts;
+      } else if (parts.length > 2) {
+          firstName = parts[0];
+          lastName = parts[parts.length - 1];
+          middleName = parts.slice(-1).join(" ");
+      }
+  }
+  
+  return { firstName, middleName, lastName };
+}
+
 function chk_fld(u,p,vmode){
   if(vmode != 1) { return; };
   if(u=='' || p==''){
@@ -527,7 +564,7 @@ function close_profile(){
 function save_profile(){ 
   var vmode=document.getElementById('div_admin_profile').getAttribute('data-mode');
   var userRow=parseInt(document.getElementById('div_admin_profile').getAttribute('data-userRow'));
-  //alert('going to save. data mode:'+vmode+'\nuserRow: '+userRow);
+  //alert('going to save. data mode:'+vmode+'\nuserRow: '+userRow);  
 
   if(vmode==1){ GEO_MODE=0; }
   var profileImg=document.getElementById('bar_avatar').src;
@@ -536,7 +573,7 @@ function save_profile(){
   var p=document.getElementById('fpass2').value;
   var n=document.getElementById('fname2').value;
   var n2=document.getElementById('fname22').value;
-  var n2full=document.getElementById('ffullname22').value;
+  var fullname=document.getElementById('fullname').value;
   var a=document.getElementById('faddrss2').value;
   var c=document.getElementById('fcelno2').value; 
   var lat=document.getElementById('flat2').value; 
@@ -545,6 +582,10 @@ function save_profile(){
  
   //var foto=document.getElementById('img_eavatar'+vmode).getAttribute('data-img');
   var foto=document.getElementById('img_eavatar'+vmode).src;
+
+  let lastname=extractNames(fullname).lastName;
+  let firstname=extractNames(fullname).firstName;
+  let middlename=extractNames(fullname).middleName;
   
   //foto=profileImg;
   //alert('foto:'+foto);
@@ -576,7 +617,8 @@ function save_profile(){
     uploadNOW(THISFILE[0],photo,targetDIR,ob,false,false);
   } 
     */
-  rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,n2full,a,foto,c,lat,lng,d_active,0);
+
+  rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,lastname,firstname,middlename,a,foto,c,lat,lng,d_active,CURR_AXTYPE);
 }
  
 function update_curr_user(usercode,n){
@@ -625,7 +667,12 @@ function close_editStaff(){
 }
 
 function disp_editStaff(){ 
-  var aryDB=DB_USER; 
+  if(DB_USER.length==0){
+    snackBar('No Records....');
+    return;
+  }
+  console.log(DB_USER);
+  var aryDB=DB_USER;
   aryDB.sort(sortByMultipleKey(['usertype','username']));
   var n = new Date().toLocaleTimeString('it-IT');
   //document.getElementById('div_sel_orders').innerHTML=newOptionsHtml1; 

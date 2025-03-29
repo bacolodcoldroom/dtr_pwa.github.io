@@ -933,7 +933,7 @@ async function isAppOffline(timeout = 3000) {
   });
 }
 
-function get_IDX_database(){
+function factoryReset(){
   if(!CURR_USER){ 
     snackBar('Please Log In...');
     return;
@@ -945,32 +945,23 @@ function get_IDX_database(){
   }
   
 
-  MSG_SHOW(vbOkAbort,'DATA RESET:','<center>Going to Download Data from the Server.<br>Current Data will be replaced.<br><br>Are you sure to do this?</center>', function(){ do_get_data_server(); },function(){ return; });
+  MSG_SHOW(vbOkAbort,'DATA RESET:','<center>Going to Reset Database from the Server.<br>Current Data will be replaced.<br><br>Are you sure to do this?</center>', function(){ do_reset(); },function(){ return; });
   
-  async function do_get_data_server(){
-    //deleteDatabase(CURR_IDX_DB);
-    //initDb();
-    DB_DAILY=[];
+  async function do_reset(){
     DB_MONTHLY=[];
     DB_SIG=[];
     DB_USER=[];
     
-    await clearAllRecords('daily');
     await clearAllRecords('monthly');
     await clearAllRecords('sig');
     await clearAllRecords('user');    
     
-    console.log('before');
-    await get_all_db_from_json();
-    console.log('after');
-    //getAllDataFromIDX();
-    
-    DB_DAILY=await readAllRecords('daily');
-    DB_MONTHLY=await readAllRecords('monthly');
-    DB_SIG=await readAllRecords('sig');
-    DB_USER=await readAllRecords('user');
-    console.log('clearing user :'+DB_USER.length);
-    
+    let data=await getFile('dtr/sig.json'); DB_SIG=data.content; console.log('DB_SIG',DB_SIG);
+    let data_user=await getFile('dtr/user.json'); DB_USER=data_user.content; console.log('DB_USER',DB_USER);
+
+    saveDataToIDX(DB_SIG,2);
+    saveDataToIDX(DB_USER,3);
+
     snackBar('Data Reset Completed...');
     //dispHeaderMode();
   }  

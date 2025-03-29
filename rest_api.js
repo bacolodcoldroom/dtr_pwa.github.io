@@ -1,6 +1,8 @@
 //const token='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';
 async function rest_api_start(){  
   DB_USER=await readAllRecords('user'); 
+  console.log('>>> axtype',CURR_AXTYPE);
+  console.log('start db_user',DB_USER);
   if(DB_USER.length==0){
     MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.', function(){ get_all_db_from_json(); },function(){});
   }
@@ -17,19 +19,18 @@ async function rest_api_start(){
 
   let currentData = await getFile('dtr/daily.json');
   let data2=currentData.content;
-  console.log('All Data',data2);
+  //console.log('All Data',data2);
   let arr=[]; let arr_ctr=0;
   for(let i=0;i<data2.length;i++){
     if(data2[i].usercode != CURR_USER){ continue; }
     arr[arr_ctr]=data2[i];
     arr_ctr++;
   }
-  console.log('Current content:',arr);  
-  
+  console.log('Current content:',arr);    
 }
 
 async function get_all_db_from_json(){  
-  await fetch('./DBF/daily.json').then(res => res.json()).then(data => { DB_DAILY=data;saveDataToIDX(data,0); }) 
+  //await fetch('./DBF/daily.json').then(res => res.json()).then(data => { DB_DAILY=data;saveDataToIDX(data,0); }) 
   await fetch('./DBF/monthly.json').then(res => res.json()).then(data => { DB_MONTHLY=data;saveDataToIDX(data,1); })
   await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); })
   await fetch('./DBF/user.json').then(res => res.json()).then(data => { DB_USER=data;saveDataToIDX(data,3); })
@@ -77,7 +78,7 @@ function rest_api_chk_fld(u,p){
   }
 }
 
-async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,n2full,a,photo,c,lat,lng,d_active,usertype){
+async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,lastname,firstname,middlename,a,photo,c,lat,lng,d_active,usertype){  
   var jimg=photo;  
   if(photo){    
     await JBE_BLOB(n,jimg).then(result => jimg=result);
@@ -85,22 +86,32 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,n2full,a,ph
     jimg='';
   }
   var ob = {
-    id:userRow,
+    id:userRow, 
+    clientno:CURR_CLIENT,
     usercode:usercode,
     userid:u,
+    username:n,
+    username2:n2,
     pword:p,
-    username:n, 
-    username2:n2, 
-    fullname:n2full, 
-    addrss:a,     
-    photo:jimg,
+    fullname:fullname,
+    lastname:lastname,
+    firstname:firstname,
+    midname:middlename,
+    photo:'',    
+    usertype:usertype,
+    addrss:a,
     celno:c,
-    lat:lat,
-    lng:lng,
+    fb:'',
+    email:'',
     d_active:d_active,
-    usertype:usertype
+    lat:lat,
+    lng:lng
   };      
-  updateRecord(ob,'user','upd_save_profile');    
+  console.log('save:',lastname,':',firstname,':',middlename);
+  console.log(ob);
+  await jeff_update_File('dtr/user.json',ob,'usercode',CURR_USER);  
+  ob.photo=jimg;
+  updateRecord(ob,'user','upd_save_profile');      
   document.getElementById('admin_avatar').src=document.getElementById('img_eavatar'+vmode).src;
 }
   
@@ -136,17 +147,16 @@ async function upload2server(){
 function updownForm(jmode){
   let lb_mode='Upload'; let vgfx='jupload.png';  
   if(jmode==2){ lb_mode='Download';vgfx='jdownload.png'; }
-  let h=420;
-  if(JBE_MOBILE){ h=220; }
+  let h=220;
   let date=new Date();
   let dtl=     
     '<div id="div_updownForm" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;padding:10px;background-color:none;">'+     
       '<div style="width:100%;height:45%;padding:2px;background:'+JBE_CLOR+';">'+
-        '<div style="width:100%;height:50%;padding:3%;">From Date:</div>'+
+        '<div style="width:100%;height:50%;padding:10px;">From Date:</div>'+
         '<input id="d1" style="width:100%;height:50%;text-align:center;" onchange="chg_date_updownForm('+jmode+',d1.value,d2.value)" type="month" value="'+JBE_DATE_FORMAT(date,'YYYY-MM')+'"  placeholder="Date" />'+              
       '</div>'+
-      '<div style="margin-top:5%;width:100%;height:45%;padding:2px;background:'+JBE_CLOR+';">'+
-        '<div style="width:100%;height:50%;padding:3%;"> To Date:</div>'+
+      '<div style="margin-top:15px;width:100%;height:45%;padding:2px;background:'+JBE_CLOR+';">'+
+        '<div style="width:100%;height:50%;padding:10px;"> To Date:</div>'+
         '<input id="d2" style="width:100%;height:50%;text-align:center;" onchange="chg_date_updownForm('+jmode+',d1.value,d2.value)" type="month" value="'+JBE_DATE_FORMAT(date,'YYYY-MM')+'"  placeholder="Date" />'+              
       '</div>'+     
     '</div>';
@@ -157,8 +167,8 @@ function updownForm(jmode){
         '<span>'+lb_mode+'</span>'+
       '</div>'+
       '<div class="class_footer" style="float:left;width:50%;">'+
-        '<div id="div_tot_entries"></div>'+
-        '<span id="div_tot_label" style="padding:5px;color:black;background:green;">Entries to '+lb_mode+'</span>'+
+        '<div id="div_tot_entries" style="width:100%;height:50%;"></div>'+
+        '<span id="div_tot_label" style="width:100%;height:50%;text-align:center;padding:2px;font-size:12px;color:black;">Entries to '+lb_mode+'</span>'+
       '</div>'+
       '<div class="class_footer" style="float:right;width:25%;" onclick="JBE_CLOSEBOX()">'+
         '<img src="gfx/jclose.png" alt="call image" />'+
@@ -259,14 +269,14 @@ async function do_download(d1,d2){
   let s_date=JBE_DATE_FORMAT(d1+'-01','YYYY-MM-DD');
   let e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
 
-  console.log('download: s_date,e_date',s_date,e_date);
+  //console.log('download: s_date,e_date',s_date,e_date);
     
   //let tbl_daily = await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
   let currentData = await getFile('dtr/daily.json');
   let tbl_daily=currentData.content;
   let arr=[]; let arr_ctr=0;
-  console.log(s_date+' vs '+e_date);
-  console.log('tbl_daily',tbl_daily);
+  //console.log(s_date+' vs '+e_date);
+  //console.log('tbl_daily',tbl_daily);
   for(var i=0;i<tbl_daily.length;i++){
     if(tbl_daily[i].usercode != CURR_USER){ continue; }
     if((JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') < s_date) || (JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') > e_date)){ continue; }
@@ -274,7 +284,7 @@ async function do_download(d1,d2){
     arr[arr_ctr]=tbl_daily[i];
     arr_ctr++;
   }
-  console.log('new arr:',arr);
+  //console.log('new arr:',arr);
   DB_DAILY=arr;
   saveDataToIDX(arr,0);
   snackBar('Download Successful...');

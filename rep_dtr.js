@@ -211,7 +211,7 @@ function save_dtr(row,v_work){
   
 
   save_entry(row,v_date,CURR_USER,aryTime[0], aryTime[1], aryTime[2], aryTime[3],dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
-  ref_ctr(false);
+  ref_ctr(ctr,false);
 }
 
 function format_12(timeString){
@@ -318,8 +318,8 @@ function ret_dtr(vDate,f_print){
   v_width='320px';
   let max_days=31;
   let aryUSER=JBE_GETARRY(DB_USER,'usercode',CURR_USER);
+  console.log('aryUSER',aryUSER);
   let empname=aryUSER.lastname+', '+aryUSER.firstname+' '+aryUSER.midname.substring(0,1)+'.';
-
   //let max_days=document.getElementById('dv_dtr').getAttribute('data-maxdays');
   var dtl=
   '<div style="width:'+v_width+';height:'+iif(f_print,960,730)+'px;margin:0 auto;font-family:Lato, sans-serif;text-align:left;border:1px solid white;">'+

@@ -37,7 +37,7 @@ function initDb() {
     db.createObjectStore('daily', { keyPath:['usercode','date'] });
     db.createObjectStore('monthly', { keyPath:'id' });    
     db.createObjectStore('sig', { keyPath:'id' });    
-    db.createObjectStore('user', { keyPath:'id' });    
+    db.createObjectStore('user', { keyPath:'usercode' });    
     //db.createObjectStore('TranMeter', { keyPath:'meterno' });
     
     dbReady = true;
@@ -230,12 +230,12 @@ function jdata(){
   MSG_SHOW(vbOk,"DATA:",jd,function(){},function(){}); 
 }
 
-function saveDataToIDX(aryDB,n) {    
+async function saveDataToIDX(aryDB,n) {    
   JBE_STORE_IDX[n]['numrec']=aryDB.length;
   console.log(JBE_STORE_IDX[n]['flename']+' ::: '+aryDB.length+'::: saveDataToIDX '+n);
   for(var i=0;i<aryDB.length;i++){     
     //if(aryDB[i]['clientno']!=CURR_CLIENT){ continue; }
-    putDataToIDX(i,aryDB,n);
+    await putDataToIDX(i,aryDB,n);
   }
 }
 async function putDataToIDX(i,aryDB,n){ 
@@ -277,12 +277,14 @@ async function putDataToIDX(i,aryDB,n){
       tiktok:aryDB[i]['tiktok']
     }; 
   }else if(n==3){ //user
+    /*
     var jimg='uploadz/'+aryDB[i]['photo'];  
     if(aryDB[i]['photo']){    
       await JBE_BLOB(n,jimg).then(result => jimg=result);
     }else{
       jimg='';
     }
+    */
     ob = {
       id:i,
       clientno:aryDB[i]['clientno'],
@@ -295,7 +297,8 @@ async function putDataToIDX(i,aryDB,n){
       lastname:aryDB[i]['lastname'],
       firstname:aryDB[i]['firstname'],
       midname:aryDB[i]['midname'],
-      photo:jimg,
+      //photo:jimg,
+      photo:aryDB[i]['photo'],
       usertype:aryDB[i]['usertype'],
       addrss:aryDB[i]['addrss'],
       celno:aryDB[i]['celno'],
@@ -317,7 +320,8 @@ async function putDataToIDX(i,aryDB,n){
   }
 
   trans.oncomplete = function(e) {
-    //alert(n+': putToIDX '+JBE_STORE_IDX[n]['flename']+' with value '+JBE_STORE_IDX[n]['numrec']);  
+    //console.log(n+': putToIDX '+JBE_STORE_IDX[n]['flename']+' with value '+JBE_STORE_IDX[n]['numrec']);  
+    //console.log('--------------');
     //alert(xox);
   }
 }

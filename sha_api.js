@@ -13,13 +13,14 @@ const REPO_NAME = 'JDB';
 var apiBase = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/`;
 
 async function getFile(path) {
+    console.log('>>>>>getfile',path);
     try {
         const response = await fetch(apiBase+`${path}`, {
             headers: { Authorization: `token ${GITHUB_TOKEN}` }
         });
         if (!response.ok) throw new Error(`Failed to fetch file: ${response.status}`);
         const data = await response.json();        
-        return { content: JSON.parse(atob(data.content)), sha: data.sha };        
+        return { content: JSON.parse(atob(data.content)), sha: data.sha };
     } catch (error) {
         console.error("Error fetching file:", error);
     }

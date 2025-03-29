@@ -197,22 +197,3 @@ async function fetchTextPortion(url, start, end) {
       throw error; // Re-throw for caller to handle
   }
 }
-
-function xxdeleteDatabase(dbName) {
-  const request = indexedDB.deleteDatabase(dbName);
-
-  request.onerror = function(event) {
-    console.error(`Error deleting database "${dbName}":`, event.target.error);
-  };
-
-  request.onsuccess = function(event) {
-    console.log(`Database "${dbName}" deleted successfully.`);
-  };
-
-  request.onblocked = function(event) {
-    console.warn(`Deletion of database "${dbName}" is blocked. Close other tabs or windows that may be using this database.`);
-  };
-}
-
-// Example usage:
-//deleteDatabase("myDatabase");

@@ -39,22 +39,28 @@ function disp_user_time(vDate,f_print){
   if(!f_print && vDate==JBE_DATE_FORMAT(new Date(),'YYYY-MM')){ fg='white'; bg=JBE_CLOR4; }
   document.getElementById('date_dtr').style.color=fg;
   document.getElementById('date_dtr').style.backgroundColor=bg;
-  
+  let ctr=0;
   for(var i=0;i<DB_DAILY.length;i++){
     if(DB_DAILY[i].usercode != CURR_USER){ continue; }   
     if(JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM') != vDate){ continue; }
 
     let v_txt=DB_DAILY[i].txt;  
+    let v_t1=DB_DAILY[i].time1;  
+    let v_t2=DB_DAILY[i].time2;  
+    let v_t3=DB_DAILY[i].time3;  
+    let v_t4=DB_DAILY[i].time4;  
+    if(time_empty(v_txt,v_t1,v_t2,v_t3,v_t4)){ continue; } 
           
     let vdate=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM-DD');
     let vday=parseInt(vdate.substring(8,10));  
     
-    //*** CHECK IF NON WORKING DAY */    
+    //*** CHECK IF NON WORKING DAY */        
     let f_nowork=parseInt(document.getElementById('dtl_'+vday).getAttribute('data-work'));
-    //console.log(f_nowork);
+    console.log('f_nowork',f_nowork);
     if( f_nowork != -1){
       document.getElementById('dtl_xx_'+vday).style.display='none';
     }
+    
     
     //document.getElementById('dtl_ymd'+'_'+vday).innerHTML=vdate;
     if(DB_DAILY[i].time1){ document.getElementById('dtl_t1'+'_'+vday).innerHTML=DB_DAILY[i].time1.replace(/^0+/, "")+iif(f_print,' am',''); }
@@ -83,16 +89,15 @@ function disp_user_time(vDate,f_print){
       document.getElementById('dtl_txt'+vday).style.width=dtl_txt_width;
       document.getElementById('dtl_txt'+vday).style.fontSize=dtl_txt_fsize;
     }
-
+    ctr++;
   }
-  ref_ctr(f_print);
+  ref_ctr(ctr,f_print);
 }
 
 function chg_dtr_month(v){
   //alert('jbe: '+v);
   document.getElementById('dv_ret_dtr').innerHTML=ret_dtr(v,false);
   querySel_dtr();
-  //disp_month(JBE_DATE_FORMAT(v,'YYYY-MM'));
   disp_month(v);
   disp_user_time(v,false);
 }
@@ -376,7 +381,8 @@ async function update_db(){
   JBE_CLOSEBOX();   
 }
 
-function ref_ctr(f_print){
+function xref_ctr(f_print){
+  console.clear();
   //alert(f_print); 
   let ctr=0;  
   for(var i=1;i<31;i++){
@@ -395,7 +401,13 @@ function ref_ctr(f_print){
     if(vtimes.trim().length==0 && txt.trim().length==0){ continue; }
     
     ctr++;
+    console.log(i,'line:',ctr);
   }
+  if(f_print){ ctr=0; }
+  document.getElementById('div_total').innerHTML=ctr;
+}
+
+function ref_ctr(ctr,f_print){  
   if(f_print){ ctr=0; }
   document.getElementById('div_total').innerHTML=ctr;
 }
