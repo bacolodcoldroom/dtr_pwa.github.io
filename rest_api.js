@@ -109,7 +109,9 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
   };      
   console.log('save:',lastname,':',firstname,':',middlename);
   console.log(ob);
+  showProgress(true);
   await jeff_update_File('dtr/user.json',ob,'usercode',CURR_USER);  
+  showProgress(false);
   ob.photo=jimg;
   updateRecord(ob,'user','upd_save_profile');      
   document.getElementById('admin_avatar').src=document.getElementById('img_eavatar'+vmode).src;
