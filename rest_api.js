@@ -88,7 +88,6 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
   console.log(photo.substring(0,11));
   var jimg=photo;  
   if(JBE_CHK_BASE64(photo)){    
-    alert('yes');
     await JBE_BLOB(n,jimg).then(result => jimg=result);
   }else{
     jimg='';
@@ -209,28 +208,17 @@ async function chg_date_updownForm(jmode,d1,d2){
   let ctr=0;
 
   if(jmode==1){ //upload
-    for(var i=0;i<DB_DAILY.length;i++){
-      if(DB_DAILY[i].usercode !== CURR_USER){ continue; }
-      let vdate=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM-DD');
-      if(vdate < s_date || vdate > e_date){ continue; }
-
-      //console.log(i,'vdate',vdate);
-      ctr++;
-    }  
+    let result = DB_DAILY.filter(item => 
+      item.usercode === CURR_USER && (JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') >= s_date && JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') <= e_date) && !time_empty(item.txt,item.time1,item.time2,item.time3,item.time4) 
+    );
+    ctr=result.length;
   }else if(jmode==2){
     let currentData = await getFile('dtr/daily.json'); 
     let tbl_daily=currentData.content;
-    //console.log(tbl_daily);
-    //console.log(s_date,'tbl_daily',tbl_daily.length);
-
-    for(var i=0;i<tbl_daily.length;i++){
-      if(tbl_daily[i].usercode !== CURR_USER){ continue; }
-      let vdate=JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD');
-      if(vdate < s_date || vdate > e_date){ continue; }
-
-      //console.log(i,'vdate',vdate,tbl_daily[i].usercode);
-      ctr++;
-    }
+    let result = tbl_daily.filter(item => 
+      item.usercode === CURR_USER && (JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') >= s_date && JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') <= e_date) && !time_empty(item.txt,item.time1,item.time2,item.time3,item.time4) 
+    );
+    ctr=result.length;
   }
   document.getElementById('div_tot_entries').innerHTML=ctr;
 }
@@ -259,19 +247,23 @@ function do_upload(d1,d2){
   let e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
   console.log('UPLOAD: s_date,e_date',s_date,e_date);
 
-  MSG_SHOW(vbYesNo,'CONFIRM:','Are you sure to Upload your Data?',function(){ 
-    let fld='usercode';
-    let val=CURR_USER;  
-    const result = DB_DAILY.filter(item => 
-      item.usercode === val && (JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') >= s_date && JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') <= e_date) && !time_empty(item.txt,item.time1,item.time2,item.time3,item.time4) 
-    );
-    console.log('For Upload ------:',result);
-    //jeff_update_gistFile(gistId, fileName,result,fld,val);
-    jeff_update_File('dtr/daily.json',result,fld,val);
-    console.log(result);
-    snackBar('Upload Successful...');    
-  },function(){ return; });
+  MSG_SHOW(vbYesNo,'CONFIRM:','Are you sure to Upload your Data?',function(){ do2_upload(); },function(){ return; });
   JBE_CLOSEBOX();
+}
+
+async function do2_upload(){
+  let fld='usercode';
+  let val=CURR_USER;  
+  const result = DB_DAILY.filter(item => 
+    item.usercode === val && (JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') >= s_date && JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') <= e_date) && !time_empty(item.txt,item.time1,item.time2,item.time3,item.time4) 
+  );
+  showProgress(true);
+  console.log('For Upload ------:',result);
+  //jeff_update_gistFile(gistId, fileName,result,fld,val);
+  await jeff_update_File('dtr/daily.json',result,fld,val);
+  showProgress(false);
+  //console.log(result);
+  snackBar('Upload Successful...');    
 }
 
 async function do_download(d1,d2){    
@@ -285,14 +277,9 @@ async function do_download(d1,d2){
   let s_date=JBE_DATE_FORMAT(d1+'-01','YYYY-MM-DD');
   let e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
 
-  //console.log('download: s_date,e_date',s_date,e_date);
-    
-  //let tbl_daily = await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');
   let currentData = await getFile('dtr/daily.json');
   let tbl_daily=currentData.content;
   let arr=[]; let arr_ctr=0;
-  //console.log(s_date+' vs '+e_date);
-  //console.log('tbl_daily',tbl_daily);
   for(var i=0;i<tbl_daily.length;i++){
     if(tbl_daily[i].usercode != CURR_USER){ continue; }
     if((JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') < s_date) || (JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') > e_date)){ continue; }
@@ -300,7 +287,6 @@ async function do_download(d1,d2){
     arr[arr_ctr]=tbl_daily[i];
     arr_ctr++;
   }
-  //console.log('new arr:',arr);
   DB_DAILY=arr;
   saveDataToIDX(arr,0);
   snackBar('Download Successful...');

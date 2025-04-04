@@ -91,7 +91,7 @@ function disp_user_time(vDate,f_print){
     }
     ctr++;
   }
-  ref_ctr(ctr,f_print);
+  ref_ctr(f_print);
 }
 
 function chg_dtr_month(v){
@@ -372,7 +372,6 @@ function save_entry(row,vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_t
     txt_fsize:dtl_txt_fsize
   };
   updateRecord(ob,'daily','update_db'); 
-  //addEntry('dtr/daily.json',ob);
 }
 
 async function update_db(){
@@ -381,33 +380,18 @@ async function update_db(){
   JBE_CLOSEBOX();   
 }
 
-function xref_ctr(f_print){
-  console.clear();
-  //alert(f_print); 
-  let ctr=0;  
-  for(var i=1;i<31;i++){
-    /*
-    if(DB_DAILY[i].usercode != CURR_USER){ continue; }
-    if(JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM') != date_dtr.value){ continue; }
-    let vtimes=DB_DAILY[i].time1+DB_DAILY[i].time2+DB_DAILY[i].time3+DB_DAILY[i].time4;
-    if(vtimes.trim().length==0 && DB_DAILY[i].txt.trim().length==0){ continue; }
-    */
-    let txt=document.getElementById('dtl_txt'+i).innerHTML;
+
+function ref_ctr(f_print){  
+  let ctr=0;
+  for(var i=1;i<=31;i++){
     let t1=document.getElementById('dtl_t1_'+i).innerHTML;
     let t2=document.getElementById('dtl_t2_'+i).innerHTML;
     let t3=document.getElementById('dtl_t3_'+i).innerHTML;
     let t4=document.getElementById('dtl_t4_'+i).innerHTML;
-    let vtimes=t1+t2+t3+t4;
-    if(vtimes.trim().length==0 && txt.trim().length==0){ continue; }
-    
+    let txt=document.getElementById('dtl_txt'+i).innerHTML;
+    if(time_empty(txt,t1,t2,t3,t4)){ continue; }
     ctr++;
-    console.log(i,'line:',ctr);
   }
-  if(f_print){ ctr=0; }
-  document.getElementById('div_total').innerHTML=ctr;
-}
-
-function ref_ctr(ctr,f_print){  
   if(f_print){ ctr=0; }
   document.getElementById('div_total').innerHTML=ctr;
 }
