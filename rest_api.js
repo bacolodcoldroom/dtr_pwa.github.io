@@ -14,7 +14,7 @@ async function rest_api_start(){
   console.log('DB_SIG',DB_SIG.length);
   await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); })
   GITHUB_TOKEN = DB_SIG[0].sys_pat.substring(3);
-  console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
+  //console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
   dispHeaderMode();
 
   let currentData = await getFile('dtr/daily.json');
@@ -78,9 +78,17 @@ function rest_api_chk_fld(u,p){
   }
 }
 
+function JBE_CHK_BASE64(img){
+  let rval=false;
+  if(img.substring(0,11)=='data:image/'){ rval=true; }
+  return rval;
+}
+
 async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,lastname,firstname,middlename,a,photo,c,lat,lng,d_active,usertype){  
+  console.log(photo.substring(0,11));
   var jimg=photo;  
-  if(photo){    
+  if(JBE_CHK_BASE64(photo)){    
+    alert('yes');
     await JBE_BLOB(n,jimg).then(result => jimg=result);
   }else{
     jimg='';
@@ -97,7 +105,7 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
     lastname:lastname,
     firstname:firstname,
     midname:middlename,
-    photo:'',    
+    photo:photo,    
     usertype:usertype,
     addrss:a,
     celno:c,
@@ -107,19 +115,21 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
     lat:lat,
     lng:lng
   };      
+
+  showProgress(true);
   console.log('save:',lastname,':',firstname,':',middlename);
   console.log(ob);
-  showProgress(true);
   await jeff_update_File('dtr/user.json',ob,'usercode',CURR_USER);  
-  showProgress(false);
   ob.photo=jimg;
-  updateRecord(ob,'user','upd_save_profile');      
-  document.getElementById('admin_avatar').src=document.getElementById('img_eavatar'+vmode).src;
+  await updateRecord(ob,'user','upd_save_profile'); //saveDataToIDX(DB_USER,3);      
+  showProgress(false);
+  //document.getElementById('admin_avatar').src=document.getElementById('img_eavatar'+vmode).src;  
+  document.getElementById('admin_avatar').src=photo;
 }
   
 async function upd_save_profile(){  
   DB_USER=await readAllRecords('user');
-  console.log(DB_USER);
+  console.log('upd_save_profile',DB_USER);
   dispHeaderMode();
   JBE_CLOSE_VIEW();
 }
@@ -194,30 +204,34 @@ async function chg_date_updownForm(jmode,d1,d2){
 
   let s_date=JBE_DATE_FORMAT(d1+'-01','YYYY-MM-DD');
   let e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
+  console.log(s_date,' vs ',e_date);
 
   let ctr=0;
 
   if(jmode==1){ //upload
     for(var i=0;i<DB_DAILY.length;i++){
-      if(DB_DAILY[i].usercode != CURR_USER){ continue; }
-      let vdate=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM-DD');    
-      if( vdate < s_date || vdate > e_date){ continue; }
+      if(DB_DAILY[i].usercode !== CURR_USER){ continue; }
+      let vdate=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM-DD');
+      if(vdate < s_date || vdate > e_date){ continue; }
 
-      console.log(i,'vdate',vdate);
+      //console.log(i,'vdate',vdate);
       ctr++;
     }  
   }else if(jmode==2){
-    //let tbl_daily = await jeff_get_gistFile('dtr_daily.json','da82f09bb9ba93d717271ff93a5c3e6c');    
-    let currentData = await getFile('dtr/daily.json');
+    let currentData = await getFile('dtr/daily.json'); 
     let tbl_daily=currentData.content;
+    //console.log(tbl_daily);
+    //console.log(s_date,'tbl_daily',tbl_daily.length);
 
     for(var i=0;i<tbl_daily.length;i++){
-      if(tbl_daily[i].usercode != CURR_USER){ continue; }
-      if((JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') < s_date) || (JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD') > e_date)){ continue; }      
+      if(tbl_daily[i].usercode !== CURR_USER){ continue; }
+      let vdate=JBE_DATE_FORMAT(tbl_daily[i].date,'YYYY-MM-DD');
+      if(vdate < s_date || vdate > e_date){ continue; }
+
+      //console.log(i,'vdate',vdate,tbl_daily[i].usercode);
       ctr++;
     }
   }
-
   document.getElementById('div_tot_entries').innerHTML=ctr;
 }
 

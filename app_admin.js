@@ -617,7 +617,7 @@ function save_profile(){
     uploadNOW(THISFILE[0],photo,targetDIR,ob,false,false);
   } 
     */
-
+  console.log('foto',foto);
   rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,lastname,firstname,middlename,a,foto,c,lat,lng,d_active,CURR_AXTYPE);
 }
  

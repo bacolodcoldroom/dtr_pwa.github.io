@@ -5,7 +5,7 @@ const REPO_NAME = 'JDB';
 var apiBase = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/`;
 
 async function getFile(path) {
-    console.log('>>>>>getfile',path);
+    
     try {
         const response = await fetch(apiBase+`${path}`, {
             headers: { Authorization: `token ${GITHUB_TOKEN}` }
@@ -13,7 +13,10 @@ async function getFile(path) {
         if (!response.ok) throw new Error(`Failed to fetch file: ${response.status}`);
         const data = await response.json();        
         //return { content: JSON.parse(atob(data.content)), sha: data.sha };
-        return { content: JSON.parse(decodeURIComponent(escape(atob(data.content)))), sha: data.sha };
+        //return { content: JSON.parse(decodeURIComponent(escape(atob(data.content)))), sha: data.sha };
+        const finalData=JSON.parse(decodeURIComponent(escape(atob(data.content))));
+        //console.log('>>>>>getfile',path,finalData);
+        return { content: finalData, sha: data.sha };
     } catch (error) {
         console.error("Error fetching file:", error);
     }
@@ -89,11 +92,11 @@ async function jeff_update_File(fileName,newData,fld,val){
   try {
     const { content, sha } = await getFile(fileName);
     const filteredData = content.filter(record => String(record[fld]) !== val);
-    console.log('filteredData',filteredData);    
+    //console.log('filteredData',filteredData);    
     const finalData = filteredData.concat(newData); 
     // Commit the updated array back to the file with a commit message.
     await updateFile(fileName,finalData, `Deleted item by value: ${val}`, sha);
-    console.log('finalData',finalData);    
+    //console.log('finalData',finalData);    
     speakText('Data Uploaded to Server');
   } catch (error) {
     MSG_SHOW(vbOk,"ERROR:",error.message,function(){},function(){});

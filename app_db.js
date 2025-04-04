@@ -231,10 +231,12 @@ function jdata(){
 }
 
 async function saveDataToIDX(aryDB,n) {    
+  //console.log('saveDataToIDX',JBE_STORE_IDX[n].flename, aryDB.length);
   JBE_STORE_IDX[n]['numrec']=aryDB.length;
   console.log(JBE_STORE_IDX[n]['flename']+' ::: '+aryDB.length+'::: saveDataToIDX '+n);
   for(var i=0;i<aryDB.length;i++){     
     //if(aryDB[i]['clientno']!=CURR_CLIENT){ continue; }
+    //console.log((i+1)+'/'+aryDB.length);
     await putDataToIDX(i,aryDB,n);
   }
 }
@@ -276,7 +278,7 @@ async function putDataToIDX(i,aryDB,n){
       license:aryDB[i]['license'],
       tiktok:aryDB[i]['tiktok']
     }; 
-  }else if(n==3){ //user
+  }else if(n==3){ //user    
     /*
     var jimg='uploadz/'+aryDB[i]['photo'];  
     if(aryDB[i]['photo']){    
@@ -285,6 +287,14 @@ async function putDataToIDX(i,aryDB,n){
       jimg='';
     }
     */
+
+    let jimg=aryDB[i]['photo'];  
+    if(JBE_CHK_BASE64(jimg)){    
+      await JBE_BLOB(n,jimg).then(result => jimg=result);
+    }else{
+      jimg='';
+    }
+
     ob = {
       id:i,
       clientno:aryDB[i]['clientno'],
@@ -297,8 +307,8 @@ async function putDataToIDX(i,aryDB,n){
       lastname:aryDB[i]['lastname'],
       firstname:aryDB[i]['firstname'],
       midname:aryDB[i]['midname'],
-      //photo:jimg,
-      photo:aryDB[i]['photo'],
+      photo:jimg,
+      //photo:aryDB[i]['photo'],
       usertype:aryDB[i]['usertype'],
       addrss:aryDB[i]['addrss'],
       celno:aryDB[i]['celno'],
@@ -310,7 +320,7 @@ async function putDataToIDX(i,aryDB,n){
     };
   }
 
-  console.log('>>> putDataToIDX: flename: '+JBE_STORE_IDX[n]['flename']);
+  console.log(i,'>>> putDataToIDX: flename: ',JBE_STORE_IDX[n]['flename'],ob.username);
   var trans = db.transaction([JBE_STORE_IDX[n]['flename']], 'readwrite');
   var addReq = trans.objectStore(JBE_STORE_IDX[n]['flename']).put(ob);
   addReq.onerror = function(e) {

@@ -142,7 +142,7 @@ async function clearAllRecords(tbl) {
 
       request.onsuccess = (event) => {
         let jres=event.target.result;
-        console.log(event.target.result);
+        //console.log(event.target.result);
         resolve(jres);
       };
 
