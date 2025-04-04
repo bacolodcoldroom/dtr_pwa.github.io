@@ -948,6 +948,7 @@ function factoryReset(){
   MSG_SHOW(vbOkAbort,'DATA RESET:','<center>Going to Reset Database from the Server.<br>Current Data will be replaced.<br><br>Are you sure to do this?</center>', function(){ do_reset(); },function(){ return; });
   
   async function do_reset(){
+    showProgress(true);
     console.clear();
     DB_MONTHLY=[];
     DB_SIG=[];
@@ -960,11 +961,11 @@ function factoryReset(){
     let data=await getFile('dtr/sig.json'); DB_SIG=data.content; console.log('DB_SIG',DB_SIG);
     let data_user=await getFile('dtr/user.json'); DB_USER=data_user.content; console.log('DB_USER',DB_USER);
 
-    saveDataToIDX(DB_SIG,2);
-    saveDataToIDX(DB_USER,3);
+    await saveDataToIDX(DB_SIG,2);
+    await saveDataToIDX(DB_USER,3);
+    showProgress(false);
 
     snackBar('Data Reset Completed...');
-    //dispHeaderMode();
   }  
 }
 
