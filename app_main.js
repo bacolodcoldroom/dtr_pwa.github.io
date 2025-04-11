@@ -133,6 +133,22 @@ function showMainPage(){
   dispMenu(true,vmenu);
 }
 
+function xdispHeaderMode(){
+  //var n = new Date().toLocaleTimeString('it-IT');
+  //let v_mphoto='gfx/avatar.png'; 
+  if(!CURR_USER){
+    document.getElementById('logger').style.color='navy';
+    document.getElementById('logger').innerHTML="Please Log In";
+    document.getElementById("page_login").style.display="none";     
+  }else{
+    document.getElementById('logger').style.color='navy';
+    document.getElementById('logger').innerHTML='Hi!, '+CURR_NAME;     
+    document.getElementById("page_login").style.display="none";    
+  }
+  //document.getElementById('bar_avatar').src=v_mphoto;
+  //document.getElementById('owner').src=v_mphoto;
+}
+
 function dispHeaderMode(){
   //var n = new Date().toLocaleTimeString('it-IT');
   let v_mphoto='gfx/avatar.png'; 

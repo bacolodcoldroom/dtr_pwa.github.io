@@ -604,20 +604,7 @@ function save_profile(){
     MSG_SHOW(vbOk,"ERROR: Pls. complete the form.",vmsg,function(){},function(){});
     return;
   }
-   /*
-  var photo=usercode+'.jpg';  
- 
-  var targetDIR='uploadz/'; 
-  if(THISFILE[0]){
-    let ob = [
-      { "div":"bar_avatar" },
-      { "div":"admin_avatar" }
-    ];
-    if(vmode==1){ ob=[]; }
-    uploadNOW(THISFILE[0],photo,targetDIR,ob,false,false);
-  } 
-    */
-  console.log('foto',foto);
+  //console.log('foto',foto);
   rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,lastname,firstname,middlename,a,foto,c,lat,lng,d_active,CURR_AXTYPE);
 }
  
@@ -666,7 +653,7 @@ function close_editStaff(){
   mnu_fm_admin();
 }
 
-function disp_editStaff(){ 
+async function disp_editStaff(){ 
   if(DB_USER.length==0){
     snackBar('No Records....');
     return;
@@ -676,6 +663,7 @@ function disp_editStaff(){
   aryDB.sort(sortByMultipleKey(['usertype','username']));
   var n = new Date().toLocaleTimeString('it-IT');
   //document.getElementById('div_sel_orders').innerHTML=newOptionsHtml1; 
+  showProgress(true);
   var dtl='';
   for(var i=0;i<aryDB.length;i++){ 
     var newOptionsHtml='';
@@ -686,10 +674,9 @@ function disp_editStaff(){
         newOptionsHtml += '<option value='+y+'> Level '+y+'</option>';  
       }
     }
-
-    //alert(aryDB[i]['photo']);
-    //let v_mphoto='data:image/png;base64,' + btoa(JBE_GETFLD('photo',aryDB,'usercode',CURR_USER));
-    let v_mphoto='data:image/png;base64,' + btoa(aryDB[i].photo);
+    
+    let v_mphoto=await jeff_get_GitHubImage('dtr/images/'+aryDB[i].usercode+'.jpg');
+    if(v_mphoto==null){ v_mphoto='gfx/avatar.png'; }
 
     dtl+=
       '<div style="width:100%;height:40px;margin-top:10px;padding:0px;background:none;">'+
@@ -717,6 +704,7 @@ function disp_editStaff(){
       '</div>';
   }  
   document.getElementById('div_editStaff').innerHTML=dtl;
+  showProgress(false);
 }
 
 function chgLevel(usercode,usertype){ 
