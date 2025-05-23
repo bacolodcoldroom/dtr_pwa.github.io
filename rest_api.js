@@ -1,10 +1,5 @@
 //const token='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';
 async function rest_api_start(){  
-  if(!JBE_MOBILE){
-    document.getElementById('wrapper').innerHTML=
-    '<div style="height:auto;width:100%;padding:25% 0 0 0;font-size:56px;font-weight:bold;text-align:center;">This software can only run in mobile phones.</div>';
-    return;
-  }
   DB_USER=await readAllRecords('user'); 
   console.log('>>> axtype',CURR_AXTYPE);
   console.log('start db_user',DB_USER);
@@ -12,7 +7,7 @@ async function rest_api_start(){
     MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.', function(){ get_all_db_from_json(); },function(){});
   }
   //getAllDataFromIDX();
-  
+
   DB_DAILY=await readAllRecords('daily');
   DB_MONTHLY=await readAllRecords('monthly');
   DB_SIG=await readAllRecords('sig');  
@@ -31,7 +26,36 @@ async function rest_api_start(){
     arr[arr_ctr]=data2[i];
     arr_ctr++;
   }
+
+  return;
+  
+  DB_DAILY=await readAllRecords('daily');
+  DB_MONTHLY=await readAllRecords('monthly');
+  DB_SIG=await readAllRecords('sig');  
+  console.log('DB_SIG',DB_SIG.length);
+  await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); })
+  GITHUB_TOKEN = DB_SIG[0].sys_pat.substring(3);
+  //console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
+  dispHeaderMode();
+  /*
+  let currentData = await getFile('dtr/daily.json');
+  let data2=currentData.content;
+  //console.log('All Data',data2);
+  let arr=[]; let arr_ctr=0;
+  for(let i=0;i<data2.length;i++){
+    if(data2[i].usercode != CURR_USER){ continue; }
+    arr[arr_ctr]=data2[i];
+    arr_ctr++;
+  }
   //console.log('Current content:',arr);    
+  */
+  let v_mphoto=await jeff_get_GitHubImage('dtr/images/'+CURR_USER+'.jpg');
+  //console.log('v_mphoto',v_mphoto);
+  if(v_mphoto==null){
+    v_mphoto='gfx/avatar.png';
+  }
+  document.getElementById('bar_avatar').src=v_mphoto;
+  document.getElementById('owner').src=v_mphoto;
 }
 
 async function get_all_db_from_json(){  
@@ -109,7 +133,7 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
     lastname:lastname,
     firstname:firstname,
     midname:middlename,
-    photo:photo,    
+    photo:jimg,    
     usertype:usertype,
     addrss:a,
     celno:c,
@@ -123,12 +147,15 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
   showProgress(true);
   console.log('save:',lastname,':',firstname,':',middlename);
   console.log(ob);
-  await jeff_update_File('dtr/user.json',ob,'usercode',CURR_USER);  
-  ob.photo=jimg;
   await updateRecord(ob,'user','upd_save_profile'); //saveDataToIDX(DB_USER,3);      
-  showProgress(false);
-  //document.getElementById('admin_avatar').src=document.getElementById('img_eavatar'+vmode).src;  
+  await uploadImage(photo,'dtr/images/'+usercode+'.jpg');  
+  ob.photo='';
+  await jeff_update_File('dtr/user.json',ob,'usercode',CURR_USER);    
+  showProgress(false);  
   document.getElementById('admin_avatar').src=photo;
+  document.getElementById('bar_avatar').src=photo;
+  document.getElementById('owner').src=photo;
+  JBE_CLOSE_VIEW();
 }
   
 async function upd_save_profile(){  
