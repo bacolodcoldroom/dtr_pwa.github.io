@@ -4,7 +4,8 @@ const REPO_OWNER = 'bacolodcoldroom';
 const REPO_NAME = 'JDB';
 var apiBase = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/`;
 
-async function getFile(path) {    
+async function getFile(path) {
+    
     try {
         const response = await fetch(apiBase+`${path}`, {
             headers: { Authorization: `token ${GITHUB_TOKEN}` }
@@ -14,7 +15,7 @@ async function getFile(path) {
         //return { content: JSON.parse(atob(data.content)), sha: data.sha };
         //return { content: JSON.parse(decodeURIComponent(escape(atob(data.content)))), sha: data.sha };
         const finalData=JSON.parse(decodeURIComponent(escape(atob(data.content))));
-        
+        //console.log('>>>>>getfile',path,finalData);
         return { content: finalData, sha: data.sha };
     } catch (error) {
         showProgress(false);
@@ -137,7 +138,7 @@ async function deleteItemByValue(value) {
   
 
 async function updateJsonWithSpanishChars() {
-  //alert('sample activated...');
+  alert('sample activated...');
   
   let currentData = await getFile('dtr/samples.json');
   console.log('currentData',currentData.content);

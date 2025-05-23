@@ -653,7 +653,7 @@ function close_editStaff(){
   mnu_fm_admin();
 }
 
-async function disp_editStaff(){ 
+function disp_editStaff(){ 
   if(DB_USER.length==0){
     snackBar('No Records....');
     return;
@@ -663,7 +663,6 @@ async function disp_editStaff(){
   aryDB.sort(sortByMultipleKey(['usertype','username']));
   var n = new Date().toLocaleTimeString('it-IT');
   //document.getElementById('div_sel_orders').innerHTML=newOptionsHtml1; 
-  showProgress(true);
   var dtl='';
   for(var i=0;i<aryDB.length;i++){ 
     var newOptionsHtml='';
@@ -674,9 +673,10 @@ async function disp_editStaff(){
         newOptionsHtml += '<option value='+y+'> Level '+y+'</option>';  
       }
     }
-    
-    let v_mphoto=await jeff_get_GitHubImage('dtr/images/'+aryDB[i].usercode+'.jpg');
-    if(v_mphoto==null){ v_mphoto='gfx/avatar.png'; }
+
+    //alert(aryDB[i]['photo']);
+    //let v_mphoto='data:image/png;base64,' + btoa(JBE_GETFLD('photo',aryDB,'usercode',CURR_USER));
+    let v_mphoto='data:image/png;base64,' + btoa(aryDB[i].photo);
 
     dtl+=
       '<div style="width:100%;height:40px;margin-top:10px;padding:0px;background:none;">'+
@@ -704,7 +704,6 @@ async function disp_editStaff(){
       '</div>';
   }  
   document.getElementById('div_editStaff').innerHTML=dtl;
-  showProgress(false);
 }
 
 function chgLevel(usercode,usertype){ 
