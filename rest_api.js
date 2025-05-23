@@ -20,10 +20,23 @@ async function rest_api_start(){
   await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); })
   GITHUB_TOKEN = DB_SIG[0].sys_pat.substring(3);
   //console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
+
+  JBE_CLOUD=true;
+  JBE_API='';
+  if(JBE_CLOUD){ JBE_API='dtr/'; }
+  console.log('**************************************');
+  console.log('JBE_CLOUD',JBE_CLOUD);
+  console.log('JBE_API',JBE_API);
+  console.log('**************************************');
+  
+  
+  let data=await api_readfile(JBE_CLOUD,JBE_API+'user');   DB_USER=data.content;   
+  let data2=await api_readfile(JBE_CLOUD,JBE_API+'daily');   DB_DAILY=data2.content;   
+
   dispHeaderMode();
 
-  let currentData = await getFile('dtr/daily.json');
-  let data2=currentData.content;
+  //let currentData = await getFile('dtr/daily.json');
+  //let data2=currentData.content;
   //console.log('All Data',data2);
   let arr=[]; let arr_ctr=0;
   for(let i=0;i<data2.length;i++){
@@ -90,7 +103,7 @@ function JBE_CHK_BASE64(img){
 }
 
 async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,lastname,firstname,middlename,a,photo,c,lat,lng,d_active,usertype){  
-  //console.log(photo.substring(0,11));
+  fullname=lastname+', '+firstname+' '+middlename;
   var jimg=photo;  
   if(JBE_CHK_BASE64(photo)){    
     await JBE_BLOB(n,jimg).then(result => jimg=result);
@@ -99,7 +112,7 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
   }
   var ob = {
     id:userRow, 
-    clientno:CURR_CLIENT,
+    clientno:CURR_CLIENT,    
     usercode:usercode,
     userid:u,
     username:n,
@@ -109,7 +122,7 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
     lastname:lastname,
     firstname:firstname,
     midname:middlename,
-    photo:photo,    
+    photo:jimg,    
     usertype:usertype,
     addrss:a,
     celno:c,
@@ -121,14 +134,18 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
   };      
 
   showProgress(true);
-  console.log('save:',lastname,':',firstname,':',middlename);
-  console.log(ob);
-  await jeff_update_File('dtr/user.json',ob,'usercode',CURR_USER);  
-  ob.photo=jimg;
-  await updateRecord(ob,'user','upd_save_profile'); //saveDataToIDX(DB_USER,3);      
-  showProgress(false);
-  //document.getElementById('admin_avatar').src=document.getElementById('img_eavatar'+vmode).src;  
+  //alert('save: last: '+lastname+' first:'+firstname+' mid:'+middlename);  
+  if(JBE_CLOUD){ await jeff_uploadImage(photo,'dtr/images/'+usercode+'.jpg'); ob.photo=''; }
+  //console.log('ob.photo',ob.photo);
+  await api_save(JBE_CLOUD,JBE_API+'user',[ob],record => record.usercode !== CURR_USER);
+  showProgress(false);  
   document.getElementById('admin_avatar').src=photo;
+  document.getElementById('bar_avatar').src=photo;
+  document.getElementById('owner').src=photo;
+  
+  let data=await api_readfile(JBE_CLOUD,JBE_API+'user');   DB_USER=data.content;
+  console.log('save profile:',DB_USER);
+  JBE_CLOSE_VIEW();
 }
   
 async function upd_save_profile(){  

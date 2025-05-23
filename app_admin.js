@@ -404,14 +404,21 @@ function fm_profile(vmode){
     username=aryDB['username'];
     username2=aryDB['username2'];
     fullname=aryDB['fullname'];
+    lastname=aryDB['lastname'];
+    firstname=aryDB['firstname'];
+    middlename=aryDB['midname'];
     //'Paul Steve Panakkal'.split(' '); // returns ["Paul", "Steve", "Panakkal"]
     //'Paul Steve Panakkal'.split(' ').slice(0, -1).join(' '); // returns "Paul Steve"
     //'Paul Steve Panakkal'.split(' ').slice(-1).join(' '); // returns "Panakkal"
+    /*
     lastname=extractNames(fullname).lastName;
     firstname=extractNames(fullname).firstName;
     middlename=extractNames(fullname).middleName;
+    */
+    //const result = parseFullName(fullname);
+    //console.log(result);
 
-    console.log('lastname',lastname,firstname,middlename);
+    //console.log('lastname',lastname,firstname,middlename);
     addrss=aryDB['addrss'];
     celno=aryDB['celno'];
     //foto=aryDB['photo'];
@@ -472,10 +479,26 @@ function fm_profile(vmode){
                 'value="'+username2+'"/>'+           
           '</div>'+
          
-          '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
+          '<div style="display:none;margin-top:10px; height:auto; width:100%;background:none;">'+
             '<span style="height:15px; width:100%; background:none;">Full Name: [Last Name], [First Name] [Middle Name].</span>'+
             '<input id="fullname" class="class_profile" type="text" placeholder="User Full Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
                 'value="'+fullname+'"/>'+           
+          '</div>'+
+
+          '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
+            '<span style="height:15px; width:100%; background:none;">Full Name: [Last Name], [First Name] [Middle Name].</span>'+
+            '<input id="lastname" class="class_profile" type="text" placeholder="Last Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
+                'value="'+lastname+'"/>'+           
+          '</div>'+
+          '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
+            //'<span style="height:15px; width:100%; background:none;">Full Name: [Last Name], [First Name] [Middle Name].</span>'+
+            '<input id="firstname" class="class_profile" type="text" placeholder="First Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
+                'value="'+firstname+'"/>'+           
+          '</div>'+
+          '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
+            //'<span style="height:15px; width:100%; background:none;">Full Name: [Last Name], [First Name] [Middle Name].</span>'+
+            '<input id="middlename" class="class_profile" type="text" placeholder="Middle Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
+                'value="'+middlename+'"/>'+           
           '</div>'+
 
           '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
@@ -514,6 +537,20 @@ function fm_profile(vmode){
     '</div>';       
 
   JBE_OPEN_VIEW(dtl,'My Profile','close_profile');
+}
+
+function parseFullName(fullName) {
+  const parts = fullName.trim().split(/\s+/);
+
+  if (parts.length === 0) {
+    return { firstName: '', middleName: '', lastName: '' };
+  }
+
+  const firstName = parts[0];
+  const lastName = parts.length > 1 ? parts[parts.length - 1] : '';
+  const middleName = parts.length > 2 ? parts.slice(1, -1).join(' ') : '';
+  //console.log(firstName, middleName, lastName);
+  return { firstName, middleName, lastName };
 }
 
 function extractNames(fullName) {
@@ -574,6 +611,9 @@ function save_profile(){
   var n=document.getElementById('fname2').value;
   var n2=document.getElementById('fname22').value;
   var fullname=document.getElementById('fullname').value;
+  var lastname=document.getElementById('lastname').value;
+  var firstname=document.getElementById('firstname').value;
+  var middlename=document.getElementById('middlename').value;
   var a=document.getElementById('faddrss2').value;
   var c=document.getElementById('fcelno2').value; 
   var lat=document.getElementById('flat2').value; 
@@ -583,9 +623,11 @@ function save_profile(){
   //var foto=document.getElementById('img_eavatar'+vmode).getAttribute('data-img');
   var foto=document.getElementById('img_eavatar'+vmode).src;
 
+  /*
   let lastname=extractNames(fullname).lastName;
   let firstname=extractNames(fullname).firstName;
   let middlename=extractNames(fullname).middleName;
+  */
   
   //foto=profileImg;
   //alert('foto:'+foto);
