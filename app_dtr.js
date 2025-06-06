@@ -384,14 +384,13 @@ async function update_db(){
 function ref_ctr(f_print){  
   let ctr=0;
   for(var i=1;i<=31;i++){
-    let t1=document.getElementById('dtl_t1_'+i).innerHTML;
-    let t2=document.getElementById('dtl_t2_'+i).innerHTML;
-    let t3=document.getElementById('dtl_t3_'+i).innerHTML;
-    let t4=document.getElementById('dtl_t4_'+i).innerHTML;
-    let txt=document.getElementById('dtl_txt'+i).innerHTML;
-    if(time_empty(txt,t1,t2,t3,t4)){ continue; }
-    ctr++;
+    let ctr_time=0;
+    for(var k=1;k<=4;k++){
+      if(document.getElementById('dtl_t'+k+'_'+i).innerHTML){ ctr_time++; } 
+    }
+    if(ctr_time>1){ ctr++; }
   }
+
   if(f_print){ ctr=0; }
   document.getElementById('div_total').innerHTML=ctr;
 }
