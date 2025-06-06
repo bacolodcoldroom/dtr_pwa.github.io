@@ -964,6 +964,7 @@ function factoryReset(){
   MSG_SHOW(vbOkAbort,'DATA RESET:','<center>Going to Reset Database from the Server.<br>Current Data will be replaced.<br><br>Are you sure to do this?</center>', function(){ do_reset(); },function(){ return; });
   
   async function do_reset(){
+    return;
     showProgress(true);
     console.clear();
     DB_MONTHLY=[];

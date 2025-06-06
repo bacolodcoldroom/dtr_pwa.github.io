@@ -23,7 +23,7 @@ async function rest_api_start(){
 
   JBE_CLOUD=false;
   JBE_API='';
-  if(JBE_CLOUD){ JBE_API='dtr/'; }
+  //if(JBE_CLOUD){ JBE_API='dtr/'; }
   console.log('**************************************');
   console.log('JBE_CLOUD',JBE_CLOUD);
   console.log('JBE_API',JBE_API);
@@ -240,7 +240,7 @@ async function chg_date_updownForm(jmode,d1,d2){
     ctr=result.length;
   }else if(jmode==2){
     //let currentData = await getFile('dtr/daily.json'); 
-    let currentData=await api_readfile(true,JBE_API+'daily'); 
+    let currentData=await api_readfile(true,'dtr/'+'daily'); 
     let tbl_daily=currentData.content;
     let result = tbl_daily.filter(item => 
       item.usercode === CURR_USER && (JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') >= s_date && JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') <= e_date) && !time_empty(item.txt,item.time1,item.time2,item.time3,item.time4) 
@@ -290,7 +290,7 @@ async function do2_upload(s_date,e_date){
   //await jeff_update_File('dtr/daily.json',result,fld,val);
   //
   //await jeff_update_File(JBE_API+'daily.json',result,fld,val);
-  await api_save(true,JBE_API+'daily',result,record => !(record.usercode === CURR_USER));
+  await api_save(true,'dtr/'+'daily',result,record => !(record.usercode === CURR_USER && record.date >= s_date && record.date <= e_date));
   showProgress(false);
   //console.log(result);
   snackBar('Upload Successful...');    
@@ -308,7 +308,7 @@ async function do_download(d1,d2){
   let e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
 
   //let currentData = await getFile('dtr/daily.json');
-  let currentData=await api_readfile(true,JBE_API+'daily');  
+  let currentData=await api_readfile(true,'dtr/'+'daily');  
   let tbl_daily=currentData.content;
   let arr=[]; let arr_ctr=0;
   for(var i=0;i<tbl_daily.length;i++){
