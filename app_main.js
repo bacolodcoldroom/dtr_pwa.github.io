@@ -15,18 +15,19 @@ function start_app(){
   isAppOffline().then(offline => {
     let msg='offline';
     if (offline) {
-      JBE_ONLINE=false;
-      document.getElementById('mnu_upload').style.display='none';      
+      JBE_ONLINE=false;   
     } else {
       JBE_ONLINE=true;
-      msg='ONLINE';
-      document.getElementById('mnu_upload').style.display='block';      
+      msg='ONLINE';  
       document.getElementById('online_status').style.display='none';      
+
+      document.getElementById('mnu_upload').disabled=false;
+      document.getElementById('mnu_upload').style.opacity=1;
+      document.getElementById('mnu_upload').style.pointerEvents='auto';
     }
     console.log("The app is "+msg);
   });
-  
-  
+    
   //searchContentInFile('SW_DTR.js', 'cacheName')
   // Get text from character 10 to 50
   fetchTextPortion('SW_DTR.js', 17, 22)
