@@ -268,18 +268,13 @@ function fm_admin(){
         '<div class="cls_system" onclick="share_app()">'+
           '<img src="gfx/jshare.png" />'+
           '<span>Share the App</span>'+
-        '</div>'+
+        '</div>'+  
 
+        '<hr style="margin-top:20px;">'+
         '<div class="cls_system" id="down_load" onclick="show_download()" disabled style="opacity:0.4;pointer-events:none;">'+
           '<img src="gfx/jdown.png" />'+
           '<span style="color:blue;">Download Data from Server</span>'+
-        '</div>'+                              
-
-        '<hr style="margin-top:20px;">'+
-        '<div class="cls_system" onclick="factoryReset()" style="margin-top:10px;">'+
-          '<img src="gfx/jcategory.png" />'+
-          '<span style="color:red;">Factory Reset</span>'+
-        '</div>'+
+        '</div>'+         
         '<hr style="margin-top:10px;">'+
 
         '<div class="cls_system" onclick="layas()" style="margin-top:40px;">'+
