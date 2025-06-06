@@ -395,6 +395,64 @@ function openPage(m){
 }
 
 function show_credits(){    
+  var h=380;
+  var dtl=     
+    '<div id="main_credit" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;background-color:white;">'+     
+      '<div style="width:100%;height:100%;padding:2px;overflow:auto;background:none">'+
+        '<div style="height:40px;width:100%;background:lightgray;text-align:center;padding:7px 0 0 0;font-size:25px;">*** C R E D I T S ***</div>'+
+        //'<hr style="margin-top:20px;">'+
+
+        '<div class="cls_sidenav">'+
+          '<div style="width:30%;text-align:right;">'+ //left
+            '<img src="gfx/credits/pau.jpg" />'+
+          '</div>'+
+          '<div style="width:70%;">'+ //right
+            '<h4>Paulynne Rojo-Sustento</h4>'+
+            '<p>Chief System Analyst</p>'+
+          '</div>'+
+        '</div>'+
+
+        '<div class="cls_sidenav">'+
+          '<div style="width:30%;text-align:right;">'+ //left
+            '<img src="gfx/credits/yen.jpg" />'+
+          '</div>'+
+          '<div style="width:70%;">'+ //right
+            '<h4>Irene I. Mojica</h4>'+
+            '<p>System UI/UX Designer</p>'+
+          '</div>'+
+        '</div>'+
+
+        '<div class="cls_sidenav">'+
+          '<div style="width:30%;text-align:right;">'+ //left
+            '<img src="gfx/credits/dax.jpg" />'+
+          '</div>'+
+          '<div style="width:70%;">'+ //right
+            '<h4>Dax H. Parreño</h4>'+
+            '<p>Software Architect</p>'+
+          '</div>'+
+        '</div>'+
+
+        '<div class="cls_sidenav">'+
+          '<div style="width:30%;text-align:right;">'+ //left
+            '<img src="gfx/credits/jeff.jpg" />'+
+          '</div>'+
+          '<div style="width:70%;">'+ //right
+            '<h4>Jeffrey B. Enad</h4>'+
+            '<p>System Developer/Programmer</p>'+
+          '</div>'+
+        '</div>'+
+
+      '</div>'+        
+    '</div>';
+  var dtl2=     
+    '<div style="width:100%;height:100%;padding:0px 0 0 0;text-align:center;color:'+JBE_TXCLOR1+';background:none;">'+
+      '<input type="button" onclick="JBE_CLOSEBOX()" style="width:100px;height:100%;" value="Close" />'+     
+    '</div>';  
+  JBE_OPENBOX('main_credit','Software Development Team',dtl,dtl2);
+}
+
+
+function xxshow_credits(){    
   var h=330;
   var dtl=     
     '<div id="main_credit" data-zoom=0 data-close="" style="width:100%;height:'+h+'px;text-align:center;background-color:white;">'+     
@@ -838,12 +896,24 @@ if (isMobileDevice()) {
   console.log("User is not using a mobile device.");
 }
 */
-function exit_app(){
+function xxxexit_app(){
   let msg='Click the Upper Right [X] button of your browser';
   if(isMobileDevice()) {
     msg='Click the phone Back button';
   }
   MSG_SHOW(vbOk,'EXIT APP','<center>'+msg+'</center>', function(){},function(){});
+}
+
+function exit_app() {
+  // 1. Check for standalone display-mode
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+  
+  if (window.history.length === 1) {
+    window.close();
+  } else {
+    //console.warn(`exitPWA(): Session history length is ${window.history.length}; must be 1 to close.`);
+    MSG_SHOW(vbCancel,'EXIT APP','<center>Click the phone BACK Button again to Exit.</center>', function(){},function(){});
+  }
 }
 
 function formatPhoneNumber(phoneNumber) {

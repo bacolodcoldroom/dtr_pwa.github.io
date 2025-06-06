@@ -506,13 +506,20 @@
         </div>
       </div>
 
+      <div onclick="show_credits()" style="float:left;width:25%;height:100%;background:none;">
+        <div class="class_footer">
+          <img src="gfx/jorg.png" alt="call image" />
+          <span>Credits</span>
+        </div>
+      </div>
+
       <!--div onclick="main_login()" style="float:right;width:25%;height:100%;background:none;"-->
-      <div onclick="exit_app()" style="float:right;width:25%;height:100%;background:none;">
+      <!--div onclick="exit_app()" style="float:right;width:25%;height:100%;background:none;">
         <div class="class_footer">
           <img id="log_avatar" src="gfx/jclose.png" onerror="imgOnError(this)" style="height:100%;" alt="admin image" />
           <span>EXIT</span>
         </div> 
-      </div>
+      </div-->
 
     </div> <!--menu-->
 
@@ -734,12 +741,11 @@
     //}
     
     if (event.state) {      
-      if(f_MainPage){                
-        //refreshIDX();
-        MSG_SHOW(vbYesNo,"CONFIRM: ","Close the App?",function(){                    
-          window.history.go(0);
-          f_reload=true;
-        },function(){});                  
+      if(f_MainPage){    
+         // Clear session data
+        sessionStorage.clear();
+        localStorage.clear();
+        exit_app();
       }
     }
   })
