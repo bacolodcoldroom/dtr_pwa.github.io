@@ -1,3 +1,4 @@
+const vbCancel = '-1';
 const vbOk = '0';
 const vbYesNo = '1';
 const vbOkAbort = '2';
@@ -52,6 +53,9 @@ function MSG_SHOW(jmode,jtitle,jbody,fn1,fn2){
     document.getElementById('btnYes').value = 'OK';
     document.getElementById('btnNo').value = 'Abort';
     document.getElementById('txtPrompt').focus();
+  } else if(jmode=='-1') {          
+    document.getElementById('msgDivOk').style.display = 'block';    
+    document.getElementById('btnOk').value = 'Cancel';
   }
 }
 
