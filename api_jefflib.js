@@ -132,6 +132,7 @@ async function get_all_db_from_json(){
   await fetch(dir+'stock_invty.json').then(res => res.json()).then(data => { DB_STOCK_INVTY=data; saveDataToIDX(data,3); })
   await fetch(dir+'stock_accom.json').then(res => res.json()).then(data => { DB_STOCK_ACCOM=data; saveDataToIDX(data,4); })
   await fetch(dir+'user.json').then(res => res.json()).then(data => { DB_USER=data; saveDataToIDX(data,5); }) 
+  await fetch(dir+'log.json').then(res => res.json()).then(data => { DB_LOG=data; saveDataToIDX(data,6); }) 
 }
 
 

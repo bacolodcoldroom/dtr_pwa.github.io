@@ -133,7 +133,7 @@ function showMainPage(){
   dispMenu(true,vmenu);
 }
 
-function dispHeaderMode(){
+function xxdispHeaderMode(){
   //var n = new Date().toLocaleTimeString('it-IT');
   let v_mphoto='gfx/avatar.png'; 
   if(!CURR_USER){
@@ -151,6 +151,29 @@ function dispHeaderMode(){
         break;
       }
     }
+  }
+  document.getElementById('bar_avatar').src=v_mphoto;
+  document.getElementById('owner').src=v_mphoto;
+}
+
+async function dispHeaderMode(){
+  //var n = new Date().toLocaleTimeString('it-IT');
+  let v_mphoto='gfx/avatar.png'; 
+  if(!CURR_USER){    
+    document.getElementById('logger').innerHTML="Please Log In";
+    document.getElementById("page_login").style.display="none";     
+  }else{    
+    document.getElementById('logger').innerHTML='Hi!, '+CURR_NAME;     
+    document.getElementById("page_login").style.display="none";   
+         
+    const ndx = DB_USER.findIndex(item => item.usercode === CURR_USER); 
+    if(ndx > -1){
+      v_mphoto='data:image/png;base64,' + btoa(DB_USER[ndx]['photo']);
+    }
+    
+    if(!v_mphoto){
+      v_mphoto='../gfx/avatar.png';
+    } 
   }
   document.getElementById('bar_avatar').src=v_mphoto;
   document.getElementById('owner').src=v_mphoto;
@@ -951,8 +974,8 @@ function factoryReset(){
     await clearAllRecords('sig');
     await clearAllRecords('user');    
     
-    let data=await getFile('dtr/sig.json'); DB_SIG=data.content; console.log('DB_SIG',DB_SIG);
-    let data_user=await getFile('dtr/user.json'); DB_USER=data_user.content; console.log('DB_USER',DB_USER);
+    let data=await api_readfile(false,JBE_API+'sig'); DB_SIG=data.content; console.log('DB_SIG',DB_SIG);
+    let data_user=await api_readfile(false,JBE_API+'user'); DB_USER=data_user.content; console.log('DB_USER',DB_USER);
 
     await saveDataToIDX(DB_SIG,2);
     await saveDataToIDX(DB_USER,3);

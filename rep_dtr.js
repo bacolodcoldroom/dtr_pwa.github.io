@@ -319,7 +319,7 @@ function ret_dtr(vDate,f_print){
   let max_days=31;
   let aryUSER=JBE_GETARRY(DB_USER,'usercode',CURR_USER);
   console.log('aryUSER',aryUSER);
-  let empname=aryUSER.lastname+', '+aryUSER.firstname+' '+aryUSER.midname.substring(0,1)+'.';
+  let empname=aryUSER.fullname; //aryUSER.lastname+', '+aryUSER.firstname+' '+aryUSER.midname.substring(0,1)+'.';
   //let max_days=document.getElementById('dv_dtr').getAttribute('data-maxdays');
   var dtl=
   '<div style="width:'+v_width+';height:'+iif(f_print,960,730)+'px;margin:0 auto;font-family:Lato, sans-serif;text-align:left;border:1px solid white;">'+

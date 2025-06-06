@@ -21,7 +21,7 @@ async function rest_api_start(){
   GITHUB_TOKEN = DB_SIG[0].sys_pat.substring(3);
   //console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
 
-  JBE_CLOUD=true;
+  JBE_CLOUD=false;
   JBE_API='';
   if(JBE_CLOUD){ JBE_API='dtr/'; }
   console.log('**************************************');
@@ -30,8 +30,8 @@ async function rest_api_start(){
   console.log('**************************************');
   
   
-  let data=await api_readfile(JBE_CLOUD,JBE_API+'user');   DB_USER=data.content;   
-  let data2=await api_readfile(JBE_CLOUD,JBE_API+'daily');   DB_DAILY=data2.content;   
+  let data=await api_readfile(false,JBE_API+'user');   DB_USER=data.content;   
+  let data2=await api_readfile(false,JBE_API+'daily');   DB_DAILY=data2.content;   
 
   dispHeaderMode();
 
@@ -134,16 +134,17 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
   };      
 
   showProgress(true);
-  //alert('save: last: '+lastname+' first:'+firstname+' mid:'+middlename);  
-  if(JBE_CLOUD){ await jeff_uploadImage(photo,'dtr/images/'+usercode+'.jpg'); ob.photo=''; }
-  //console.log('ob.photo',ob.photo);
-  await api_save(JBE_CLOUD,JBE_API+'user',[ob],record => record.usercode !== CURR_USER);
+  //alert('save: usercode: '+usercode+' curr_user:'+CURR_USER);  
+  
+  alert('offline:'+ob.photo);
+  await api_save(false,JBE_API+'user',[ob],record => !(record.usercode === usercode));
+  
   showProgress(false);  
   document.getElementById('admin_avatar').src=photo;
   document.getElementById('bar_avatar').src=photo;
   document.getElementById('owner').src=photo;
   
-  let data=await api_readfile(JBE_CLOUD,JBE_API+'user');   DB_USER=data.content;
+  let data=await api_readfile(false,JBE_API+'user');   DB_USER=data.content;
   console.log('save profile:',DB_USER);
   JBE_CLOSE_VIEW();
 }
@@ -235,7 +236,8 @@ async function chg_date_updownForm(jmode,d1,d2){
     );
     ctr=result.length;
   }else if(jmode==2){
-    let currentData = await getFile('dtr/daily.json'); 
+    //let currentData = await getFile('dtr/daily.json'); 
+    let currentData=await api_readfile(true,JBE_API+'daily'); 
     let tbl_daily=currentData.content;
     let result = tbl_daily.filter(item => 
       item.usercode === CURR_USER && (JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') >= s_date && JBE_DATE_FORMAT(item.date,'YYYY-MM-DD') <= e_date) && !time_empty(item.txt,item.time1,item.time2,item.time3,item.time4) 
@@ -269,11 +271,11 @@ function do_upload(d1,d2){
   let e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
   console.log('UPLOAD: s_date,e_date',s_date,e_date);
 
-  MSG_SHOW(vbYesNo,'CONFIRM:','Are you sure to Upload your Data?',function(){ do2_upload(); },function(){ return; });
+  MSG_SHOW(vbYesNo,'CONFIRM:','Are you sure to Upload your Data?',function(){ do2_upload(s_date,e_date); },function(){ return; });
   JBE_CLOSEBOX();
 }
 
-async function do2_upload(){
+async function do2_upload(s_date,e_date){
   let fld='usercode';
   let val=CURR_USER;  
   const result = DB_DAILY.filter(item => 
@@ -282,7 +284,10 @@ async function do2_upload(){
   showProgress(true);
   console.log('For Upload ------:',result);
   //jeff_update_gistFile(gistId, fileName,result,fld,val);
-  await jeff_update_File('dtr/daily.json',result,fld,val);
+  //await jeff_update_File('dtr/daily.json',result,fld,val);
+  //
+  //await jeff_update_File(JBE_API+'daily.json',result,fld,val);
+  await api_save(true,JBE_API+'daily',result,record => !(record.usercode === CURR_USER));
   showProgress(false);
   //console.log(result);
   snackBar('Upload Successful...');    
@@ -299,7 +304,8 @@ async function do_download(d1,d2){
   let s_date=JBE_DATE_FORMAT(d1+'-01','YYYY-MM-DD');
   let e_date=JBE_DATE_FORMAT(dum2_date,'YYYY-MM-DD');
 
-  let currentData = await getFile('dtr/daily.json');
+  //let currentData = await getFile('dtr/daily.json');
+  let currentData=await api_readfile(true,JBE_API+'daily');  
   let tbl_daily=currentData.content;
   let arr=[]; let arr_ctr=0;
   for(var i=0;i<tbl_daily.length;i++){

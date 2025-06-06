@@ -448,68 +448,75 @@ function fm_profile(vmode){
           '</div>'+
         '</div>'+
         
-        '<div class="class_admin" style="font-size:12px;margin-top:20px;margin-bottom:10px;height:auto;background:none;">'+
+        '<div class="class_admin" style="font-size:12px;margin-top:20px;margin-bottom:10px;height:auto;overflow:auto;background:none;">'+
 
-          '<div id="dv_usercode" style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            '<span style="height:15px; width:100%; background:none;">USER CODE</span>'+
-            '<input id="fusercode" disabled class="class_profile" value="'+usercode+'"/>'+           
+          '<div id="dv_usercode" class="class_profile">'+
+            '<span>USER CODE</span>'+
+            '<input id="fusercode" disabled value="'+usercode+'"/>'+           
           '</div>'+
 
-          '<div id="dv_uid2" style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            '<span style="height:15px; width:100%; background:none;">User ID</span>'+
-            '<input id="fuser2" class="class_profile" onchange="chk_fld(this.value,fpass2.value,'+vmode+')" type="text"  placeholder="User ID (Name, Email or Phone Number)" maxlength=20 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;fpass2&quot;).focus();"'+
+          '<div id="dv_uid2" class="class_profile">'+
+            '<span>User ID</span>'+
+            '<input id="fuser2" onchange="chk_fld(this.value,fpass2.value,'+vmode+')" type="text"  placeholder="User ID (Name, Email or Phone Number)" maxlength=20 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;fpass2&quot;).focus();"'+
                 'value="'+userid+'"/>'+           
           '</div>'+
  
-          '<div id="dv_pass" style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            '<span style="height:15px; width:100%;background:none;">Password</span>'+           
-            '<input id="fpass2" class="class_profile" onchange="chk_fld(this.value,fpass2.value,'+vmode+')" name="fpass" autocomplete="off" type="password" placeholder="Password" maxlength=20 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()"'+
+          '<div id="dv_pass" class="class_profile">'+
+            '<span>Password</span>'+           
+            '<input id="fpass2" onchange="chk_fld(this.value,fpass2.value,'+vmode+')" name="fpass" autocomplete="off" type="password" placeholder="Password" maxlength=20 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()"'+
                 'value="'+pword+'"/>'+           
           '</div>'+
 
-          '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            '<span style="height:15px; width:100%; background:none;">Username</span>'+
-            '<input id="fname2" class="class_profile" type="text" placeholder="User Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
+          '<div class="class_profile">'+
+            '<span>Username</span>'+
+            '<input id="fname2" type="text" placeholder="User Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
                 'value="'+username+'"/>'+           
           '</div>'+
          
-          '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            '<span style="height:15px; width:100%; background:none;">Voice Name</span>'+
-            '<input id="fname22" class="class_profile" type="text" placeholder="Voice Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
+          '<div class="class_profile">'+
+            '<span>Voice Name</span>'+
+            '<input id="fname22" type="text" placeholder="Voice Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
                 'value="'+username2+'"/>'+           
           '</div>'+
          
-          '<div style="display:none;margin-top:10px; height:auto; width:100%;background:none;">'+
-            '<span style="height:15px; width:100%; background:none;">Full Name: [Last Name], [First Name] [Middle Name].</span>'+
-            '<input id="fullname" class="class_profile" type="text" placeholder="User Full Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
+          
+          '<div class="class_profile" style="display:none;">'+
+            '<span>Full Name: [Last], [First] [Middle]</span>'+
+            '<input id="fullname"  type="text" placeholder="User Full Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
                 'value="'+fullname+'"/>'+           
           '</div>'+
+          
 
-          '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            '<span style="height:15px; width:100%; background:none;">Full Name: [Last Name], [First Name] [Middle Name].</span>'+
-            '<input id="lastname" class="class_profile" type="text" placeholder="Last Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
-                'value="'+lastname+'"/>'+           
-          '</div>'+
-          '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            //'<span style="height:15px; width:100%; background:none;">Full Name: [Last Name], [First Name] [Middle Name].</span>'+
-            '<input id="firstname" class="class_profile" type="text" placeholder="First Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
-                'value="'+firstname+'"/>'+           
-          '</div>'+
-          '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            //'<span style="height:15px; width:100%; background:none;">Full Name: [Last Name], [First Name] [Middle Name].</span>'+
-            '<input id="middlename" class="class_profile" type="text" placeholder="Middle Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
-                'value="'+middlename+'"/>'+           
-          '</div>'+
+          '<div class="class_profile" style="margin-top:5px; height:85px; width:100%;padding:2px;background:none;">'+
 
-          '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            '<span style="height:15px; width:100%; background:none;">Address</span>'+
-            '<textarea id="faddrss2" class="class_profile" name="faddrss" rows="4" cols="50" maxlength=300 placeholder="Address" style="resize:none;height:70px;">'+
+            '<div style="margin-top:0px; height:25px; width:100%;background:none;">'+
+              '<div style="float:left;height:100%; width:40%; background:none;">[ Last Name ]</div>'+
+              '<input id="lastname" style="float:left;width:60%;height:100%;" type="text" placeholder="Last Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
+                  'value="'+lastname+'"/>'+           
+            '</div>'+
+            '<div style="margin-top:1px; height:25px; width:100%;background:none;">'+
+              '<div style="float:left;height:15px; width:40%; background:none;">[ First Name ]</div>'+
+              '<input id="firstname" style="float:left;width:60%;height:100%;" type="text" placeholder="First Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
+                  'value="'+firstname+'"/>'+           
+            '</div>'+
+            '<div style="margin-top:1px; height:25px; width:100%;background:none;">'+
+              '<div style="float:left;height:15px; width:40%; background:none;">[ Middle Name ]</div>'+
+              '<input id="middlename" style="float:left;width:60%;height:100%;" type="text" placeholder="Middle Name"  maxlength=50 onkeydown="javascript:if(event.keyCode==13) document.getElementById(&quot;faddrss2&quot;).focus()" '+
+                  'value="'+middlename+'"/>'+           
+            '</div>'+
+
+          '</div>'+
+          
+
+          '<div class="class_profile" style="margin-top:0px;">'+
+            '<span>Address</span>'+
+            '<textarea id="faddrss2" name="faddrss" rows="4" cols="50" maxlength=300 placeholder="Address" style="resize:none;height:40px;">'+
               addrss+'</textarea>'+   
           '</div>'+
 
-          '<div style="margin-top:10px; height:auto; width:100%;background:none;">'+
-            '<span style="height:15px; width:100%; background:none;">Celphone</span>'+
-            '<input id="fcelno2" class="class_profile" type="number" placeholder="Contact Number"  maxlength=11" '+
+          '<div class="class_profile" style="margin-top:15px;">'+
+            '<span>Celphone</span>'+
+            '<input id="fcelno2" type="number" placeholder="Contact Number"  maxlength=11" '+
                 'value="'+celno+'"/>'+           
           '</div>'+
 
@@ -610,10 +617,12 @@ function save_profile(){
   var p=document.getElementById('fpass2').value;
   var n=document.getElementById('fname2').value;
   var n2=document.getElementById('fname22').value;
-  var fullname=document.getElementById('fullname').value;
+  //var fullname=document.getElementById('fullname').value;
   var lastname=document.getElementById('lastname').value;
   var firstname=document.getElementById('firstname').value;
   var middlename=document.getElementById('middlename').value;
+  var fullname=lastname.trim()+', '+firstname+' '+middlename.substring(0,1)+'.';
+
   var a=document.getElementById('faddrss2').value;
   var c=document.getElementById('fcelno2').value; 
   var lat=document.getElementById('flat2').value; 

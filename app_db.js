@@ -289,11 +289,14 @@ async function putDataToIDX(i,aryDB,n){
     */
 
     let jimg=aryDB[i]['photo'];  
+    console.log('jimg',jimg);
+    /*
     if(JBE_CHK_BASE64(jimg)){    
       await JBE_BLOB(n,jimg).then(result => jimg=result);
     }else{
       jimg='';
     }
+      */
 
     ob = {
       id:i,
@@ -320,7 +323,7 @@ async function putDataToIDX(i,aryDB,n){
     };
   }
 
-  console.log(i,'>>> putDataToIDX: flename: ',JBE_STORE_IDX[n]['flename'],ob.username);
+  //console.log(i,'>>> putDataToIDX: flename: ',JBE_STORE_IDX[n]['flename'],ob.username);
   var trans = db.transaction([JBE_STORE_IDX[n]['flename']], 'readwrite');
   var addReq = trans.objectStore(JBE_STORE_IDX[n]['flename']).put(ob);
   addReq.onerror = function(e) {
@@ -330,8 +333,19 @@ async function putDataToIDX(i,aryDB,n){
   }
 
   trans.oncomplete = function(e) {
-    //console.log(n+': putToIDX '+JBE_STORE_IDX[n]['flename']+' with value '+JBE_STORE_IDX[n]['numrec']);  
+    console.log(n+': putToIDX '+JBE_STORE_IDX[n]['flename']+' with value '+JBE_STORE_IDX[n]['numrec']);  
     //console.log('--------------');
     //alert(xox);
   }
+}
+
+function get_ndx_JBE_STORE_IDX(tbl){
+  let rval=-1;
+  for(var i=0;i<JBE_STORE_IDX.length;i++){
+    if(tbl==JBE_STORE_IDX[i].flename){
+      rval=i;
+      break;
+    }
+  }
+  return rval;
 }
