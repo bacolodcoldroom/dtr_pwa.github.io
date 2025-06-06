@@ -973,6 +973,8 @@ function factoryReset(){
     await clearAllRecords('monthly');
     await clearAllRecords('sig');
     await clearAllRecords('user');    
+
+    JBE_API='dtr/';
     
     let data=await api_readfile(false,JBE_API+'sig'); DB_SIG=data.content; console.log('DB_SIG',DB_SIG);
     let data_user=await api_readfile(false,JBE_API+'user'); DB_USER=data_user.content; console.log('DB_USER',DB_USER);

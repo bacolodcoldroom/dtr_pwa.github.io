@@ -289,7 +289,7 @@ async function putDataToIDX(i,aryDB,n){
     */
 
     let jimg=aryDB[i]['photo'];  
-    console.log('jimg',jimg);
+    //console.log('jimg',jimg);
     /*
     if(JBE_CHK_BASE64(jimg)){    
       await JBE_BLOB(n,jimg).then(result => jimg=result);
