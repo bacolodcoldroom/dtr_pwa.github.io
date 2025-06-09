@@ -459,8 +459,9 @@ async function save_fm_dtr(){
   
   let cond='record.date === '+vDate+' && record.usercode === '+CURR_USER;
   //alert(cond);
-  await deleteDaily(vDate);
-
+  //await deleteDaily(vDate);
+  let ary_obs=[]; let obs_ctr=0;
+  let ob;
   for(var j=1;j<=31;j++){    
     time1=document.getElementById('dtl_t1_'+j).innerHTML;
     time2=document.getElementById('dtl_t2_'+j).innerHTML;
@@ -473,13 +474,36 @@ async function save_fm_dtr(){
     dtl_txt_width=document.getElementById('dtl_txt_width_'+j).innerHTML;
     dtl_txt_fsize=document.getElementById('dtl_txt_fsize_'+j).innerHTML;
 
-    if(time_empty(dtl_txt,time1,time2,time3,time4)){ continue; }
+    //if(time_empty(dtl_txt,time1,time2,time3,time4)){ continue; }
+
     //console.log(dtl_txt,time1,time2,time3,time4);    
-    await save_entry(j,vDate,CURR_USER,time1, time2, time3, time4, dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
+    //await save_entry(j,vDate,CURR_USER,time1, time2, time3, time4, dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
+    ob = {      
+      row:j,
+      date:vDate,
+      rank:0,
+      usercode:CURR_USER,
+      day:j,
+      time1:time1,
+      time2:time2,
+      time3:time3,
+      time4:time4,
+
+      txt:dtl_txt,
+      txt_top:dtl_txt_top,
+      txt_left:dtl_txt_left,
+      txt_width:dtl_txt_width,
+      txt_fsize:dtl_txt_fsize
+    };
+    ary_obs[obs_ctr]=ob; obs_ctr++;
   }  
+  //console.log('ary_obs');
+  //console.log(ary_obs);
+  await api_save(false,'daily',ary_obs,record => !(record.usercode === usercode && record.date === vDate));  
+  DB_DAILY=await readAllRecords('daily');
   //save monthly
   for_month.innerHTML=title_dtr.value;
-  let ob = {
+   ob = {
     date:date_dtr.value,
     title:title_dtr.value
   };

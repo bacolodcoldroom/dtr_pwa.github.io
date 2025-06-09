@@ -241,17 +241,13 @@ async function saveDataToIDX(aryDB,n) {
   }
 }
 async function putDataToIDX(i,aryDB,n){ 
-  if(n==0){ //daily   
-    let dte=JBE_DATE_FORMAT(aryDB[i]['date'],'YYYY-MM-DD');
-    if(!dte){      
-      dte=JBE_DATE_FORMAT(new Date(),'YYYY-MM-DD');
-    }    
+  if(n==0){ //daily 
     ob = {      
-      id:aryDB[i]['id'],
-      date:dte,
+      row:aryDB[i]['row'],
+      date:aryDB[i]['date'],
       rank:aryDB[i]['rank'],
       usercode:aryDB[i]['usercode'],
-      day:aryDB[i]['day'],
+      day:aryDB[i]['row'],
       time1:aryDB[i]['time1'],
       time2:aryDB[i]['time2'],
       time3:aryDB[i]['time3'],
