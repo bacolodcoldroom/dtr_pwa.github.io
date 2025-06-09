@@ -18,7 +18,8 @@ async function rest_api_start(){
   console.log('------------DB_MONTHLY ',DB_MONTHLY);
   DB_SIG=await readAllRecords('sig');  
   console.log('DB_SIG',DB_SIG.length);
-  if(DB_SIG.length==0){ await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); }) }
+  //if(DB_SIG.length==0){ await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); }) }
+  await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); }
   GITHUB_TOKEN = DB_SIG[0].sys_pat.substring(3);
   console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
 
