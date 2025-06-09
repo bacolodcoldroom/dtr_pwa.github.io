@@ -263,7 +263,7 @@ async function putDataToIDX(i,aryDB,n){
     ob = {
       id:i,
       date:aryDB[i]['date'],
-      descrp:aryDB[i]['descrp']
+      title:aryDB[i]['title']
     };  
   }else if(n==2){ //sig    
     ob = {
@@ -272,7 +272,7 @@ async function putDataToIDX(i,aryDB,n){
       position:aryDB[i]['position'],
       office:aryDB[i]['office'],
       license:aryDB[i]['license'],
-      tiktok:aryDB[i]['tiktok']
+      sys_pat:aryDB[i]['sys_pat']
     }; 
   }else if(n==3){ //user    
     /*

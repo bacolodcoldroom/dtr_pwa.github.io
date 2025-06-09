@@ -507,6 +507,13 @@ async function save_fm_dtr(){
     date:date_dtr.value,
     title:title_dtr.value
   };
-  await updateRecord(ob,'monthly','update_monthly_db'); 
+  //await updateRecord(ob,'monthly','dtr_save_display'); 
+  await api_save(false,'monthly',[ob],record => !(record.date === date_dtr.value));  
+  DB_MONTHLY=await readAllRecords('monthly');
+  disp_fm_dtr();
+}
+
+async function dtr_save_display(){
+  DB_MONTHLY=await readAllRecords('monthly');
   disp_fm_dtr();
 }

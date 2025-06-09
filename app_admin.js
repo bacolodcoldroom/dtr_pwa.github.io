@@ -270,10 +270,15 @@ function fm_admin(){
           '<span>Share the App</span>'+
         '</div>'+  
 
-        '<hr style="margin-top:20px;">'+
         '<div class="cls_system" id="down_load" onclick="show_download()" disabled style="opacity:0.4;pointer-events:none;">'+
           '<img src="gfx/jdown.png" />'+
           '<span style="color:blue;">Download Data from Server</span>'+
+        '</div>'+         
+
+        '<hr style="margin-top:20px;">'+
+        '<div class="cls_system" onclick="factoryReset()">'+
+          '<img src="gfx/jcancel.png" />'+
+          '<span style="color:red;">Reset</span>'+
         '</div>'+         
         '<hr style="margin-top:10px;">'+
 

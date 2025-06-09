@@ -1035,23 +1035,17 @@ function factoryReset(){
   MSG_SHOW(vbOkAbort,'DATA RESET:','<center>Going to Reset Database from the Server.<br>Current Data will be replaced.<br><br>Are you sure to do this?</center>', function(){ do_reset(); },function(){ return; });
   
   async function do_reset(){
-    return;
     showProgress(true);
     console.clear();
     DB_MONTHLY=[];
-    DB_SIG=[];
+    DB_DAILY=[];
     DB_USER=[];
-    
+    await clearAllRecords('daily');
     await clearAllRecords('monthly');
-    await clearAllRecords('sig');
     await clearAllRecords('user');    
 
-    JBE_API='dtr/';
-    
-    let data=await api_readfile(false,JBE_API+'sig'); DB_SIG=data.content; console.log('DB_SIG',DB_SIG);
-    let data_user=await api_readfile(false,JBE_API+'user'); DB_USER=data_user.content; console.log('DB_USER',DB_USER);
-
-    await saveDataToIDX(DB_SIG,2);
+    JBE_API='dtr/';    
+    let data_user=await api_readfile(true,JBE_API+'user'); DB_USER=data_user.content; console.log('DB_USER',DB_USER);
     await saveDataToIDX(DB_USER,3);
     showProgress(false);
 

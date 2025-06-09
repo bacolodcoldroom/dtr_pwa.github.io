@@ -185,7 +185,7 @@ function save_daily(){
   let v_date=JBE_DATE_FORMAT(new Date(),'YYYY-MM-DD');
   let row=parseInt(v_date.substring(8,10));
   v_date=v_date.substring(0,7);
-  alert(v_date.substring(0,7)+' :::save_daily row: '+row);
+  //alert(v_date.substring(0,7)+' :::save_daily row: '+row);
   let time1=format_12(document.getElementById('inp_time1').value);  
   let time2=format_12(document.getElementById('inp_time2').value);
   let time3=format_12(document.getElementById('inp_time3').value);

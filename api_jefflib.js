@@ -30,6 +30,7 @@ async function api_readfile(cloud,path) {
        return { content: tbl };
     } catch (error) {
         showProgress(false);
+        console.log("Error fetching file: ",error);
         //snackBar("Error fetching file: "+error);
         //MSG_SHOW(vbOk,"ERROR:",error,function(){},function(){});
     }
