@@ -15,13 +15,14 @@ function rp_dtr(){
   if(JBE_MOBILE){ pa_height=H_VIEW-30; }
 
   var dtl=
-  '<div id="dv_dtr" data-maxdays=0 data-print=1 style="height:100%;width:100%;font-family:Arial Narrow,Arial,sans-serif;font-size:12px;padding:10px;border:0px solid lightgray;background:white;">'+
+  '<div id="dv_dtr" data-maxdays=0 data-print=1 style="height:100%;width:100%;font-family:Arial Narrow,Arial,sans-serif;font-size:12px;padding:10px;border:1px solid gold;background:white;">'+
 
     '<div style="height:35px;width:100%;text-align:center;padding:0px;font-size:16px;border:1px solid lightgray;background:none;">'+ 
-       '<div class="cls_daily" style="margin:0 auto;width:250px;height:100%;padding:4px;border:0px solid lightgray;">'+ 
-          '<span style="float:left;width:40%;height:100%;padding:3px 0 0 0;font-size:14px;font-weight:bold;background:none;">DTR Month of:</span>'+ 
-          '<input id="date_dtr" style="width:60%;height:100%;" onchange="chg_repdtr_month(this.value)" type="month" value="'+JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM')+'"  placeholder="Date" />'+       
-        '</div>'+
+      '<div id="title_dtr" style="display:none;width:100%;height:950px;margin-top:0px;font-size:14px;padding:0px;border:0px solid green;">888</div>'+  
+      '<div class="cls_daily" style="margin:0 auto;width:250px;height:100%;padding:4px;border:0px solid lightgray;">'+ 
+        '<span style="float:left;width:40%;height:100%;padding:3px 0 0 0;font-size:14px;font-weight:bold;background:none;">DTR Month of:</span>'+ 
+        '<input id="date_dtr" style="width:58%;height:100%;margin-left:2%;" onchange="chg_repdtr_month(this.value)" type="month" value="'+JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM')+'"  placeholder="Date" />'+       
+      '</div>'+
     '</div>'+  
 
     '<div id="printableBorder" style="height:'+pa_height+'px;">'+    
@@ -54,10 +55,16 @@ function chg_repdtr_month(v){
     dtr2.innerHTML=dtr1.innerHTML;
 }
 
-function disp_month(vDate){
-  //alert('disp_month: '+vDate);
-  //let f_print=iif(document.getElementById('dv_dtr').getAttribute('data-print')==0,false,true);
-  //alert(f_print);
+function disp_month(vDate){  
+  //alert('disp_month(vDate) : '+vDate);
+  //seek dtr title
+  let title=JBE_GETFLD('title',DB_MONTHLY,'date',vDate);
+  //alert('aaatitle:'+title);
+  if(!title){ title=JBE_DATE_FORMAT(vDate,'MMMM YYYY'); }
+  for_month.innerHTML=title;
+  
+  document.getElementById('title_dtr').value=title;
+
   let str=vDate.split('-');
   let numDays = (y, m) => new Date(y, m, 0).getDate();
   let max_days=numDays(str[0], str[1]);
@@ -67,8 +74,17 @@ function disp_month(vDate){
     let vDate2=str[0]+'-'+str[1]+'-'+j.toString().padStart(2, '0'); 
     document.getElementById('dtl_ymd_'+j).innerHTML=vDate2;
     document.getElementById('dtl_dd_'+j).innerHTML=j.toString().padStart(2, '0');
+    //document.getElementById('dtl_t1_'+j).style.backgroundColor='green';
     let vday=new Date(vDate2).getDay();
     if(vday == 0 ||  vday == 6){ no_work(j,vday); }    
+    //clear entries
+    //document.getElementById('dtl_'+j).style.backgroundColor='none';
+    /*
+    for(var jj=1;jj<=4;jj++){
+      //document.getElementById('dtl_t'+jj+'_'+j).style.backgroundColor='green';
+      document.getElementById('dtl_t'+jj+'_'+j).innerHTML='';
+    }
+    */
   }
 
   
@@ -91,7 +107,7 @@ function disp_month(vDate){
     }
     
     //document.getElementById('dtl_'+row).style.backgroundColor=bg;
-
+    /*
     document.getElementById('dtl_xx_'+row).style.display='block';
     document.getElementById('dtl_dd_'+row).style.color=fg;
     document.getElementById('dtl_nn_'+row).style.color=fg;
@@ -102,13 +118,15 @@ function disp_month(vDate){
       //document.getElementById('dtl_t'+jj+'_'+row).style.display='none';
       //document.getElementById('dtl_t'+jj+'_'+row).style.color=fg;
     }
+      
     //document.getElementById('dtl_hh_'+row).style.display='none';
     document.getElementById('dtl_mm_'+row).style.display='none';
-    document.getElementById('dtl_'+row).setAttribute('data-work',1);    
+    document.getElementById('dtl_'+row).setAttribute('data-work',1);   
+    */ 
   }  
 }
 
-function close_edit_dtr(){
+function close_edit_row_dtr(){
   return;
 }
 
@@ -139,7 +157,7 @@ function toggle_dtl_dtr(row,v_empty){
   document.getElementById('dtl_txt'+row).style.display='block';
 }
 
-function save_dtr(row,v_work){ 
+function save_row_dtr(row,v_work){ 
   //display and save
   let ctr=0;
   let f_empty=false;
@@ -199,9 +217,7 @@ function save_dtr(row,v_work){
   document.getElementById('dtl_txt'+row).style.fontSize=dtl_txt_fsize+'px';
 
   document.getElementById('dtl_txt'+row).style.border=iif(dtl_txt,'1','0')+'px solid green';
-  
-  //alert('dtl_txt_left:'+inp_txt.value);
-  
+    
   document.getElementById('dtl_txt'+row).style.textAlign='left';
   document.getElementById('dtl_txt'+row).style.display='block'; 
   document.getElementById('dtl_txt'+row).style.top=dtl_txt_top;
@@ -209,9 +225,9 @@ function save_dtr(row,v_work){
   document.getElementById('dtl_txt'+row).style.width=dtl_txt_width;
   document.getElementById('dtl_txt'+row).style.fontSize=dtl_txt_fsize;
   
-
-  save_entry(row,v_date,CURR_USER,aryTime[0], aryTime[1], aryTime[2], aryTime[3],dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
-  ref_ctr(false);
+  //save_entry(row,v_date,CURR_USER,aryTime[0], aryTime[1], aryTime[2], aryTime[3],dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
+  JBE_CLOSEBOX();
+  //ref_ctr(false);
 }
 
 function format_12(timeString){
@@ -311,18 +327,20 @@ function ret_clocks(){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function ret_dtr(vDate,f_print){
-  vDate=vDate+'-01';
+function ret_dtr(date,f_print){
+  let vDate=date+'-01';
+  //month_of
   let v_width='100%';
   if(f_print){ v_width='320px'; }
   v_width='320px';
   let max_days=31;
   let aryUSER=JBE_GETARRY(DB_USER,'usercode',CURR_USER);
-  console.log('aryUSER',aryUSER);
-  let empname=aryUSER.fullname; //aryUSER.lastname+', '+aryUSER.firstname+' '+aryUSER.midname.substring(0,1)+'.';
-  //let max_days=document.getElementById('dv_dtr').getAttribute('data-maxdays');
+  let title=JBE_GETFLD('title',DB_MONTHLY,'date',date);
+  
+  //console.log('aryUSER',aryUSER);
+  let empname=aryUSER.fullname; 
   var dtl=
-  '<div style="width:'+v_width+';height:'+iif(f_print,960,730)+'px;margin:0 auto;font-family:Lato, sans-serif;text-align:left;border:1px solid white;">'+
+  '<div style="width:'+v_width+';height:'+iif(f_print,960,720)+'px;margin:0 auto;font-family:Lato, sans-serif;text-align:left;border:0px solid gold;background:white;">'+
   
     //'<div style="width:100%;height:20px;font-size:10px;font-style:italic;border:0px solid black;">Civil Service Form No. 48</div>'+
     '<div style="width:85%;height:20px;margin-top:'+iif(f_print,80,20)+'px;text-align:center;font-size:14px;font-weight:bold;border:0px solid black;">DAILY TIME RECORD</div>'+   
@@ -338,7 +356,7 @@ function ret_dtr(vDate,f_print){
 
     '<div style="width:100%;height:15px;margin-top:40px;font-size:11px;background:none;">'+
       '<div style="float:left;width:27%;height:100%;background:none;">For the month of</div>'+
-      '<div id="month_of" style="float:right;width:65%;height:100%;font-size:12px;font-weight:bold;text-align:left;padding:0 0 0 10px;border-bottom:2px solid lightblue;">'+JBE_DATE_FORMAT(vDate,'MMMM YYYY')+'</div>'+
+      '<div id="for_month" style="float:right;width:65%;height:100%;font-size:12px;font-weight:bold;text-align:left;padding:0 0 0 10px;border-bottom:2px solid lightblue;">'+title+'</div>'+
     '</div>'+   
 
     '<div style="width:100%;height:10px;margin-top:6px;font-size:10px;font-style:italic;background:none;">'+
@@ -391,7 +409,7 @@ function ret_dtr(vDate,f_print){
     //if(!f_print){ rowHeight=25; rowPad=6; }
     for(var i=1;i<=max_days;i++){
       dtl+=
-      '<div id="dtl_'+i+'" data-work = -1 onclick="edit_dtr('+i+','+f_print+')" style="position:relative;width:100%;height:'+rowHeight+'px;cursor:pointer;text-align:center;border:1px solid black;border-bottom:0px;">'+        
+      '<div id="dtl_'+i+'" data-work = -1 onclick="edit_row_dtr('+i+','+f_print+')" style="position:relative;width:100%;height:'+rowHeight+'px;cursor:pointer;text-align:center;border:1px solid black;border-bottom:0px;">'+        
         '<div id="dtl_ymd_'+i+'" style="display:none;"></div>'+
         '<div id="dtl_dd_'+i+'" class="pBox rightBox" style="width:6%;padding:'+rowPad+'px 0 0 0;"></div>'+
         '<div id="dtl_nn_'+i+'" class="pBox" style="display:none;width:89%;padding:'+rowPad+'px 0 0 0;"></div>'+
@@ -427,8 +445,6 @@ function ret_dtr(vDate,f_print){
     
       '<div style="width:100%;height:20px;margin-top:20px;border-top:1px solid black;">VERIFIED as to the prescribed office hours:</div>'+
 
-      //'<div style="width:100%;height:20px;margin-top:20px;border-bottom:2px solid black;"></div>'+
-      //'<div style="margin-top:2px;">In Charge</div>'+
       '<div style="width:100%;height:15px;font-size:13px;font-weight:bold;margin-top:20px;border-bottom:2px solid lightblue;">'+DB_SIG[0].head+'</div>'+
       '<div style="width:100%;height:auto;font-size:11px;font-weight:bold;margin-top:2px;">'+
         '<div>'+DB_SIG[0].position+'</div>'+

@@ -248,5 +248,5 @@ function toggle_setting(v){
 
 function save_setting(){
   let vdate=inp_curdate.value+'-01';
-  rest_api_save_setting(vdate);  
+  //rest_api_save_setting(vdate);  
 }

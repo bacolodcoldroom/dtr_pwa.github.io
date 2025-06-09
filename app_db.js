@@ -34,8 +34,8 @@ function initDb() {
 
   request.onupgradeneeded = function(e) {
     db = e.target.result;
-    db.createObjectStore('daily', { keyPath:['usercode','date'] });
-    db.createObjectStore('monthly', { keyPath:'id' });    
+    db.createObjectStore('daily', { keyPath:['usercode','date','row'] });
+    db.createObjectStore('monthly', { keyPath:'date' });    
     db.createObjectStore('sig', { keyPath:'id' });    
     db.createObjectStore('user', { keyPath:'usercode' });    
     //db.createObjectStore('TranMeter', { keyPath:'meterno' });

@@ -115,7 +115,7 @@ async function updateRecord(record,tbl,func) {
 // ------------------------------
 // Delete a record by key
 // ------------------------------
-async function deleteRecord(id,tbl) {
+async function xdeleteRecord(id,tbl) {
   return openDatabase(tbl).then(db => {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction(tbl, "readwrite");
@@ -196,4 +196,60 @@ async function fetchTextPortion(url, start, end) {
       console.error('Error fetching text portion:', error);
       throw error; // Re-throw for caller to handle
   }
+}
+
+async function deleteDaily(date){
+  const dbName = CURR_IDX_DB;
+  const storeName = 'daily';
+
+  const request = indexedDB.open(dbName);
+
+  request.onerror = (event) => {
+    console.error('Database error:', event.target.errorCode);
+  };
+
+  request.onsuccess = (event) => {
+    const db = event.target.result;
+    const transaction = db.transaction(storeName, 'readwrite');
+    const store = transaction.objectStore(storeName);
+
+    const cursorRequest = store.openCursor();
+
+    cursorRequest.onsuccess = (event) => {
+      const cursor = event.target.result;
+      if (cursor) {
+        const record = cursor.value;
+        let cond=record.date === date && record.usercode === CURR_USER;
+        if (cond) {
+          cursor.delete(); // Deletes the current record
+          console.log(`Deleted record with key ${cursor.key}`);
+        }
+        cursor.continue();
+      } else {
+        console.log('Finished deleting matching records.');
+      }
+    };
+
+    cursorRequest.onerror = (event) => {
+      console.error('Cursor error:', event.target.errorCode);
+    };
+  };
+}
+
+function dropDatabase(){
+  const dbName = CURR_IDX_DB;
+
+  const deleteRequest = indexedDB.deleteDatabase(dbName);
+
+  deleteRequest.onsuccess = function () {
+    console.log(`Database "${dbName}" deleted successfully`);
+  };
+
+  deleteRequest.onerror = function (event) {
+    console.error(`Error deleting database "${dbName}":`, event);
+  };
+
+  deleteRequest.onblocked = function () {
+    console.warn(`Delete blocked. Please close all other tabs using "${dbName}"`);
+  };
 }

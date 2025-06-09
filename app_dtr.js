@@ -5,22 +5,26 @@ function fm_dtr(){
   document.getElementById('back_view1').style.display='none';  
   mnu_fm_dtr();
 
-  let pa_height=H_VIEW-20;
+  let pa_height=H_VIEW-40-17;
   
   var dtl= 
-  '<div id="dv_dtr" data-maxdays=0 data-print=0  style="height:100%;width:100%;font-family:Arial Narrow,Arial,sans-serif;font-size:12px;padding:5px;border:1px solid lightgray;background:white;">'+
+  '<div id="dv_dtr" data-maxdays=0 data-print=0  style="height:100%;width:100%;font-family:Arial Narrow,Arial,sans-serif;font-size:12px;padding:5px;border:1px solid lightgray;background:red;">'+
 
-    '<div style="height:35px;width:100%;padding:0px;border:1px solid lightgray;background:none;">'+             
+    '<div style="height:70px;width:100%;padding:0px;border:1px solid lightgray;background:white;">'+             
       
-      '<div class="cls_daily" style="margin:0 auto;width:250px;height:100%;padding:4px;border:0px solid lightgray;">'+ 
+      '<div class="cls_daily" style="margin:0 auto;width:300px;height:50%;padding:4px;border:0px solid lightgray;">'+ 
         '<span style="float:left;width:40%;height:100%;padding:3px 0 0 0;font-size:14px;font-weight:bold;background:none;">DTR Month of:</span>'+ 
-        '<input id="date_dtr" style="width:60%;height:100%;" onchange="chg_dtr_month(this.value)" type="month" value="'+JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM')+'"  placeholder="Date" />'+       
+        '<input id="date_dtr" style="width:58%;height:100%;margin-left:2%;" onchange="chg_dtr_month(this.value)" type="month" value="'+JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM')+'"  placeholder="Date" />'+       
+      '</div>'+
+      '<div class="cls_daily" style="width:100%;height:50%;padding:4px;border:1px solid lightgray;">'+ 
+        '<span style="float:left;width:15%;height:100%;padding:3px 0 0 0;font-size:14px;font-weight:bold;background:none;">TITLE:</span>'+ 
+        '<input id="title_dtr" data-otitle="" disabled style="float:left;width:85%;height:100%;margin-left:0%;" type="text" onchange="chg_dtr_title(this.value)" placeholder="Title" />'+               
       '</div>'+
 
     '</div>'+   
 
-    '<div style="width:100%;height:'+pa_height+'px;border:1px solid lightgray;overflow:auto;padding:10px 0 10px 0;background:lightgray;">'+     
-      '<div id="dv_ret_dtr" style="margin:0 auto;width:360px;height:745px;padding:5px;border:0px solid cyan;background:white;">'+
+    '<div style="width:100%;height:'+pa_height+'px;border:2px solid black;overflow:auto;padding:0px;background:lightgray;">'+     
+      '<div id="dv_ret_dtr" style="pointer-events:none;margin:0 auto;width:360px;height:745px;padding:5px;border:0px solid cyan;background:white;">'+
           ret_dtr(JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM'),false)+
       '</div>'+
     '</div>'+
@@ -28,10 +32,8 @@ function fm_dtr(){
   '</div>';
   
   JBE_OPEN_VIEW(dtl,'My DTR','showMainPage');       
-  querySel_dtr();
-  
-  disp_month(JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM'));
-  disp_user_time(JBE_DATE_FORMAT(CURR_DATE,'YYYY-MM'),false);
+  querySel_dtr();  
+  disp_fm_dtr();  
 }
 
 function disp_user_time(vDate,f_print){
@@ -40,6 +42,14 @@ function disp_user_time(vDate,f_print){
   document.getElementById('date_dtr').style.color=fg;
   document.getElementById('date_dtr').style.backgroundColor=bg;
   let ctr=0;
+
+  for(var j=1;j<=31;j++){
+    document.getElementById('dtl_'+j).style.backgroundColor='white';
+    for(var jj=1;jj<=4;jj++){
+      document.getElementById('dtl_t'+jj+'_'+j).innerHTML='';
+    }
+  }
+  //DB_DAILY.sort(JBE_SORT_ARRAY(['time1']));
   for(var i=0;i<DB_DAILY.length;i++){
     if(DB_DAILY[i].usercode != CURR_USER){ continue; }   
     if(JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM') != vDate){ continue; }
@@ -51,22 +61,22 @@ function disp_user_time(vDate,f_print){
     let v_t4=DB_DAILY[i].time4;  
     if(time_empty(v_txt,v_t1,v_t2,v_t3,v_t4)){ continue; } 
           
-    let vdate=JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM-DD');
-    let vday=parseInt(vdate.substring(8,10));  
+    let vday=DB_DAILY[i].row;  
     
     //*** CHECK IF NON WORKING DAY */        
     let f_nowork=parseInt(document.getElementById('dtl_'+vday).getAttribute('data-work'));
     console.log('f_nowork',f_nowork);
     if( f_nowork != -1){
       document.getElementById('dtl_xx_'+vday).style.display='none';
-    }
-    
+    }    
     
     //document.getElementById('dtl_ymd'+'_'+vday).innerHTML=vdate;
     if(DB_DAILY[i].time1){ document.getElementById('dtl_t1'+'_'+vday).innerHTML=DB_DAILY[i].time1.replace(/^0+/, "")+iif(f_print,' am',''); }
     if(DB_DAILY[i].time2){ document.getElementById('dtl_t2'+'_'+vday).innerHTML=DB_DAILY[i].time2.replace(/^0+/, "")+iif(f_print,' pm',''); }   
     if(DB_DAILY[i].time3){ document.getElementById('dtl_t3'+'_'+vday).innerHTML=DB_DAILY[i].time3.replace(/^0+/, "")+iif(f_print,' pm',''); }
     if(DB_DAILY[i].time4){ document.getElementById('dtl_t4'+'_'+vday).innerHTML=DB_DAILY[i].time4.replace(/^0+/, "")+iif(f_print,' pm',''); }   
+
+    document.getElementById('dtl_'+vday).style.backgroundColor='none';
     
     //console.log('====>>> Day '+vdate);
     let vtop=parseInt(DB_DAILY[i].txt_top);
@@ -95,12 +105,18 @@ function disp_user_time(vDate,f_print){
 }
 
 function chg_dtr_month(v){
-  //alert('jbe: '+v);
+  //alert('chg_dtr_month: '+v);
   document.getElementById('dv_ret_dtr').innerHTML=ret_dtr(v,false);
   querySel_dtr();
-  disp_month(v);
-  disp_user_time(v,false);
+  //disp_month(v);
+  //disp_user_time(v,false);
+  disp_fm_dtr();
 }
+function chg_dtr_title(v){
+  //alert('jbe: '+v);
+  
+}
+
 function ret_weekend(myDate){
   var myDate = new Date();
   if(myDate.getDay() == 6){ return 'Saturday'; }
@@ -116,13 +132,35 @@ function close_fm_dtr(){
 function mnu_fm_dtr(){
   var jmenu=
     '<div style="width:100%;height:100%;">'+           
-      '<div style="float:left;width:75%;height:100%;padding:12px;text-align:left;background:none;">'+
-        'DTR File Maintenance'+
+      '<div onclick="edit_fm_dtr()" style="float:left;width:25%;height:100%;background:none;">'+
+        '<div class="class_footer">'+
+          '<img src="gfx/jedit.png"  alt="home image" />'+
+          '<span>Edit</span>'+
+        '</div>'+
       '</div>'+
       '<div onclick="showMainPage()" style="float:right;width:25%;height:100%;background:none;">'+
         '<div class="class_footer">'+
           '<img src="gfx/jclose.png"  alt="home image" />'+
           '<span>Close</span>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  dispMenu(false,jmenu);
+}
+
+function mnu_edit_fm_dtr(){
+  var jmenu=
+    '<div style="width:100%;height:100%;">'+           
+      '<div onclick="save_fm_dtr()" style="float:left;width:25%;height:100%;background:none;">'+
+        '<div class="class_footer">'+
+          '<img src="gfx/jsave.png"  alt="home image" />'+
+          '<span>Save</span>'+
+        '</div>'+
+      '</div>'+
+      '<div onclick="disp_fm_dtr()" style="float:right;width:25%;height:100%;background:none;">'+
+        '<div class="class_footer">'+
+          '<img src="gfx/jclose.png"  alt="home image" />'+
+          '<span>Cancel</span>'+
         '</div>'+
       '</div>'+
     '</div>';
@@ -135,12 +173,6 @@ function refresh_dtr(){
 }
  
 function print_back(){
-  //alert('rp_dtr');
-  /*
-  window.history.pushState({ noBackExitsApp: true }, '');
-  f_MainPage=false;
-  var repTilt='';
-  */
   document.getElementById('back_view2').style.display='none';
   document.getElementById('cap_viewMid2').innerHTML='';
   
@@ -215,9 +247,17 @@ function ret_back_page(){
   dtr_b2.innerHTML=dtl;
 }
 
+function edit_fm_dtr(){
+  dv_dtr.style.backgroundColor='red';
+  date_dtr.disabled=true;
+  title_dtr.disabled=false;
+  dv_ret_dtr.style.pointerEvents='auto';
+  mnu_edit_fm_dtr();
+}
+
 //‐-------
-function edit_dtr(row,f_print){
-  //alert('edit_dtr');
+function edit_row_dtr(row,f_print){
+  //alert('edit_row_dtr');
   let max_days=document.getElementById('dv_dtr').getAttribute('data-maxdays');
   if(row > max_days){ return; }
   //alert(row+' max:'+max_days);
@@ -254,7 +294,7 @@ function edit_dtr(row,f_print){
   let vheight=163;
   if(!txt){ disp_txt='none'; vheight=98; }
   var dtl=       
-    '<div id="div_edit_dtr" style="width:100%;height:'+vheight+'px;text-align:center;padding:0px;background-color:none;">'+
+    '<div id="div_edit_row_dtr" style="width:100%;height:'+vheight+'px;text-align:center;padding:0px;background-color:none;">'+
      
         '<div style="width:100%;height:40px;color:black;margin-top:0px;font-size:12px;font-weight:bold;padding:0px;border:0px solid black;background:none;">'+
           '<div style="float:left;width:12%;height:100%;margin-right:1%;padding:6px 0 0 0;font-size:12px;font-weight:bold;color:white;background:'+JBE_CLOR+';">DAY<br>'+row+'</div>'+      
@@ -291,10 +331,10 @@ function edit_dtr(row,f_print){
   var dtl2=   
     '<div style="width:100%;height:100%;text-align:center;color:'+JBE_TXCLOR1+';background:none;">'+
       '<div style="width:100%;height:100%;">'+      
-        '<div onclick="save_dtr('+row+','+v_work+')" style="float:left;width:25%;height:100%;background:none;">'+
+        '<div onclick="save_row_dtr('+row+','+v_work+')" style="float:left;width:25%;height:100%;background:none;">'+
           '<div class="class_footer">'+
-            '<img src="gfx/jsave.png"  alt="home image" />'+
-            '<span>Save</span>'+
+            '<img src="gfx/jdown.png"  alt="home image" />'+
+            '<span>OK</span>'+
           '</div>'+
         '</div>'+
         '<div onclick="clear_dtr_entry('+row+')" style="float:left;width:25%;height:100%;background:none;">'+
@@ -318,7 +358,7 @@ function edit_dtr(row,f_print){
       '</div>';  
     '</div>';
 
-  JBE_OPENBOX('div_edit_dtr',tilt,dtl,dtl2,'close_edit_dtr');
+  JBE_OPENBOX('div_edit_row_dtr',tilt,dtl,dtl2,'close_edit_row_dtr');
   let f_empty=chk_dtr_dtl_empty(row);
   //alert('f_empty: '+f_empty);
   //if(chk_dtr_dtl_empty(row)){  
@@ -347,15 +387,16 @@ function clk_text(row){
   document.getElementById("myJBox_main").style.height='217px';
 }
 
-function save_entry(row,vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize){
+async function save_entry(row,vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize){  
+  //alert('save dtr');
   console.log('time1:'+time1);
   console.log('time2:'+time2);
   console.log('time3:'+time3);
   console.log('time4:'+time4);
   console.log('row|id :'+row);
   
-  var ob = {
-    id:row,
+  let ob = {
+    row:row,
     date:vdate,
     rank:0,
     usercode:usercode,
@@ -371,15 +412,20 @@ function save_entry(row,vdate,usercode,time1, time2, time3, time4, dtl_txt,dtl_t
     txt_width:dtl_txt_width,
     txt_fsize:dtl_txt_fsize
   };
-  updateRecord(ob,'daily','update_db'); 
+  await updateRecord(ob,'daily','update_daily_db'); 
 }
 
-async function update_db(){
+async function update_daily_db(){
   DB_DAILY=await readAllRecords('daily');
-  console.log('update_db Daily: '+DB_DAILY.length);
-  JBE_CLOSEBOX();   
+  console.log('update_daily_db Daily: '+DB_DAILY.length);
+  //JBE_CLOSEBOX();   
 }
 
+async function update_monthly_db(){
+  DB_MONTHLY=await readAllRecords('monthly');
+  console.log('update db monthly: '+DB_MONTHLY.length);
+  //JBE_CLOSEBOX();   
+}
 
 function ref_ctr(f_print){  
   let ctr=0;
@@ -393,4 +439,50 @@ function ref_ctr(f_print){
 
   if(f_print){ ctr=0; }
   document.getElementById('div_total').innerHTML=ctr;
+}
+
+function disp_fm_dtr(){
+  disp_month(date_dtr.value);
+  disp_user_time(date_dtr.value,false);
+  dv_dtr.style.backgroundColor='white';
+  mnu_fm_dtr();
+  dv_ret_dtr.style.pointerEvents='none';
+  date_dtr.disabled=false;
+  title_dtr.disabled=true;
+  ref_ctr(false);
+}
+
+async function save_fm_dtr(){
+  let vDate=date_dtr.value;
+  let time1=''; let time2=''; let time3=''; let time4='';
+  let dtl_txt=''; let dtl_txt_top=0; let dtl_txt_left=0; let dtl_txt_width=0; let dtl_txt_fsize=12;
+  
+  let cond='record.date === '+vDate+' && record.usercode === '+CURR_USER;
+  //alert(cond);
+  await deleteDaily(vDate);
+
+  for(var j=1;j<=31;j++){    
+    time1=document.getElementById('dtl_t1_'+j).innerHTML;
+    time2=document.getElementById('dtl_t2_'+j).innerHTML;
+    time3=document.getElementById('dtl_t3_'+j).innerHTML;
+    time4=document.getElementById('dtl_t4_'+j).innerHTML;
+    //
+    dtl_txt=document.getElementById('dtl_txt'+j).innerHTML;
+    dtl_txt_top=document.getElementById('dtl_txt_top_'+j).innerHTML;
+    dtl_txt_left=document.getElementById('dtl_txt_left_'+j).innerHTML;
+    dtl_txt_width=document.getElementById('dtl_txt_width_'+j).innerHTML;
+    dtl_txt_fsize=document.getElementById('dtl_txt_fsize_'+j).innerHTML;
+
+    if(time_empty(dtl_txt,time1,time2,time3,time4)){ continue; }
+    //console.log(dtl_txt,time1,time2,time3,time4);    
+    await save_entry(j,vDate,CURR_USER,time1, time2, time3, time4, dtl_txt,dtl_txt_top,dtl_txt_left,dtl_txt_width,dtl_txt_fsize);
+  }  
+  //save monthly
+  for_month.innerHTML=title_dtr.value;
+  let ob = {
+    date:date_dtr.value,
+    title:title_dtr.value
+  };
+  await updateRecord(ob,'monthly','update_monthly_db'); 
+  disp_fm_dtr();
 }
