@@ -145,9 +145,10 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
   };      
 
   showProgress(true);
+  
   //alert('save: usercode: '+usercode+' curr_user:'+CURR_USER);    
   //alert('offline:'+ob.photo);
-  await api_save(false,JBE_API+'user',[ob],record => !(record.usercode === usercode));
+  await api_save(false,'user',[ob],record => !(record.usercode === usercode));
   
   showProgress(false);  
   document.getElementById('admin_avatar').src=photo;
@@ -156,6 +157,12 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
   
   let data=await api_readfile(false,JBE_API+'user');   DB_USER=data.content;
   console.log('save profile:',DB_USER);
+
+  if(JBE_ONLINE){ 
+    await jeff_uploadImage(photo,'dtr/images/'+usercode+'.jpg'); 
+    ob.photo='';
+    await api_save(true,'dtr/'+'user',[ob],record => !(record.usercode === usercode));
+  }
   JBE_CLOSE_VIEW();
 }
   
