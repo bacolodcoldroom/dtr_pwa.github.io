@@ -144,12 +144,11 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
     lng:lng
   };      
 
-  showProgress(true);
+  
   
   //alert('save: usercode: '+usercode+' curr_user:'+CURR_USER);    
   //alert('offline:'+ob.photo);
-  await api_save(false,'user',[ob],record => !(record.usercode === usercode));
-  
+  await api_save(false,'user',[ob],record => !(record.usercode === usercode));  
   
   document.getElementById('admin_avatar').src=photo;
   document.getElementById('bar_avatar').src=photo;
@@ -163,17 +162,8 @@ async function rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,la
     ob.photo='';
     await api_save(true,'dtr/'+'user',[ob],record => !(record.usercode === usercode));
   }
-  showProgress(false);  
-  JBE_CLOSE_VIEW();
 }
-  
-async function upd_save_profile(){  
-  DB_USER=await readAllRecords('user');
-  console.log('upd_save_profile',DB_USER);
-  dispHeaderMode();
-  JBE_CLOSE_VIEW();
-}
-  
+    
 //=============================
 function time_empty(txt,t1,t2,t3,t4){
   let rval=true;

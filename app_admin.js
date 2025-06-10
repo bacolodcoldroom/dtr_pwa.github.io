@@ -634,8 +634,10 @@ async function save_profile(){
     return;
   }  
   //console.log('foto',foto);  
+  showProgress(true);
   rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,lastname,firstname,middlename,a,foto,c,lat,lng,d_active,CURR_AXTYPE);
-  showProgress(false);
+  showProgress(false);  
+  JBE_CLOSE_VIEW();
 }
  
 function update_curr_user(usercode,n){
