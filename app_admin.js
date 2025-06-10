@@ -645,7 +645,7 @@ async function save_profile(){
     MSG_SHOW(vbOk,"ERROR: Pls. complete the form.",vmsg,function(){},function(){});
     return;
   }
-  if(JBE_CLOUD){ await jeff_uploadImage(foto,'dtr/images/'+usercode+'.jpg'); }
+  if(JBE_ONLINE){ await jeff_uploadImage(foto,'dtr/images/'+usercode+'.jpg'); }
   //console.log('foto',foto);  
   rest_api_save_profile(vmode,userRow,usercode,u,p,n,n2,fullname,lastname,firstname,middlename,a,foto,c,lat,lng,d_active,CURR_AXTYPE);
   showProgress(false);

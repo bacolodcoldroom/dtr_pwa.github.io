@@ -4,32 +4,35 @@ function fm_daily(){
   //return;
 
   if(!JBE_CHK_USER(0)){ 
-    speakText("Please Log-In. Thank you.");
+    speakText("Please Log-In.");
     return; 
   }
   
   let tilt='Time In';
   let f_found=false;
-  let v_date=new Date();  
-  let minutos = v_date.getMinutes().toString().padStart(2, '0');
-  v_date=JBE_DATE_FORMAT(v_date,'YYYY-MM-DD');
+  let v_date=JBE_DATE_FORMAT(new Date(),'YYYY-MM-DD');
+  let v_date2=JBE_DATE_FORMAT(v_date,'YYYY-MM');
+  let row=Number(v_date.substring(8));
 
-  ary=ret_clocks();
-  ary=[];
-  let v_time1=ary[0];
-  let v_time2=ary[1];
-  let v_time3=ary[2];
-  let v_time4=ary[3];
+  let aryDAILY=JBE_GETARRY2(DB_DAILY,[
+    { "fld":"usercode","val":CURR_USER },
+    { "fld":"date","val":v_date2 },
+    { "fld":"row","val":row }
+  ]); 
+  console.log('>>>> times :',aryDAILY);
+
+  let v_time1=format_12(aryDAILY.time1);
+  let v_time2=format_12(aryDAILY.time2);
+  let v_time3=format_12(aryDAILY.time3);
+  let v_time4=format_12(aryDAILY.time4);
   
   let v_save='TIME IN';
   let bgsave='white';
 
-  DB_DAILY.sort(JBE_SORT_ARRAY(['time1']));
+  //DB_DAILY.sort(JBE_SORT_ARRAY(['time1']));
   var dtl=     
     '<div id="div_timeIN" style="width:100%;height:230px;text-align:center;padding:0px;background-color:white;">'+
-      //'<div id="div_date" style="display:none;">'+v_date+'</div>'+
-      //  '<div id="dtls_timeIN" style="display:none;width:100%;height:'+(H_BODY-260)+'px;overflow:auto;text-align:center;padding:0px;border:1px solid black;">'+
-      //'</div>'+
+
       '<div style="width:100%;height:100%;padding:10px;border:1px solid gray;">'+
     
         '<div style="margin:0 auto;width:80%;height:85px;margin-top:10px;border:1px solid '+JBE_CLOR+';color:white;font-size:11px;background:'+JBE_CLOR4+';">'+  
@@ -97,76 +100,8 @@ function fm_daily(){
   );
   tilt=formatter.format(new Date());
   JBE_OPENBOX('div_timeIN',tilt,dtl,dtl2);
-  show_daily(v_date,v_time1,v_time2,v_time3,v_time4);
-}
-
-function show_daily(v_date,v_time1,v_time2,v_time3,v_time4){
-  let f_found=false;
-  DB_DAILY.sort(JBE_SORT_ARRAY(['time1']));
-  dtl='';
-  let v_save='Save';
-  let bgsave='red';
-  let sv_last=v_time1;
-  let ctr=0;
-  for(var i=0;i<DB_DAILY.length;i++){
-    if(JBE_DATE_FORMAT(DB_DAILY[i].date,'YYYY-MM-DD') != v_date){ continue; }
-    
-    let v_username=JBE_GETFLD('username',DB_USER,'usercode',DB_DAILY[i].usercode);
-    let v_color='black';
-    ctr++;
-    
-    if(DB_DAILY[i].usercode==CURR_USER){
-      f_found=true;
-      v_color='red';
-      v_time1=DB_DAILY[i].time1;
-      v_time2=DB_DAILY[i].time2;
-      v_time3=DB_DAILY[i].time3;
-      v_time4=DB_DAILY[i].time4;
-      v_save='Save';
-      bgsave='white';
-      inp_time1.setAttribute('data-otime1',v_time1);
-    }
-      
-    sv_last=DB_DAILY[i].time1;
-    dtl+=
-      '<div style="width:100%;height:40px;margin-top:5px;padding:5px;text-align:left;font-size:12px;color:'+v_color+';background-color:'+JBE_CLOR2+';">'+
-        '<div style="float:left;width:5%;height:100%;padding:8px 0 0 0px;text-align:right;">'+ctr+'. </div>'+
-        '<div style="float:left;width:35%;height:100%;padding:8px 0 0 5px;">'+v_username+'</div>'+
-        '<div style="float:left;width:30%;height:100%;padding:8px 0 0 5px;">'+DB_DAILY[i].time1+'</div>'+
-      '</div>';        
-  }
-   /*
-  if(!f_found){ 
-    let oras = sv_last.split(':');
-    let hh = oras[0].padStart(2, '0');
-    let mm = oras[1].padStart(2, '0');
-    
-    let xhh=Number(hh);
-    let xmm=Number(mm)+1;
-    if(xmm==60){ 
-      xmm=1;  xhh++;
-      if(xhh > 12){ xhh=1; }
-    }
-    v_time1=xhh.toString().padStart(2, '0')+':'+xmm.toString().padStart(2, '0');
-  }
-  */
-  //alert('v_time1:'+v_time1);        
-  //dtls_timeIN.innerHTML=dtl;
-  btn_save.value=v_save;
-  btn_save.style.backgroundColor=bgsave;
-  btn_save.setAttribute('data-found',f_found);
-  inp_time1.value=v_time1;
-  inp_time2.value=v_time2;
-  inp_time3.value=v_time3;
-  inp_time4.value=v_time4;
-  
-  //let hour = new Date().getHours();
-  //let msg="Good " + (hour<12 && "Morning" || hour<18 && "Afternoon" || "Evening"); 
-  //msg = msg+' '+CURR_NAME2+"!"; 
-  //alert('sv_last:'+sv_last);
-  let msg="Please enter your time in today.";  
-  if(f_found){ msg="Time Edit is activated."; }
-  speakText(msg); 
+  console.log(v_date,v_time1,v_time2,v_time3,v_time4);
+  //show_daily(v_date,v_time1,v_time2,v_time3,v_time4);
 }
 
 function chg_time(id,v){  
