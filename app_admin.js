@@ -407,17 +407,6 @@ function fm_profile(vmode){
     lastname=aryDB['lastname'];
     firstname=aryDB['firstname'];
     middlename=aryDB['midname'];
-    //'Paul Steve Panakkal'.split(' '); // returns ["Paul", "Steve", "Panakkal"]
-    //'Paul Steve Panakkal'.split(' ').slice(0, -1).join(' '); // returns "Paul Steve"
-    //'Paul Steve Panakkal'.split(' ').slice(-1).join(' '); // returns "Panakkal"
-    /*
-    lastname=extractNames(fullname).lastName;
-    firstname=extractNames(fullname).firstName;
-    middlename=extractNames(fullname).middleName;
-    */
-    //const result = parseFullName(fullname);
-    //console.log(result);
-
     //console.log('lastname',lastname,firstname,middlename);
     addrss=aryDB['addrss'];
     celno=aryDB['celno'];
@@ -704,7 +693,7 @@ function close_editStaff(){
   mnu_fm_admin();
 }
 
-function disp_editStaff(){ 
+async function disp_editStaff(){ 
   if(DB_USER.length==0){
     snackBar('No Records....');
     return;
@@ -715,6 +704,7 @@ function disp_editStaff(){
   var n = new Date().toLocaleTimeString('it-IT');
   //document.getElementById('div_sel_orders').innerHTML=newOptionsHtml1; 
   var dtl='';
+  showProgress(true);   
   for(var i=0;i<aryDB.length;i++){ 
     var newOptionsHtml='';
     for(var y=0;y<6;y++){
@@ -727,7 +717,9 @@ function disp_editStaff(){
 
     //alert(aryDB[i]['photo']);
     //let v_mphoto='data:image/png;base64,' + btoa(JBE_GETFLD('photo',aryDB,'usercode',CURR_USER));
-    let v_mphoto='data:image/png;base64,' + btoa(aryDB[i].photo);
+    //let v_mphoto='data:image/png;base64,' + btoa(aryDB[i].photo);
+    let v_mphoto=await jeff_getImage('dtr/images/'+aryDB[i]['usercode']+'.jpg');    
+    if(!v_mphoto){ v_mphoto='./gfx/avatar.png'; } 
 
     dtl+=
       '<div style="width:100%;height:40px;margin-top:10px;padding:0px;background:none;">'+
@@ -754,6 +746,7 @@ function disp_editStaff(){
         '</div>'+
       '</div>';
   }  
+  showProgress(false);   
   document.getElementById('div_editStaff').innerHTML=dtl;
 }
 
