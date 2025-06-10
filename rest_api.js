@@ -5,6 +5,18 @@ async function rest_api_start(){
     '<div style="height:auto;width:100%;padding:25% 0 0 0;font-size:56px;font-weight:bold;text-align:center;">This software can only run in mobile phones.</div>';
     return;
   }
+    
+  DB_DAILY=await readAllRecords('daily');
+  DB_MONTHLY=await readAllRecords('monthly');
+  console.log('------------DB_MONTHLY ',DB_MONTHLY);
+  DB_SIG=await readAllRecords('sig');  
+  console.log('DB_SIG',DB_SIG.length);
+  console.log('DB_SIG',DB_SIG);
+  if(!DB_SIG[0].sys_pat || DB_SIG.length==0){ await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); }) }
+  //alert(DB_SIG[0].sys_pat);
+  GITHUB_TOKEN = DB_SIG[0].sys_pat.substring(3);
+  console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
+
   DB_USER=await readAllRecords('user'); 
   console.log('>>> axtype',CURR_AXTYPE);
   console.log('start db_user',DB_USER);
@@ -12,15 +24,6 @@ async function rest_api_start(){
     MSG_SHOW(vbOk,'ERROR:','No Database Found. Create New one.', async function(){ await get_all_db_from_cloud(); },function(){});
   }
   //getAllDataFromIDX();
-  
-  DB_DAILY=await readAllRecords('daily');
-  DB_MONTHLY=await readAllRecords('monthly');
-  console.log('------------DB_MONTHLY ',DB_MONTHLY);
-  DB_SIG=await readAllRecords('sig');  
-  console.log('DB_SIG',DB_SIG.length);
-  if(DB_SIG.length==0){ await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); }) }
-  GITHUB_TOKEN = DB_SIG[0].sys_pat.substring(3);
-  console.log('GITHUB_TOKEN:',GITHUB_TOKEN);
 
   JBE_CLOUD=false;
   JBE_API='';
@@ -59,6 +62,7 @@ async function get_all_db_from_json(){
 async function get_all_db_from_cloud(){  
   let data=await api_readfile(true,'dtr/user');   DB_USER=data.content;  
   await saveDataToIDX(DB_USER,3);
+  await fetch('./DBF/sig.json').then(res => res.json()).then(data => { DB_SIG=data;saveDataToIDX(data,2); }) 
 }
 
 function rest_api_lognow(u,p){
