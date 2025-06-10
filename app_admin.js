@@ -595,7 +595,6 @@ function close_profile(){
 }
 
 async function save_profile(){ 
-  showProgress(true);
   var vmode=document.getElementById('div_admin_profile').getAttribute('data-mode');
   var userRow=parseInt(document.getElementById('div_admin_profile').getAttribute('data-userRow'));
   //alert('going to save. data mode:'+vmode+'\nuserRow: '+userRow);  
@@ -619,18 +618,7 @@ async function save_profile(){
   var lng=document.getElementById('flng2').value; 
   var d_active=document.getElementById('dv_d_active').innerHTML; 
  
-  //var foto=document.getElementById('img_eavatar'+vmode).getAttribute('data-img');
   var foto=document.getElementById('img_eavatar'+vmode).src;
-
-  /*
-  let lastname=extractNames(fullname).lastName;
-  let firstname=extractNames(fullname).firstName;
-  let middlename=extractNames(fullname).middleName;
-  */
-  
-  //foto=profileImg;
-  //alert('foto:'+foto);
-
  
   if(u=='' || p=='' || n=='' || c=='' || a=='' || foto==''){
     var vmsg='';
