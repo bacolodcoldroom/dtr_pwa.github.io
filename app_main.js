@@ -1030,7 +1030,6 @@ function factoryReset(){
     snackBar('System Offline...');
     return;
   }
-  
 
   MSG_SHOW(vbOkAbort,'DATA RESET:','<center>Going to Reset Database from the Server.<br>Current Data will be replaced.<br><br>Are you sure to do this?</center>', function(){ do_reset(); },function(){ return; });
   
