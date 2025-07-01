@@ -94,8 +94,7 @@ async function api_save(cloud,fileName,newData,cond){
   }else{
     let n=get_ndx_JBE_STORE_IDX(fileName);
     console.log('saveDataToIDX',JBE_STORE_IDX[n]['flename'],n);
-    await saveDataToIDX(newData,n);
-    //speakText('Data updated to Indexed DB.');
+    await saveDataToIDX(newData,n);    
   }
 }
 

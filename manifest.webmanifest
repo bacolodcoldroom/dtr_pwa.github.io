@@ -9,7 +9,7 @@
   "description": "DTR App for Bacolod Cold Chain Facility",
   "icons": [
     {
-      "src": "gfx/favicon_io/android-chrome-152x152.png",
+      "src": "gfx/favicon_io/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     },

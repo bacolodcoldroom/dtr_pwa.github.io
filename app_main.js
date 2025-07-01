@@ -134,29 +134,6 @@ function showMainPage(){
   dispMenu(true,vmenu);
 }
 
-function xxdispHeaderMode(){
-  //var n = new Date().toLocaleTimeString('it-IT');
-  let v_mphoto='gfx/avatar.png'; 
-  if(!CURR_USER){
-    document.getElementById('logger').style.color='navy';
-    document.getElementById('logger').innerHTML="Please Log In";
-    document.getElementById("page_login").style.display="none";     
-  }else{
-    document.getElementById('logger').style.color='navy';
-    document.getElementById('logger').innerHTML='Hi!, '+CURR_NAME;     
-    document.getElementById("page_login").style.display="none";
-    for(var i=0;i<DB_USER.length;i++){
-      //console.log('seee',DB_USER[i].usercode,CURR_USER);
-      if(DB_USER[i].usercode==CURR_USER){
-        v_mphoto='data:image/png;base64,' + btoa(DB_USER[i].photo);
-        break;
-      }
-    }
-  }
-  document.getElementById('bar_avatar').src=v_mphoto;
-  document.getElementById('owner').src=v_mphoto;
-}
-
 async function dispHeaderMode(){
   //var n = new Date().toLocaleTimeString('it-IT');
   let v_mphoto='gfx/avatar.png'; 
@@ -182,8 +159,7 @@ async function dispHeaderMode(){
 
 // ** ======================= SHOW ROUTINES ===================================
 function showProfile(v){ 
-  //alert('showprofile: '+v);
- 
+  //alert('showprofile: '+v); 
   document.getElementById('div_bar').style.display='block';
   var n = new Date().toLocaleTimeString('it-IT');
   var v_mphoto='gfx/avatar.png';
@@ -209,23 +185,21 @@ function showSystem(){
     v_banner='data:image/png;base64,' + btoa(aryDB[0]['banner']);
   }  
 
-
-
   //slide paint area==================
   var dtl='';
   var idx=0;
   var v_slide;
   for(var i=0;i<3;i++){ 
-      idx=(i+1);          
-      v_slide=JBE_API+'gfx/slide'+idx+'.jpg?'+n;     
-      //alert('v_slide '+v_slide);
-      if(!JBE_ONLINE){       
-          v_slide='data:image/png;base64,' + btoa(DB_SYS[0]['slide'+idx]);
-      }
-      dtl+=
-          '<div id="ds'+idx+'" class="slideX" style="animation:fade'+idx+' 20s infinite;-webkit-animation:fade'+idx+' 20s infinite;'+
-                'width:100%;height:100%;background:url('+v_slide+') center no-repeat;">'+                      
-          '</div>';
+    idx=(i+1);          
+    v_slide=JBE_API+'gfx/slide'+idx+'.jpg?'+n;     
+    //alert('v_slide '+v_slide);
+    if(!JBE_ONLINE){       
+        v_slide='data:image/png;base64,' + btoa(DB_SYS[0]['slide'+idx]);
+    }
+    dtl+=
+        '<div id="ds'+idx+'" class="slideX" style="animation:fade'+idx+' 20s infinite;-webkit-animation:fade'+idx+' 20s infinite;'+
+              'width:100%;height:100%;background:url('+v_slide+') center no-repeat;">'+                      
+        '</div>';
                  
     document.getElementById('div_slider').innerHTML=dtl;   
   }

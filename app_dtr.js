@@ -248,7 +248,7 @@ function ret_back_page(){
 }
 
 function edit_fm_dtr(){
-  dv_dtr.style.backgroundColor='red';
+  dv_dtr.style.backgroundColor='black';
   date_dtr.disabled=true;
   title_dtr.disabled=false;
   dv_ret_dtr.style.pointerEvents='auto';
@@ -453,6 +453,7 @@ function disp_fm_dtr(){
 }
 
 async function save_fm_dtr(){
+  alert('going to save...');
   let vDate=date_dtr.value;
   let time1=''; let time2=''; let time3=''; let time4='';
   let dtl_txt=''; let dtl_txt_top=0; let dtl_txt_left=0; let dtl_txt_width=0; let dtl_txt_fsize=12;
@@ -497,8 +498,8 @@ async function save_fm_dtr(){
     };
     ary_obs[obs_ctr]=ob; obs_ctr++;
   }  
-  //console.log('ary_obs');
-  //console.log(ary_obs);
+  console.log('ary_obs');
+  console.log(ary_obs);
   await api_save(false,'daily',ary_obs,record => !(record.usercode === usercode && record.date === vDate));  
   DB_DAILY=await readAllRecords('daily');
   //save monthly
@@ -509,6 +510,7 @@ async function save_fm_dtr(){
   };
   //await updateRecord(ob,'monthly','dtr_save_display'); 
   await api_save(false,'monthly',[ob],record => !(record.date === date_dtr.value));  
+  speakText('Data updated to Indexed DB.');
   DB_MONTHLY=await readAllRecords('monthly');
   disp_fm_dtr();
 }
